@@ -17,14 +17,14 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
 
     <!-- Icons -->
-    <link href="argon/vendor/nucleo/css/nucleo.css" rel="stylesheet">
-    <link href="argon/vendor/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link href="/argon/vendor/nucleo/css/nucleo.css" rel="stylesheet">
+    <link href="/argon/vendor/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
 
     <!-- Argon CSS -->
-    <link type="text/css" href="argon/css/argon.min.css" rel="stylesheet">
-    <link type="text/css" href="css/app.css" rel="stylesheet">
-
-    <!-- Java Script -->
+    <link type="text/css" href="/argon/css/argon.min.css" rel="stylesheet">
+    <link type="text/css" href="/css/app.css" rel="stylesheet">
+    {{--<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />--}}
+    {{--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css">--}}
 
 </head>
 <body>
@@ -41,7 +41,7 @@
             </button>
             <!-- Brand -->
             <router-link class="navbar-brand pt-0" to="/">
-                <img src="argon/img/brand/blue.png" class="navbar-brand-img" alt="...">
+                <img src="/argon/img/brand/blue.png" class="navbar-brand-img" alt="...">
             </router-link>
             <!-- User -->
             <ul class="nav align-items-center d-md-none">
@@ -162,6 +162,11 @@
                             <i class="ni ni-single-02 text-yellow"></i> User profile
                         </router-link>
                     </li>
+                        <li class="nav-item">
+                            <router-link class="nav-link" to="/tickets">
+                                <i class="ni ni-single-02 text-yellow"></i> Ticket Software
+                            </router-link>
+                        </li>
                     <li class="nav-item">
                         <a class="nav-link" href="./examples/tables.html">
                             <i class="ni ni-bullet-list-67 text-red"></i> Tables
@@ -206,7 +211,7 @@
     <!-- Main content -->
     <div class="main-content">
         <!-- Top navbar -->
-        <nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
+        <nav class="navbar navbar-top navbar-expand-md navbar-dark mb-5" id="navbar-main">
             <div class="container-fluid">
                 <!-- Brand -->
                 <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="./index.html">Dashboard</a>
@@ -228,11 +233,11 @@
                            aria-expanded="false">
                             <div class="media align-items-center">
                 <span class="avatar avatar-sm rounded-circle">
-                  <img alt="Image placeholder" src="argon/img/theme/team-4-800x800.jpg">
+                  <img alt="Image placeholder" :src="user.photo">
                 </span>
                                 <div class="media-body ml-2 d-none d-lg-block">
                                     <span
-                                        class="mb-0 text-sm  font-weight-bold">{{ \Illuminate\Support\Facades\Auth::user()->name }}</span>
+                                        class="mb-0 text-sm  font-weight-bold">@{{user.name}}</span>
                                 </div>
                             </div>
                         </a>
@@ -271,101 +276,10 @@
                 </ul>
             </div>
         </nav>
-        <!-- Header -->
-        <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
-            <div class="container-fluid">
-                <div class="header-body">
-                    <!-- Card stats -->
-                    <div class="row">
-                        <div class="col-xl-3 col-lg-6">
-                            <div class="card card-stats mb-4 mb-xl-0">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col">
-                                            <h5 class="card-title text-uppercase text-muted mb-0">Traffic</h5>
-                                            <span class="h2 font-weight-bold mb-0">350,897</span>
-                                        </div>
-                                        <div class="col-auto">
-                                            <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
-                                                <i class="fas fa-chart-bar"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <p class="mt-3 mb-0 text-muted text-sm">
-                                        <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
-                                        <span class="text-nowrap">Since last month</span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-lg-6">
-                            <div class="card card-stats mb-4 mb-xl-0">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col">
-                                            <h5 class="card-title text-uppercase text-muted mb-0">New users</h5>
-                                            <span class="h2 font-weight-bold mb-0">2,356</span>
-                                        </div>
-                                        <div class="col-auto">
-                                            <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
-                                                <i class="fas fa-chart-pie"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <p class="mt-3 mb-0 text-muted text-sm">
-                                        <span class="text-danger mr-2"><i class="fas fa-arrow-down"></i> 3.48%</span>
-                                        <span class="text-nowrap">Since last week</span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-lg-6">
-                            <div class="card card-stats mb-4 mb-xl-0">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col">
-                                            <h5 class="card-title text-uppercase text-muted mb-0">Sales</h5>
-                                            <span class="h2 font-weight-bold mb-0">924</span>
-                                        </div>
-                                        <div class="col-auto">
-                                            <div class="icon icon-shape bg-yellow text-white rounded-circle shadow">
-                                                <i class="fas fa-users"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <p class="mt-3 mb-0 text-muted text-sm">
-                                        <span class="text-warning mr-2"><i class="fas fa-arrow-down"></i> 1.10%</span>
-                                        <span class="text-nowrap">Since yesterday</span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-lg-6">
-                            <div class="card card-stats mb-4 mb-xl-0">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col">
-                                            <h5 class="card-title text-uppercase text-muted mb-0">Performance</h5>
-                                            <span class="h2 font-weight-bold mb-0">49,65%</span>
-                                        </div>
-                                        <div class="col-auto">
-                                            <div class="icon icon-shape bg-info text-white rounded-circle shadow">
-                                                <i class="fas fa-percent"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <p class="mt-3 mb-0 text-muted text-sm">
-                                        <span class="text-success mr-2"><i class="fas fa-arrow-up"></i> 12%</span>
-                                        <span class="text-nowrap">Since last month</span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+        <div class="container-fluid">
+            <router-view></router-view>
         </div>
-        <router-view></router-view>
         <vue-progress-bar></vue-progress-bar>
         <!-- Footer -->
         <footer class="footer">
@@ -409,57 +323,59 @@
     </script>
 @endauth()
 
-<script src="js/app.js"></script>
+<script src="/js/app.js"></script>
 <!-- Optional JS -->
-<script src="argon/vendor/chart.js/dist/Chart.min.js"></script>
-<script src="argon/vendor/chart.js/dist/Chart.extension.js"></script>
+<script src="/argon/vendor/chart.js/dist/Chart.min.js"></script>
+<script src="/argon/vendor/chart.js/dist/Chart.extension.js"></script>
 <script>
-$(document).ready(function () {
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-46172202-1']);
-    _gaq.push(['_trackPageview']);
-
-    (function () {
-        var ga = document.createElement('script');
-        ga.type = 'text/javascript';
-        ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(ga, s);
-    })();
-
-    // Facebook Pixel Code Don't Delete
-    !function (f, b, e, v, n, t, s) {
-        if (f.fbq) return;
-        n = f.fbq = function () {
-            n.callMethod ?
-                n.callMethod.apply(n, arguments) : n.queue.push(arguments)
-        };
-        if (!f._fbq) f._fbq = n;
-        n.push = n;
-        n.loaded = !0;
-        n.version = '2.0';
-        n.queue = [];
-        t = b.createElement(e);
-        t.async = !0;
-        t.src = v;
-        s = b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t, s)
-    }(window,
-        document, 'script', '//connect.facebook.net/en_US/fbevents.js');
-
-    try {
-        fbq('init', '111649226022273');
-        fbq('track', "PageView");
-
-    } catch (err) {
-        console.log('Facebook Track Error:', err);
-    }
-
-});
+// $(document).ready(function () {
+//     var _gaq = _gaq || [];
+//     _gaq.push(['_setAccount', 'UA-46172202-1']);
+//     _gaq.push(['_trackPageview']);
+//
+//     (function () {
+//         var ga = document.createElement('script');
+//         ga.type = 'text/javascript';
+//         ga.async = true;
+//         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+//         var s = document.getElementsByTagName('script')[0];
+//         s.parentNode.insertBefore(ga, s);
+//     })();
+//
+//     // Facebook Pixel Code Don't Delete
+//     !function (f, b, e, v, n, t, s) {
+//         if (f.fbq) return;
+//         n = f.fbq = function () {
+//             n.callMethod ?
+//                 n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+//         };
+//         if (!f._fbq) f._fbq = n;
+//         n.push = n;
+//         n.loaded = !0;
+//         n.version = '2.0';
+//         n.queue = [];
+//         t = b.createElement(e);
+//         t.async = !0;
+//         t.src = v;
+//         s = b.getElementsByTagName(e)[0];
+//         s.parentNode.insertBefore(t, s)
+//     }(window,
+//         document, 'script', '//connect.facebook.net/en_US/fbevents.js');
+//
+//     try {
+//         fbq('init', '111649226022273');
+//         fbq('track', "PageView");
+//
+//     } catch (err) {
+//         console.log('Facebook Track Error:', err);
+//     }
+//
+// });
 </script>
 <!-- Argon JS -->
-<script src="argon/js/argon.min.js"></script>
+{{--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js"></script>--}}
+{{--<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>--}}
+<script src="/argon/js/argon.min.js"></script>
 </body>
 
 </html>

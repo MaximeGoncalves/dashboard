@@ -30,7 +30,7 @@ class UserController extends Controller
     public function index()
     {
         $this->authorize('isAdmin');
-        return User::with('society')->latest()->paginate(10);
+        return User::with('society')->latest()->paginate(50);
     }
 
     /**
@@ -47,7 +47,10 @@ class UserController extends Controller
             'fullname' => 'required|string|max:191',
             'email' => 'required|email|max:191',
             'password' => 'required|string|min:6',
+            'role' => 'required',
             'society' => 'required',
+            'profession' => 'nullable|string|max:191',
+            'phone' => 'nullable|numeric|digits:10',
         ]);
 
         $user = new User();
@@ -57,6 +60,8 @@ class UserController extends Controller
         $user->role = $request->get('role');
         $user->password = Hash::make($request->get('password'));
         $user->society_id = $request->get('society');
+        $user->profession = $request->profession;
+        $user->phone = $request->phone;
         $user->save();
         return response()->json(['success' => 'Done!']);
     }
@@ -90,6 +95,8 @@ class UserController extends Controller
             'email' => 'required|email|max:191',
             'password' => 'required|string|min:6',
             'society' => 'required',
+            'profession' => 'nullable|string|max:191',
+            'phone' => 'nullable|numeric|digits:10',
         ]);
 
         $user->name = $request->name;
@@ -97,6 +104,9 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->society()->associate($request->society);
         $user->role = $request->role;
+        $user->password = bcrypt($request->password);
+        $user->profession = $request->profession;
+        $user->phone = $request->phone;
         $user->save();
         return response(['message' => 'success']);
     }
@@ -130,7 +140,9 @@ class UserController extends Controller
         $this->validate($request, [
             'fullname' => 'required|string|max:191',
             'email' => 'required|email|max:191',
-            'password' => 'nullable|confirmed|min:6'
+            'password' => 'nullable|confirmed|min:6',
+            'profession' => 'nullable|string|max:191',
+            'phone' => 'nullable|numeric|digits:10',
         ]);
 
         $user = \auth('api')->user();
@@ -152,7 +164,10 @@ class UserController extends Controller
         $user->fullname = $request->fullname;
         $user->email = $request->email;
         $user->photo = $request->photo;
-        $user->password = bcrypt($request->password);
+        if($request->password != ''){
+            $user->password = bcrypt($request->password);
+        }
+
         $user->save();
         return response(['message' => 'Success']);
 

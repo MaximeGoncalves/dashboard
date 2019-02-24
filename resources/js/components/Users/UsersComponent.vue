@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid mt--7">
+    <div>
         <div class="row">
             <div class="col">
                 <div class="card shadow" v-if="$gate.isAdmin()">
@@ -48,7 +48,8 @@
                                             <form action="https://argon-dashboard-laravel.creative-tim.com/user/8642"
                                                   method="post">
                                                 <input type="hidden" name="_token"
-                                                       value="F3fqjyIFWnoHEzAeYoetOWiaHkr9ZdnoaXaxFsx7"> <input
+                                                       value="F3fqjyIFWnoHEzAeYoetOWiaHkr9ZdnoaXaxFsx7">
+                                                <input
                                                 type="hidden" name="_method" value="delete">
                                                 <a class="dropdown-item"
                                                    href="#" @click.prevent="EditUser(user.id)">Edit</a>
@@ -162,7 +163,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group" :class="errors.password ? 'has-danger' : ''">
-                                        <input type="password" v-model="user.password" v-bind:disabled="editMode"
+                                        <input type="password" v-model="user.password"
                                                class="form-control form-control-alternative" name="password"
                                                :class="errors.password ? 'is-invalid' : ''"
                                                placeholder="Password">
@@ -175,15 +176,39 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
+                                    <div class="form-group" :class="errors.profession ? 'has-danger' : ''">
+                                        <input name="profession" id="profession"
+                                               v-model="user.profession"
+                                               class="form-control form-control-alternative"
+                                               :class="errors.profession ? 'is-invalid' : ''"
+                                               placeholder="Profession">
+                                        <small v-if="errors.profession" :class="errors.profession ? 'text-danger' : ''"
+                                               v-for="error in errors.profession"
+                                        >{{ error }}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" :class="errors.phone ? 'has-danger' : ''">
+                                        <input name="phone" id="phone"
+                                               v-model="user.phone"
+                                               class="form-control form-control-alternative"
+                                               :class="errors.phone ? 'is-invalid' : ''"
+                                               placeholder="Téléphone">
+                                        <small v-if="errors.phone" :class="errors.phone ? 'text-danger' : ''"
+                                               v-for="error in errors.phone">{{ error }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
                                     <div class="form-group" :class="errors.society ? 'has-danger' : ''">
-                                        <select name="society" id="society"
-                                                class="form-control form-control-alternative" v-model="user.society_id"
-                                                :class="errors.society ? 'is-invalid' : ''">
-                                            <option value="" selected>Selectionner une société</option>
-                                            <option v-for="soc in society" :value="soc.id"
-                                                    :selected="soc.id === user.society">{{ soc.name}}
-                                            </option>
-                                        </select>
+                                            <v-select label="name"
+                                                      :options="society"
+                                                      v-model="user.society"
+                                                      class="form-control-alternative"
+                                                      placeholder="Société"></v-select>
                                         <small v-if="errors.society" :class="errors.society ? 'text-danger' : ''"
                                                v-for="error in errors.society">{{ error }}
                                         </small>
@@ -191,16 +216,16 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group" :class="errors.role ? 'has-danger' : ''">
-                                        <select name="role" id="role" v-model="user.role"
-                                                class="form-control form-control-alternative"
-                                                :class="errors.role ? 'is-invalid' : ''">
-                                            <option value="" selected>Select role</option>
-                                            <option value="user">User</option>
-                                            <option value="leader">Leader</option>
-                                            <option value="admin">Admin</option>
-                                        </select>
-                                        <small v-if="errors.role" :class="errors.role ? 'text-danger' : ''">{{
-                                            errors.role }}
+                                        <v-select
+                                                  :options="[{label: 'User', value: 'user'},
+                                                  {label: 'Leader', value: 'leader'},
+                                                  {label: 'Admin', value: 'admin'}]"
+                                                  v-model="user.role"
+                                                  class="form-control-alternative"
+                                                  placeholder="Technicien"></v-select>
+                                        <small v-if="errors.role" :class="errors.role ? 'text-danger' : ''"
+                                               v-for="error in errors.role">{{
+                                            error }}
                                         </small>
                                     </div>
                                 </div>
@@ -225,8 +250,10 @@
 export default {
     data() {
         return {
-            user: {},
-            society: {},
+            user: {
+                society:{}
+            },
+            society: [],
             errors: [],
             users: {},
             editMode: true,
@@ -243,10 +270,12 @@ export default {
                 password: this.user.password,
                 role: this.user.role,
                 society: this.user.society_id,
+                profession: this.user.profession,
+                phone: this.user.phone,
             }).then((response) => {
                 $('#addNewUser').modal('hide')
                 Fire.$emit('UpdateUser')
-                this.$toasted.global.flash({message : "L'utilisateur à été mis à jour"});
+                this.$toasted.global.flash({message: "L'utilisateur à été mis à jour"});
 
                 this.$Progress.finish();
             }).catch(error => {
@@ -271,7 +300,7 @@ export default {
             this.user.email = ''
             this.user.password = ''
             this.user.role = ''
-            this.user.society_id = ''
+            this.user.society = ''
             $('#addNewUser').modal('show')
         },
         createUser() {
@@ -281,20 +310,15 @@ export default {
                 fullname: this.user.fullname,
                 email: this.user.email,
                 password: this.user.password,
-                role: this.user.role,
-                society: this.user.society_id,
+                role: this.user.role.value,
+                society: this.user.society.id,
+                profession: this.user.profession,
+                phone: this.user.phone,
             }).then(response => {
                 Fire.$emit('CreateUser')
                 this.$Progress.finish();
                 $('#addNewUser').modal('hide')
-                // let toast = this.$toasted.show("Utilisateur créé !", {
-                //     theme: "toasted-primary",
-                //     position: "bottom-right",
-                //     duration: 3000,
-                //     className: 'bg-primary'
-                // });
-                // this.flash('Utilisateur crée !')
-                this.$toasted.global.flash({message : "L'utilisateur à été créé."});
+                this.$toasted.global.flash({message: "L'utilisateur à été créé."});
                 this.errors = []
             }).catch(error => {
 
@@ -344,13 +368,20 @@ export default {
     },
     created() {
         if (this.$gate.isAdmin()) {
+            this.$Progress.start();
             this.loadUsers()
             this.getSociety()
+            this.$Progress.finish();
             Fire.$on('CreateUser', () => {
+                this.$Progress.start();
                 this.loadUsers()
+                this.$Progress.finish();
             })
             Fire.$on('UpdateUser', () => {
+                this.$Progress.start();
+
                 this.loadUsers()
+                this.$Progress.finish();
             })
         }
     },

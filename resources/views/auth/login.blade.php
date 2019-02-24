@@ -9,11 +9,20 @@
                 <div class="card bg-secondary shadow border-0">
                     <div class="card-body px-lg-5 py-lg-5">
                         <div class="text-center text-muted mb-4">
-                            <small>Sign in</small><br>
+                            <strong>Support</strong><br>
                         </div>
                         <form role="form" method="POST" action="{{ route('login') }}">
                             @csrf
+                            @if (isset($errors) && count($errors))
 
+                                There were {{count($errors->all())}} Error(s)
+                                <ul>
+                                    @foreach($errors->all() as $error)
+                                        <li>{{ $error }} </li>
+                                    @endforeach
+                                </ul>
+
+                            @endif
                             <div class="form-group{{ $errors->has('email') ? ' has-danger' : '' }} mb-3">
                                 <div class="input-group input-group-alternative">
                                     <div class="input-group-prepend">
@@ -52,8 +61,8 @@
                         </form>
                     </div>
                 </div>
-                <div class="row mt-3">
-                    <div class="col-6">
+                <div class="row mt-3 text-center">
+                    <div class="col-12">
                         @if (Route::has('password.request'))
                             <a href="{{ route('password.request') }}" class="text-light">
                                 <small>{{ __('Forgot password?') }}</small>

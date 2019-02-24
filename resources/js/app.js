@@ -12,8 +12,12 @@ import GateRestriction from './GateRestriction'
 
 Vue.prototype.$gate = new GateRestriction(window.user)
 
-
 window.Fire = new Vue();
+
+/* Vue select **/
+import vSelect from 'vue-select'
+
+Vue.component('v-select', vSelect)
 
 /*  MomentJS */
 import moment from 'moment';
@@ -27,7 +31,7 @@ Vue.filter('formatDate', function (date) {
 import VueProgressBar from 'vue-progressbar'
 
 const options = {
-    color: '#5E72E4',
+    color: '#2dce89',
     failedColor: '#874b4b',
     thickness: '5px',
     transition: {
@@ -77,11 +81,14 @@ window.swal = swal
 import VueRouter from 'vue-router'
 
 const routes = [
+    {path: '*', redirect: '/' },
     {path: '/', component: require('./components/DashboardComponent.vue').default},
     {path: '/profile', component: require('./components/Profile/ProfileComponent.vue').default},
     {path: '/users', component: require('./components/Users/UsersComponent.vue').default},
     {path: '/societies', component: require('./components/SocietiesComponent').default},
-    {path: '/developper', component: require('./components/DevelopperComponent').default}
+    {path: '/developper', component: require('./components/DevelopperComponent').default},
+    {path: '/tickets', component: require('./components/Tickets/TicketsComponent').default},
+    {path: '/tickets/:id', name: 'ticket', params: {id : ''}, component: require('./components/Tickets/TicketComponent').default}
 ]
 Vue.use(VueRouter)
 
@@ -131,5 +138,31 @@ Vue.component(
 
 const app = new Vue({
     el: '#app',
-    router
+    router,
+    data() {
+        return {
+            user: {}
+        }
+    },
+    methods: {
+        getProfilePhoto() {
+            if (this.user.photo !== 'profile.png') {
+                this.user.photo = '/img/profile/' + this.user.name + '/' + this.user.photo
+            } else {
+                this.user.photo = '/img/profile/profile.png'
+            }
+        },
+    },
+    created() {
+        axios.get('/api/profile').then(result => {
+            this.user = result.data
+            this.getProfilePhoto()
+        })
+        Fire.$on('UpdatePhoto', () => {
+            axios.get('/api/profile').then(result => {
+                this.user = result.data
+                this.getProfilePhoto()
+            })
+        })
+    }
 });

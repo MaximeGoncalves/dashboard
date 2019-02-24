@@ -17,8 +17,13 @@ use Illuminate\Http\Request;
 //    return $request->user();
 //});
 
-
-Route::apiResource('user', 'API\UserController');
-Route::apiResource('society', 'API\SocietyController');
-Route::get('/profile', 'API\UserController@profile');
-Route::put('/updateProfile', 'API\UserController@updateProfile');
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::apiResource('user', 'API\UserController');
+    Route::apiResource('society', 'API\SocietyController');
+    Route::apiResource('tickets', 'API\TicketController');
+    Route::get('/profile', 'API\UserController@profile');
+    Route::put('/updateProfile', 'API\UserController@updateProfile');
+    Route::post('/uploadFiles', 'API\TicketController@uploadFiles');
+    Route::post('/addAction/{ticket}', 'API\ActionsController@store');
+    Route::post('/message/{ticket}', 'API\MessageController@store');
+});

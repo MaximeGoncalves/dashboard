@@ -6,3 +6,26 @@
   font-weight: bold;
 }
 
+.main-content .navbar-top {
+  position: relative;
+  background: linear-gradient(87deg, #5e72e4 0, #825ee4 100%) !important;
+}
+
+p {
+  font-size: 14px;
+}
+
+.btn-icon .btn-inner--text:not(:first-child) {
+  margin-left: 0;
+}
+
+.btn {
+  padding: 7.2px 14px;
+}
+
+.badge {
+  font-size: 56%;
+  position: relative;
+  top: -5px;
+}
+

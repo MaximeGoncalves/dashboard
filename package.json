@@ -26,9 +26,12 @@
     "dependencies": {
         "moment": "^2.24.0",
         "node-sass": "^4.11.0",
+        "postcss-loader": "^3.0.0",
+        "raw-loader": "^0.5.1",
         "sweetalert": "^2.1.2",
         "vue-progressbar": "^0.7.5",
         "vue-router": "^3.0.2",
+        "vue-select": "^2.5.1",
         "vue-toasted": "^1.1.26"
     }
 }

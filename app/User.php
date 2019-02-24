@@ -38,7 +38,18 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function society(){
          return $this->belongsTo(Society::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function technician()
+    {
+        return $this->belongsTo(Technician::class);
     }
 }
