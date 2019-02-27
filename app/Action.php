@@ -6,10 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Action extends Model
 {
-    public function ticket(){
+    private $content;
+
+    public function ticket()
+    {
         return $this->belongsTo(Ticket::class);
     }
-    public function from(){
+
+    public function from()
+    {
         return $this->belongsTo(User::class, 'from_id');
     }
+
 }

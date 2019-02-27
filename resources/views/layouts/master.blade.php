@@ -41,29 +41,29 @@
             </button>
             <!-- Brand -->
             <router-link class="navbar-brand pt-0" to="/">
-                <img src="/argon/img/brand/blue.png" class="navbar-brand-img" alt="...">
+                <img src="/images/logo-sf.svg" class="navbar-brand-img" alt="..." width="75%">
             </router-link>
             <!-- User -->
             <ul class="nav align-items-center d-md-none">
-                <li class="nav-item dropdown">
-                    <a class="nav-link nav-link-icon" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
-                       aria-expanded="false">
-                        <i class="ni ni-bell-55"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right"
-                         aria-labelledby="navbar-default_dropdown_1">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
-                </li>
+                {{--<li class="nav-item dropdown">--}}
+                    {{--<a class="nav-link nav-link-icon" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"--}}
+                       {{--aria-expanded="false">--}}
+                        {{--<i class="ni ni-bell-55"></i>--}}
+                    {{--</a>--}}
+                    {{--<div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right"--}}
+                         {{--aria-labelledby="navbar-default_dropdown_1">--}}
+                        {{--<a class="dropdown-item" href="#">Action</a>--}}
+                        {{--<a class="dropdown-item" href="#">Another action</a>--}}
+                        {{--<div class="dropdown-divider"></div>--}}
+                        {{--<a class="dropdown-item" href="#">Something else here</a>--}}
+                    {{--</div>--}}
+                {{--</li>--}}
                 <li class="nav-item dropdown">
                     <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
                        aria-expanded="false">
                         <div class="media align-items-center">
               <span class="avatar avatar-sm rounded-circle">
-                <img alt="Image placeholder" src="./assets/img/theme/team-1-800x800.jpg">
+                <img alt="Image placeholder" :src="user.photo">
               </span>
                         </div>
                     </a>
@@ -74,18 +74,6 @@
                         <a href="./examples/profile.html" class="dropdown-item">
                             <i class="ni ni-single-02"></i>
                             <span>My profile</span>
-                        </a>
-                        <a href="./examples/profile.html" class="dropdown-item">
-                            <i class="ni ni-settings-gear-65"></i>
-                            <span>Settings</span>
-                        </a>
-                        <a href="./examples/profile.html" class="dropdown-item">
-                            <i class="ni ni-calendar-grid-58"></i>
-                            <span>Activity</span>
-                        </a>
-                        <a href="./examples/profile.html" class="dropdown-item">
-                            <i class="ni ni-support-16"></i>
-                            <span>Support</span>
                         </a>
                         <div class="dropdown-divider"></div>
                         <a href="#!" class="dropdown-item">
@@ -102,7 +90,7 @@
                     <div class="row">
                         <div class="col-6 collapse-brand">
                             <a href="./index.html">
-                                <img src="./assets/img/brand/blue.png">
+                                <img src="/argon/img/brand/blue.png">
                             </a>
                         </div>
                         <div class="col-6 collapse-close">
@@ -138,9 +126,10 @@
                 <!-- Divider -->
                 <hr class="my-3">
                 <!-- Heading -->
-                <h6 class="navbar-heading text-muted">Management</h6>
-                <ul class="navbar-nav">
-                    @can('isAdmin')
+                @can('isAdmin')
+                    <h6 class="navbar-heading text-muted">Management</h6>
+                    <ul class="navbar-nav">
+
                         <li class="nav-item">
                             <router-link class="nav-link" to="/societies">
                                 <i class="fa fa-building text-red"></i> Sociétés
@@ -156,55 +145,40 @@
                                 <i class="ni ni-pin-3 text-orange"></i> Developpeur
                             </router-link>
                         </li>
-                    @endcan()
+
+                    </ul>
+                @endcan()
+                <hr class="my-3">
+                <h6 class="navbar-heading text-muted">Software</h6>
+
+                <ul class="navbar-nav">
+
                     <li class="nav-item">
                         <router-link class="nav-link" to="/profile">
                             <i class="ni ni-single-02 text-yellow"></i> User profile
                         </router-link>
                     </li>
-                        <li class="nav-item">
-                            <router-link class="nav-link" to="/tickets">
-                                <i class="ni ni-single-02 text-yellow"></i> Ticket Software
-                            </router-link>
-                        </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./examples/tables.html">
-                            <i class="ni ni-bullet-list-67 text-red"></i> Tables
-                        </a>
+                        <router-link class="nav-link" to="/tickets">
+                            <i class="fas fa-file-alt text-primary"></i> Ticket Software
+                        </router-link>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="./examples/login.html">
-                            <i class="ni ni-key-25 text-info"></i> Login
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="./examples/register.html">
-                            <i class="ni ni-circle-08 text-pink"></i> Register
-                        </a>
-                    </li>
+
                 </ul>
                 <!-- Divider -->
                 <hr class="my-3">
                 <!-- Heading -->
-                <h6 class="navbar-heading text-muted">Documentation</h6>
-                <!-- Navigation -->
-                <ul class="navbar-nav mb-md-3">
-                    <li class="nav-item">
-                        <a class="nav-link" href="./docs/getting-started/overview.html">
-                            <i class="ni ni-spaceship"></i> Getting started
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="./docs/foundation/colors.html">
-                            <i class="ni ni-palette"></i> Foundation
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="./docs/components/alerts.html">
-                            <i class="ni ni-ui-04"></i> Components
-                        </a>
-                    </li>
-                </ul>
+                @can('isAdmin')
+                    <h6 class="navbar-heading text-muted">Documentation</h6>
+                    <!-- Navigation -->
+                    <ul class="navbar-nav mb-md-3">
+                        <li class="nav-item">
+                            <router-link class="nav-link" to="/knowledges">
+                                <i class="ni ni-bullet-list-67 text-red"></i> Base de connaissance
+                            </router-link>
+                        </li>
+                    </ul>
+                @endcan()
             </div>
         </div>
     </nav>
@@ -248,18 +222,6 @@
                             <a href="./examples/profile.html" class="dropdown-item">
                                 <i class="ni ni-single-02"></i>
                                 <span>My profile</span>
-                            </a>
-                            <a href="./examples/profile.html" class="dropdown-item">
-                                <i class="ni ni-settings-gear-65"></i>
-                                <span>Settings</span>
-                            </a>
-                            <a href="./examples/profile.html" class="dropdown-item">
-                                <i class="ni ni-calendar-grid-58"></i>
-                                <span>Activity</span>
-                            </a>
-                            <a href="./examples/profile.html" class="dropdown-item">
-                                <i class="ni ni-support-16"></i>
-                                <span>Support</span>
                             </a>
                             <div class="dropdown-divider"></div>
                             <a href="#" class="dropdown-item"
@@ -317,7 +279,6 @@
 
 {{-- On defini la variable user (Javascript) si l'utilisateur est authentifié --}}
 @auth()
-
     <script>
     window.user = @json(auth()->user())
     </script>
@@ -328,49 +289,6 @@
 <script src="/argon/vendor/chart.js/dist/Chart.min.js"></script>
 <script src="/argon/vendor/chart.js/dist/Chart.extension.js"></script>
 <script>
-// $(document).ready(function () {
-//     var _gaq = _gaq || [];
-//     _gaq.push(['_setAccount', 'UA-46172202-1']);
-//     _gaq.push(['_trackPageview']);
-//
-//     (function () {
-//         var ga = document.createElement('script');
-//         ga.type = 'text/javascript';
-//         ga.async = true;
-//         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-//         var s = document.getElementsByTagName('script')[0];
-//         s.parentNode.insertBefore(ga, s);
-//     })();
-//
-//     // Facebook Pixel Code Don't Delete
-//     !function (f, b, e, v, n, t, s) {
-//         if (f.fbq) return;
-//         n = f.fbq = function () {
-//             n.callMethod ?
-//                 n.callMethod.apply(n, arguments) : n.queue.push(arguments)
-//         };
-//         if (!f._fbq) f._fbq = n;
-//         n.push = n;
-//         n.loaded = !0;
-//         n.version = '2.0';
-//         n.queue = [];
-//         t = b.createElement(e);
-//         t.async = !0;
-//         t.src = v;
-//         s = b.getElementsByTagName(e)[0];
-//         s.parentNode.insertBefore(t, s)
-//     }(window,
-//         document, 'script', '//connect.facebook.net/en_US/fbevents.js');
-//
-//     try {
-//         fbq('init', '111649226022273');
-//         fbq('track', "PageView");
-//
-//     } catch (err) {
-//         console.log('Facebook Track Error:', err);
-//     }
-//
-// });
 </script>
 <!-- Argon JS -->
 {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js"></script>--}}

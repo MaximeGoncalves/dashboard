@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Action;
 use App\Http\Controllers\Controller;
 use App\Message;
 use App\Notifications\NewMessage;
@@ -12,11 +13,17 @@ use Illuminate\Support\Facades\Auth;
 
 class MessageController extends Controller
 {
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
+     */
     public function store(Request $request, $id)
     {
 
 //        $request->session()->put('previous-route', "message.store");
-        $request->validate([
+        $this->validate($request, [
             'content' => 'required',
         ]);
 
@@ -31,6 +38,12 @@ class MessageController extends Controller
         endif;
         $message->ticket()->associate($ticket);
         $message->save();
+        $action = new Action();
+        $action->content = 'à poster un message';
+        $action->from_id = Auth::user()->id;
+        $action->ticket()->associate($ticket);
+        $action->save();
+
         $user = User::find($message->to_id);
         //send message
 //        if($user->id !== 1){

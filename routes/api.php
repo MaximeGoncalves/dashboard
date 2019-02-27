@@ -26,4 +26,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/uploadFiles', 'API\TicketController@uploadFiles');
     Route::post('/addAction/{ticket}', 'API\ActionsController@store');
     Route::post('/message/{ticket}', 'API\MessageController@store');
+    Route::get('/tickets/filter', 'API\TicketController@filter');
+    Route::apiResource('/knowledges', 'API\KnowledgesController');
 });

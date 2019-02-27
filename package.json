@@ -24,14 +24,17 @@
         "vue-template-compiler": "^2.6.6"
     },
     "dependencies": {
+        "@toast-ui/vue-editor": "^1.0.4",
+        "highlight.js": "^9.15.5",
         "moment": "^2.24.0",
         "node-sass": "^4.11.0",
         "postcss-loader": "^3.0.0",
+        "prismjs": "^1.15.0",
         "raw-loader": "^0.5.1",
         "sweetalert": "^2.1.2",
         "vue-progressbar": "^0.7.5",
         "vue-router": "^3.0.2",
-        "vue-select": "^2.5.1",
+        "vue-select": "https://github.com/TaylorDale/vue-select.git",
         "vue-toasted": "^1.1.26"
     }
 }

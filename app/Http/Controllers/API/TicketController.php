@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Action;
 use App\Attachment;
+use App\Filter;
 use App\Source;
 use App\State;
 use App\Technician;
 use App\Ticket;
 use App\User;
+use App\Society;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class TicketController extends Controller
 {
@@ -20,9 +24,8 @@ class TicketController extends Controller
      *
      * @return Ticket[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
      */
-    public function index()
+    public function index(Request $request)
     {
-        $ticket = Ticket::with(['user', 'source', 'society', 'technician.user', 'state'])->orderBy('created_at', 'DESC')->latest()->paginate(10);
         $techs = Technician::get()->load('user');
         $technicians = [];
         $states = State::all();
@@ -31,8 +34,35 @@ class TicketController extends Controller
         }
         $user = User::all();
         $sources = Source::all();
+        $society = Society::with('users')->get();
 
-        return response(json_encode(['user' => $user, 'states' => $states, 'ticket' => $ticket, 'technician' => $technicians, 'sources' => $sources]));
+
+        $filter = new Filter();
+        $tickets = $filter->query($request);
+
+
+        return response()->json([
+            'user' => $user,
+            'states' => $states,
+            'ticket' => $tickets,
+            'technician' => $technicians,
+            'sources' => $sources,
+            'count' => $tickets->count(),
+            'society' => $society,
+            'request' => $request->all()
+        ]);
+
+
+//        if (Auth::user()->role == 'leader') {
+//            $ticket = Ticket::where('society_id', Auth::user()->society->id)->with(['user', 'source', 'society', 'technician.user', 'state', 'actions', 'messages'])->orderBy('created_at', 'DESC')->latest()->paginate(10);
+//        } else if (Auth::user()->role == 'user') {
+//            $ticket = Ticket::where('user_id', Auth::user()->id)->with(['user', 'source', 'society', 'technician.user', 'state', 'actions', 'messages'])->orderBy('created_at', 'DESC')->latest()->paginate(10);
+//        } else {
+//            $ticket = Ticket::with(['user', 'source', 'society', 'technician.user', 'state', 'actions', 'messages'])->orderBy('created_at', 'DESC')->latest()->paginate(10);
+//        }
+
+
+//        return response(json_encode(['user' => $user, 'states' => $states, 'ticket' => $ticket, 'technician' => $technicians, 'sources' => $sources, 'society' => $society]));
     }
 
     /**
@@ -66,6 +96,12 @@ class TicketController extends Controller
             $ticket->technician()->associate($technicien);
             $ticket->society()->associate($user->society->id);
             $ticket->save();
+
+            $action = new Action();
+            $action->from()->associate(Auth::user());
+            $action->ticket()->associate($ticket);
+            $action->content = 'à ouvert un ticket';
+            $action->save();
         } else {
             $this->validate($request, [
                 'topic' => 'required',
@@ -109,9 +145,7 @@ class TicketController extends Controller
         return response(['message' => "success"]);
 
 
-
     }
-
 
 
     /**
@@ -122,9 +156,23 @@ class TicketController extends Controller
      */
     public function show($id)
     {
+        $ticket = Ticket::with('user', 'society', 'state', 'technician.user', 'source', 'attachments', 'actions.from', 'messages.from')->findOrfail($id);
 
-        $ticket = Ticket::findOrfail($id);
-        return $ticket->load('user','society','state', 'technician.user', 'source', 'attachments', 'actions.from', 'messages.from');
+        if (Gate::allows('isYourTicket', $ticket)) {
+            $techs = Technician::get()->load('user');
+            $technicians = [];
+            $states = State::all();
+            foreach ($techs as $tech) {
+                $technicians[] = $tech->user;
+            }
+            $user = User::all();
+            $sources = Source::all();
+
+            return response()->json(['states' => $states, 'ticket' => $ticket, 'technicians' => $technicians, 'sources' => $sources]);
+        } else {
+            return response()->json(['unauthorized' => '404']);
+        }
+
     }
 
     /**
@@ -136,7 +184,20 @@ class TicketController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $ticket = Ticket::findOrFail($id);
+
+        if ($request->technician) {
+            $technicien = Technician::where('user_id', $request->technician)->first();
+            $ticket->technician()->associate($technicien);
+        }
+        $action = new Action();
+        $this->publishedAction($action, $request, $ticket, Auth::user()->id);
+        $ticket->state()->associate($request->state);
+        $ticket->importance = $request->importance;
+        $ticket->source()->associate($request->source);
+        $ticket->save();
+
+        return response('ok');
     }
 
     /**
@@ -147,10 +208,12 @@ class TicketController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Ticket::destroy($id);
+        return response()->json(['response' => 'Ticket supprimé']);
     }
 
-    public function storeAction(Request $request, $id){
+    public function storeAction(Request $request, $id)
+    {
         $ticket = Ticket::findOrFail($id);
         $action = new Action();
         $action->content = $request->get('content');
@@ -159,4 +222,25 @@ class TicketController extends Controller
         $action->save();
         return response()->json(['message' => 'success']);
     }
+
+    private function publishedAction($action, $request, $ticket, $id)
+    {
+        if ($request->state == 4 && $ticket->state_id != 4) {
+            $action->content = 'à cloturé le ticket';
+            $action->from_id = $id;
+            $action->ticket()->associate($ticket);
+            $action->save();
+        } elseif ($request->state == 3 && $ticket->state_id != 3) {
+            $action->content = 'à passé le ticket en attente client';
+            $action->from_id = $id;
+            $action->ticket()->associate($ticket);
+            $action->save();
+        } elseif ($request->state == 2 && $ticket->state_id != 2) {
+            $action->content = "à ouvert le ticket";
+            $action->from_id = $id;
+            $action->ticket()->associate($ticket);
+            $action->save();
+        }
+    }
+
 }

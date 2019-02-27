@@ -107,16 +107,50 @@
                                 <h2 class="d-inline">{{ ticket.topic }}</h2>
                             </router-link>
 
-                            <p class="d-inline"> - #{{ ticket.id }}</p>
+                            <p class="d-inline"> - #{{ ticket.id }} </p>
+                            <div v-if='ticket.state' class="d-inline">
+                                <i class="fas fa-bookmark text-info"
+                                   v-if="ticket.state.id == '1'" data-toggle="tooltip" data-placement="top"
+                                   title="Pending"></i>
+                                <i class="fas fa-bookmark text-success"
+                                   v-if="ticket.state.id == '2'" data-toggle="tooltip" data-placement="top"
+                                   title="Open"></i>
+                                <i class="fas fa-bookmark text-warning"
+                                   v-if="ticket.state.id == '3'" data-toggle="tooltip" data-placement="top"
+                                   title="Wainting customer"></i>
+                                <i class="fas fa-bookmark text-dark"
+                                   v-if="ticket.state.id == '4'" data-toggle="tooltip" data-placement="top"
+                                   title="Closed"></i>
+                            </div>
                             <p v-if="ticket['user']">{{ ticket['user'].fullname }} - {{ ticket.created_at | formatDate
                                 }} </p>
                             <h4>Description :</h4>
                             <p v-html="ticket.description"></p>
-                            <h4>Techniciens :</h4>
-                            <img v-if="ticket.technician" :src="getProfilePhoto(ticket.technician)"
-                                 class="avatar avatar-sm ">
+                            <div class="mt-3" v-if="ticket.technician">
+                                <img :src="getProfilePhoto(ticket.technician)"
+                                     class="avatar avatar-sm mr-3"
+                                     data-toggle="tooltip"
+                                     data-placement="bottom"
+                                     :title="ticket.technician.user.name">
+                                <small class="pr-2 text-nowrap d-inline-block" v-if="ticket.actions.length == 1">
+                                    <i class="fas fa-list-ul text-muted mr-1"></i>
+                                    <b>0</b> Actions
+                                </small>
+                                <small class="pr-2 text-nowrap d-inline-block" v-else-if="ticket.actions.length == 0">
+                                    <i class="fas fa-list-ul text-muted mr-1"></i>
+                                    <b>0</b> Actions
+                                </small>
+                                <small class="pr-2 text-nowrap d-inline-block" v-else-if="ticket.actions.length > 1">
+                                    <i class="fas fa-list-ul text-muted mr-1"></i>
+                                    <b>{{ ticket.actions.length }}</b> Actions
+                                </small>
+                                <small class="pr-2 text-nowrap d-inline-block">
+                                    <i class="fas fa-comments text-muted mr-1"></i>
+                                    <b>{{ ticket.messages.length}}</b> Commentaires
+                                </small>
+                            </div>
                         </div>
-                        <div class="col-md-3 col-12 d-flex flex-column ">
+                        <div class="col-md-3 col-12 d-flex flex-column justify-content-center" v-if="$gate.isAdmin()">
                             <div class="d-flex align-items-center">
                                 <div v-if='ticket.state'>
                                     <i class="fas fa-bookmark text-info"
@@ -128,13 +162,15 @@
                                     <i class="fas fa-bookmark text-dark"
                                        v-if="ticket['state'].id == '4'"></i>
                                 </div>
-
                                 <v-select
                                     label="name"
                                     class="d-inline"
                                     placeholder="Etat"
                                     :clearable=false
-                                    v-model="ticket.state" :options="states"></v-select>
+                                    v-model="ticket.state"
+                                    :options="states"
+                                    @input="updateTicket(ticket)"
+                                ></v-select>
                             </div>
 
                             <div class="d-flex align-items-center">
@@ -147,8 +183,11 @@
                                 <v-select
                                     label="name"
                                     placeholder="Source"
+                                    v-model="ticket.source"
                                     :clearable=false
-                                    v-model="ticket.source" :options="sources"></v-select>
+                                    :options="sources"
+                                    @input="updateTicket(ticket)"
+                                ></v-select>
                             </div>
 
                             <div class="d-flex align-items-center">
@@ -160,7 +199,9 @@
                                     placeholder="Importance"
                                     :clearable=false
                                     v-model="ticket.importance"
-                                    :options="['Normal', 'Urgent']"></v-select>
+                                    :options="['Normal', 'Urgent']"
+                                    @input="updateTicket(ticket)"
+                                ></v-select>
                             </div>
                         </div>
                     </div>
@@ -178,12 +219,14 @@
                         </div>
                     </div>
                     <div class="row">
-                        <form class="w-100">
+                        <form class="w-100" @submit.prevent="search">
                             <br>
                             <h4>Techniciens</h4>
                             <v-select class="form-control-alternative " multiple label="fullname"
                                       placeholder="Techniciens"
-                                      v-model="filter.technician" :options="technicians"></v-select>
+                                      v-model="filter.technician"
+                                      :options="technicians"
+                            ></v-select>
 
                             <h4 class="mt-4">Etat</h4>
                             <v-select class="form-control-alternative mt-2" multiple placeholder="Etat"
@@ -198,10 +241,18 @@
                             <h4 class="mt-4">Sources</h4>
                             <v-select class="form-control-alternative mt-2" label="name" placeholder="Sources"
                                       v-model="filter.source" :options="sources" clearable></v-select>
+                            <div v-if="$gate.isAdmin()">
+                                <h4 class="mt-4">Société</h4>
+                                <v-select class="form-control-alternative mt-2" label="name" placeholder="Société"
+                                          v-model="filter.society" :options="society" clearable></v-select>
+                                <h4 class="mt-4">Demandeur</h4>
+                                <v-select class="form-control-alternative mt-2" label="fullname" placeholder="Demandeur"
+                                          v-model="filter.user" :options="availableUser" clearable></v-select>
+                            </div>
 
-                            <h4 class="mt-4">Demandeur</h4>
-                            <v-select class="form-control-alternative mt-2" label="fullname" placeholder="Demandeur"
-                                      v-model="filter.society" :options="users" clearable></v-select>
+                            <button type="submit" class="btn btn-primary mt-3 float-right">
+                                Search
+                            </button>
                         </form>
                     </div>
                     <div class="row">
@@ -338,7 +389,7 @@
 <script>
 export default {
     props: {
-        placeholder: 'placeholder'
+        placeholder: 'placeholder',
     },
     data() {
         return {
@@ -352,6 +403,7 @@ export default {
             ],
             ticket: {},
             files: [],
+            society: [],
             technicians: [],
             users: [],
             sources: [],
@@ -360,9 +412,13 @@ export default {
             filter: {
                 importance: null,
                 technician: [],
-                state: [],
+                state: [
+                    {"id": 1, "name": "Pending"},
+                    {"id": 2, "name": "Open"}
+                ],
                 user: {},
                 source: {},
+                society: null,
             },
             card: true,
             photo: '',
@@ -404,23 +460,23 @@ export default {
 
             if (window.user.role === 'admin') {
                 let formData = new FormData();
-                if(this.ticket.topic){
+                if (this.ticket.topic) {
                     formData.set('topic', this.ticket.topic)
                 }
-                if(this.ticket.description) {
+                if (this.ticket.description) {
                     formData.set('description', this.ticket.description)
                 }
-                if(this.ticket.importance) {
+                if (this.ticket.importance) {
                     formData.set('importance', this.ticket.importance)
                 }
-                if(this.ticket.user) {
-                    formData.set('user', this.ticket.user)
+                if (this.ticket.user) {
+                    formData.set('user', this.ticket.user.id)
                 }
-                if(this.ticket.technician) {
-                    formData.set('technician', this.ticket.technician)
+                if (this.ticket.technician) {
+                    formData.set('technician', this.ticket.technician.id)
                 }
-                if(this.ticket.source) {
-                    formData.set('source', this.ticket.source)
+                if (this.ticket.source) {
+                    formData.set('source', this.ticket.source.id)
                 }
                 for (var i = 0; i < this.files.length; i++) {
                     let file = this.files[i];
@@ -468,6 +524,24 @@ export default {
                 })
             }
         },
+        updateTicket(ticket) {
+            console.log(ticket)
+            let tech
+            if(ticket.technician){
+                tech = ticket.technician.user.id
+            }
+
+            axios.put('/api/tickets/' + ticket.id, {
+                source: ticket.source.id,
+                importance: ticket.importance,
+                state: ticket.state.id,
+                technician: tech
+            }).then(result => {
+                this.$toasted.global.flash({message: "Le ticket à été mis à jour"});
+                this.$Progress.finish()
+                Fire.$emit('createTicket')
+            })
+        },
         handleFileUploads(e) {
             // for (var i = 0; i < event.target.files.length; i++) {
             //     this.ticket.files[i] = event.target.files[i]
@@ -484,11 +558,10 @@ export default {
             // for(var i = 0; i < uploadedFiles.length; i++) {
             //     this.files.push(uploadedFiles[i]);
             // }
-        }
-        ,
+        },
         NewModal() {
             this.errors = []
-                this.ticket.topic = ''
+            this.ticket.topic = ''
             this.ticket.description = ''
             this.ticket.importance = ''
             this.ticket.user = ''
@@ -497,8 +570,7 @@ export default {
             this.ticket.technician = ''
             this.ticket.source = ''
             $('#addNewTicket').modal('show')
-        }
-        ,
+        },
         getProfilePhoto(tech) {
             if (tech['user']) {
                 if (tech['user'].photo !== 'profile.png') {
@@ -507,18 +579,86 @@ export default {
                     return '/img/profile/profile.png'
                 }
             }
-        }
-        ,
-        loadTickets(){
-            axios.get('/api/tickets').then(response => {
+        },
+        loadTickets() {
+
+            // let filter = this.filter
+            // let filterYrN
+            // if (filter.importance || !filter.source || !filter.user || !filter.society || !filter.technician || !filter.state) {
+            //     filterYrN = false
+            // }else {
+            //     filterYrN = true
+            // }
+            // axios.get('/api/tickets?filter=true&state[]=1&state[]=2').then(response => {
+            //     console.log(response)
+            //     this.tickets = response.data.ticket.data;
+            //     this.technicians = response.data.technician;
+            //     this.users = response.data.user;
+            //     this.states = response.data.states;
+            //     this.sources = response.data.sources;
+            //     this.society = response.data.society;
+            // })
+            this.search()
+
+        },
+        search() {
+
+            let techTab = []
+            let stateTab = []
+            let source, user, society, filterYrN
+            for (var i = 0; i < this.filter.technician.length; i++) {
+                let tech = this.filter.technician[i];
+                techTab.push(tech.id)
+            }
+
+            for (var i = 0; i < this.filter.state.length; i++) {
+                let state = this.filter.state[i];
+                stateTab.push(state.id)
+            }
+
+
+            if (this.filter.source != null) {
+                source = this.filter.source.id
+            }
+
+            if (this.filter.user != null) {
+                user = this.filter.user.id
+            }
+
+            if (this.filter.society != null) {
+                society = this.filter.society.id
+            }
+            if (!this.filter.importance || !source || !user || !society || !techTab || !stateTab) {
+                filterYrN = false
+            }else {
+                filterYrN = true
+            }
+            axios.get('/api/tickets', {
+                params: {
+                    filter: filterYrN,
+                    technician: techTab,
+                    state: stateTab,
+                    importance: this.filter.importance,
+                    source: source,
+                    user: user,
+                    society: society
+                }
+            }).then(response => {
+                this.tickets = response.data.ticket.data;
                 this.tickets = response.data.ticket.data;
                 this.technicians = response.data.technician;
                 this.users = response.data.user;
                 this.states = response.data.states;
                 this.sources = response.data.sources;
+                this.society = response.data.society;
+                console.log(response)
             })
-
-        },
+        }
+    },
+    computed: {
+        availableUser() {
+            return (this.filter.society != null) ? this.filter.society.users : this.users
+        }
     },
     created() {
 
@@ -529,7 +669,6 @@ export default {
         })
 
     }
-
 }
 </script>
 <style>
@@ -559,6 +698,9 @@ export default {
     .v-select input[type="search"]:focus {
         margin: 0;
         font-size: 14px;
+        flex-basis: 20px;
+        flex-grow: 1;
+        width: 100% !important;
     }
 
     .v-select .selected-tag {
@@ -592,6 +734,7 @@ export default {
 
     .v-select .dropdown-menu {
         font-size: 14px !important;
+        width: 100%;
         border: none;
     }
 

@@ -15,17 +15,25 @@ Vue.prototype.$gate = new GateRestriction(window.user)
 window.Fire = new Vue();
 
 /* Vue select **/
-import vSelect from 'vue-select'
+import vSelect from 'vue-select/src/index'
+
+import Prism from 'Prismjs'
+Vue.use(Prism)
+import 'prismjs/themes/prism-solarizedlight.css'
 
 Vue.component('v-select', vSelect)
 
 /*  MomentJS */
 import moment from 'moment';
 
-Vue.filter('formatDate', function (date) {
-    moment.locale('fr');
-    return moment(date).format('LL');
+/** Filtres */
+import Filter from './Filter'
+
+Vue.filter('reverse', function(value) {
+    // slice to make a copy of array, then reverse the copy
+    return value.slice().reverse();
 });
+
 
 /* Vue Progress Bar */
 import VueProgressBar from 'vue-progressbar'
@@ -87,8 +95,11 @@ const routes = [
     {path: '/users', component: require('./components/Users/UsersComponent.vue').default},
     {path: '/societies', component: require('./components/SocietiesComponent').default},
     {path: '/developper', component: require('./components/DevelopperComponent').default},
-    {path: '/tickets', component: require('./components/Tickets/TicketsComponent').default},
-    {path: '/tickets/:id', name: 'ticket', params: {id : ''}, component: require('./components/Tickets/TicketComponent').default}
+    {path: '/tickets', name: 'tickets', component: require('./components/Tickets/TicketsComponent').default},
+    {path: '/tickets/:id', name: 'ticket', params: {id : ''}, component: require('./components/Tickets/TicketComponent').default},
+    {path: '/knowledges', component: require('./components/Knowledges/KnowledgesComponent').default},
+    {path: '/projects', component: require('./components/Projects/ProjectComponent').default},
+
 ]
 Vue.use(VueRouter)
 
