@@ -25,7 +25,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::put('/updateProfile', 'API\UserController@updateProfile');
     Route::post('/uploadFiles', 'API\TicketController@uploadFiles');
     Route::post('/addAction/{ticket}', 'API\ActionsController@store');
+    Route::get('/message', 'API\MessageController@index');
     Route::post('/message/{ticket}', 'API\MessageController@store');
+    Route::put('/message/{message}', 'API\MessageController@update');
     Route::get('/tickets/filter', 'API\TicketController@filter');
     Route::apiResource('/knowledges', 'API\KnowledgesController');
 });

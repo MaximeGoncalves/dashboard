@@ -154,13 +154,18 @@
                 <ul class="navbar-nav">
 
                     <li class="nav-item">
-                        <router-link class="nav-link" to="/profile">
-                            <i class="ni ni-single-02 text-yellow"></i> User profile
+                        <router-link class="nav-link" to="/tickets">
+                            <i class="fas fa-file-alt text-primary"></i> Ticket Software
                         </router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link class="nav-link" to="/tickets">
-                            <i class="fas fa-file-alt text-primary"></i> Ticket Software
+                        <router-link class="nav-link" to="/nkeep">
+                            <i class="fas fa-file-alt text-primary"></i> nkeep
+                        </router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" to="/projects">
+                            <i class="fas fa-project-diagram text-success"></i> Projects
                         </router-link>
                     </li>
 
@@ -249,25 +254,18 @@
                 <div class="row align-items-center justify-content-xl-between">
                     <div class="col-xl-6">
                         <div class="copyright text-center text-xl-left text-muted">
-                            &copy; 2018 <a href="https://www.creative-tim.com" class="font-weight-bold ml-1"
-                                           target="_blank">Creative Tim</a>
+                            &copy; 2019 <a href="https://softease.fr" class="font-weight-bold ml-1"
+                                           target="_blank">Softease</a>
                         </div>
                     </div>
                     <div class="col-xl-6">
                         <ul class="nav nav-footer justify-content-center justify-content-xl-end">
                             <li class="nav-item">
-                                <a href="https://www.creative-tim.com" class="nav-link" target="_blank">Creative Tim</a>
+                                <a href="https://www.softease.fr" class="nav-link" target="_blank">Softease</a>
                             </li>
                             <li class="nav-item">
-                                <a href="https://www.creative-tim.com/presentation" class="nav-link" target="_blank">About
+                                <a href="https://www.softease.fr" class="nav-link" target="_blank">About
                                     Us</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="http://blog.creative-tim.com" class="nav-link" target="_blank">Blog</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="https://github.com/creativetimofficial/argon-dashboard/blob/master/LICENSE.md"
-                                   class="nav-link" target="_blank">MIT License</a>
                             </li>
                         </ul>
                     </div>

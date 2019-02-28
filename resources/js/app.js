@@ -18,10 +18,14 @@ window.Fire = new Vue();
 import vSelect from 'vue-select/src/index'
 
 import Prism from 'Prismjs'
+Vue.component('v-select', vSelect)
+
+/* Prism */
 Vue.use(Prism)
 import 'prismjs/themes/prism-solarizedlight.css'
 
-Vue.component('v-select', vSelect)
+/* Pagination */
+Vue.component('pagination', require('laravel-vue-pagination'));
 
 /*  MomentJS */
 import moment from 'moment';
@@ -29,15 +33,9 @@ import moment from 'moment';
 /** Filtres */
 import Filter from './Filter'
 
-Vue.filter('reverse', function(value) {
-    // slice to make a copy of array, then reverse the copy
-    return value.slice().reverse();
-});
-
 
 /* Vue Progress Bar */
 import VueProgressBar from 'vue-progressbar'
-
 const options = {
     color: '#2dce89',
     failedColor: '#874b4b',
@@ -51,7 +49,6 @@ const options = {
     location: 'top',
     inverse: false
 }
-
 Vue.use(VueProgressBar, options)
 
 /* Toasted */
@@ -97,8 +94,9 @@ const routes = [
     {path: '/developper', component: require('./components/DevelopperComponent').default},
     {path: '/tickets', name: 'tickets', component: require('./components/Tickets/TicketsComponent').default},
     {path: '/tickets/:id', name: 'ticket', params: {id : ''}, component: require('./components/Tickets/TicketComponent').default},
-    {path: '/knowledges', component: require('./components/Knowledges/KnowledgesComponent').default},
-    {path: '/projects', component: require('./components/Projects/ProjectComponent').default},
+    {path: '/knowledges', component: require('./components/underConstruction').default},
+    {path: '/projects', component: require('./components/underConstruction').default},
+    {path: '/nkeep', component: require('./components/underConstruction').default},
 
 ]
 Vue.use(VueRouter)
@@ -139,6 +137,10 @@ Vue.component(
 Vue.component(
     'not-found',
     require('./components/404').default
+);
+Vue.component(
+    'message-component',
+    require('./components/Tickets/TicketMessagesComponent').default
 );
 
 /**

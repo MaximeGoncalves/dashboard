@@ -99,7 +99,7 @@
                         </nav>
                     </div>
                 </div>
-                <div class="card shadow mb-2 px-5 py-5" v-if="card" v-for="ticket in tickets">
+                <div class="card shadow mb-2 px-5 py-5" v-if="card" v-for="ticket in tickets.data">
                     <div class="row">
                         <div class="col-md-9 col-12">
                             <router-link :to="{name: 'ticket', params: {id: ticket.id }}">
@@ -206,6 +206,7 @@
                         </div>
                     </div>
                 </div>
+                <pagination :data="tickets" @pagination-change-page="getResults" :limit="9"></pagination>
             </div>
             <div class="col-12 flex-column-reverse col-md-4">
                 <div class="card shadow mb-2 px-5 py-5">
@@ -393,14 +394,7 @@ export default {
     },
     data() {
         return {
-            tickets: [
-                society => {
-                },
-                technician => {
-                },
-                user => {
-                },
-            ],
+            tickets: {},
             ticket: {},
             files: [],
             society: [],
@@ -527,7 +521,7 @@ export default {
         updateTicket(ticket) {
             console.log(ticket)
             let tech
-            if(ticket.technician){
+            if (ticket.technician) {
                 tech = ticket.technician.user.id
             }
 
@@ -601,36 +595,76 @@ export default {
             this.search()
 
         },
-        search() {
-
+        getResults(page = 1) {
             let techTab = []
             let stateTab = []
             let source, user, society, filterYrN
+
             for (var i = 0; i < this.filter.technician.length; i++) {
                 let tech = this.filter.technician[i];
                 techTab.push(tech.id)
             }
-
             for (var i = 0; i < this.filter.state.length; i++) {
                 let state = this.filter.state[i];
                 stateTab.push(state.id)
             }
 
-
             if (this.filter.source != null) {
                 source = this.filter.source.id
             }
-
             if (this.filter.user != null) {
                 user = this.filter.user.id
             }
-
             if (this.filter.society != null) {
                 society = this.filter.society.id
             }
             if (!this.filter.importance || !source || !user || !society || !techTab || !stateTab) {
                 filterYrN = false
-            }else {
+            } else {
+                filterYrN = true
+            }
+
+            axios.get('/api/tickets?page=' + page, {
+                params: {
+                    filter: filterYrN,
+                    technician: techTab,
+                    state: stateTab,
+                    importance: this.filter.importance,
+                    source: source,
+                    user: user,
+                    society: society
+                }
+            })
+                .then(response => {
+                    this.tickets = response.data.ticket;
+                });
+        },
+        search() {
+            let techTab = []
+            let stateTab = []
+            let source, user, society, filterYrN
+
+            for (var i = 0; i < this.filter.technician.length; i++) {
+                let tech = this.filter.technician[i];
+                techTab.push(tech.id)
+            }
+            for (var i = 0; i < this.filter.state.length; i++) {
+                let state = this.filter.state[i];
+                stateTab.push(state.id)
+            }
+
+            if (this.filter.source != null) {
+                source = this.filter.source.id
+            }
+            if (this.filter.user != null) {
+                user = this.filter.user.id
+            }
+            if (this.filter.society != null) {
+                society = this.filter.society.id
+            }
+            if (!this.filter.importance || !source || !user || !society || !techTab || !stateTab) {
+                filterYrN = false
+            } else {
                 filterYrN = true
             }
             axios.get('/api/tickets', {
@@ -644,8 +678,7 @@ export default {
                     society: society
                 }
             }).then(response => {
-                this.tickets = response.data.ticket.data;
-                this.tickets = response.data.ticket.data;
+                this.tickets = response.data.ticket;
                 this.technicians = response.data.technician;
                 this.users = response.data.user;
                 this.states = response.data.states;
@@ -662,7 +695,7 @@ export default {
     },
     created() {
 
-        this.loadTickets();
+        this.search();
 
         Fire.$on('createTicket', () => {
             this.loadTickets()

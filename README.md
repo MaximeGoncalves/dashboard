@@ -8,11 +8,11 @@
 - [x] Créer une action lors du store d'un ticket.
 - [x] Afficher une Time Line des actions
 - [x] Poster des messages et les afficher
-- [ ] Mettre en place le répondre à un message.
-- [ ] Éditer un message 
+- [x] Mettre en place le répondre à un message.
+- [x] Éditer un message 
 - [x] Mise en place de la suppression de tickets 
 - [ ] Ajouter la possibilité de mettre un type au ticket.
-- [ ] Changer les icones des tabs dans un ticket
+- [x] Changer les icones des tabs dans un ticket
 - [x] Restrindre l'affichage pour les clients Tickets
 - [x] Empecher l'acces au ticket X via url
 - [ ] Mettre en place la pagination

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Action;
 use App\Attachment;
 use App\Filter;
+use App\Message;
 use App\Source;
 use App\State;
 use App\Technician;
@@ -157,7 +158,7 @@ class TicketController extends Controller
     public function show($id)
     {
         $ticket = Ticket::with('user', 'society', 'state', 'technician.user', 'source', 'attachments', 'actions.from', 'messages.from')->findOrfail($id);
-
+        $messages = Message::where('ticket_id', $id)->whereNull('to_id')->get();
         if (Gate::allows('isYourTicket', $ticket)) {
             $techs = Technician::get()->load('user');
             $technicians = [];
@@ -168,7 +169,7 @@ class TicketController extends Controller
             $user = User::all();
             $sources = Source::all();
 
-            return response()->json(['states' => $states, 'ticket' => $ticket, 'technicians' => $technicians, 'sources' => $sources]);
+            return response()->json(['states' => $states, 'ticket' => $ticket, 'technicians' => $technicians, 'sources' => $sources, 'messages' => $messages]);
         } else {
             return response()->json(['unauthorized' => '404']);
         }

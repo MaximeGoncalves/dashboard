@@ -1,14 +1,6 @@
 <template>
     <div>
         <div v-if="ticket && unauthorized === false ">
-            <div class="row mb-2">
-                <div class="col-12 col-md-4 offset-md-8">
-                    <button class="btn btn-icon btn-danger" type="button" @click="addAction" v-if="$gate.isAdmin()">
-                        <i class="fas fa-plus-square"></i>
-                        <span class="btn-inner--text">Activité</span>
-                    </button>
-                </div>
-            </div>
             <div class="row">
                 <div class="col-12 col-md-8">
                     <div class="card shadow mb-2">
@@ -29,7 +21,8 @@
                                            data-toggle="tab"
                                            href="#tabs-icons-text-3" role="tab" aria-controls="tabs-icons-text-3"
                                            aria-selected="false"
-                                           style="box-shadow: none;border-top-right-radius: 0.375rem;"><i class="fas fa-cogs mr-2"></i>Détails</a>
+                                           style="box-shadow: none;border-top-right-radius: 0.375rem;"><i
+                                            class="fas fa-cogs mr-2"></i>Détails</a>
                                     </li>
                                 </ul>
                             </div>
@@ -170,95 +163,15 @@
 
                                 </div>
                             </form>
-                            <div class="row" v-for="message in ticket.messages">
-                                <div class="col-12">
-                                    <div class="message d-flex">
-                                        <img :src="getProfilePhotoFrom(message.from)" alt=""
-                                             class="avatar avatar-sm mr-3">
-                                        <div>
-                                            <h4 class="d-inline">{{ message.from.fullname }} </h4><small class="text-muted">
-                                            <a href="#" @click.prevent="editMessage(message)">edit</a></small>
-                                            <br>
-                                            <small class="mb-3 text-muted d-inline-block">{{ message.created_at | formatDate}}</small>
-                                            <p v-html="message.content" :id="'message' + message.id"></p>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="row" v-for="message in messages">
+                                <message-component :msg="message" :key="message.id"></message-component>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-12 col-md-4">
-                    <div class="card shadow mb-2" v-if="ticket.attachments && ticket.attachments[0] ">
-                        <div class="card-body">
-                            <h4 class="card-title">Fichiers attachés</h4>
-                            <div class="card mb-1 shadow-none border" v-for="attachment in ticket.attachments">
-                                <div class="p-2">
-                                    <div class="row align-items-center">
-                                        <div class="col-auto">
-                                            <i class="fas fa-paperclip"></i>
-                                        </div>
-                                        <div class="col pl-0">
-                                            <a class="text-muted font-weight-bold"
-                                               :href="attachment.link"
-                                               download>
-                                                {{ attachment.name }}
-                                            </a>
-                                            <p class="mb-0">2.3 MB</p>
-                                        </div>
-                                        <div class="col-auto">
-                                            <!-- Button -->
-                                            <a href="javascript:void(0);" class="btn btn-link btn-lg text-muted">
-                                                <i class="dripicons-download"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card" v-if="ticket.actions && ticket.actions[0]">
-                        <div class="card-body">
-                            <h4 class="header-title mb-2">Activités récentes</h4>
-                            <div class="timeline-alt pb-0">
-                                <div class="timeline-item" v-for="action in actions">
-                                    <img :src="getProfilePhotoFrom(action.from)"
-                                         class="timeline-avatar timeline-icon">
-                                    <div class="timeline-item-info">
-                                        <a href="#"
-                                           class="text-primary font-weight-bold mb-1 d-block">{{action.from.name}}</a>
-                                        <small v-html="action.content">
-                                        </small>
-                                        <p class="mb-0 pb-2">
-                                            <small class="text-muted">{{ action.created_at | formatDate}}</small>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-8 col-12">
-
-                </div>
-            </div>
-            <div class="modal fade" id="addAction" tabindex="-1" role="dialog" aria-labelledby="addAction"
-                 aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            <form @submit.prevent="createAction()">
-                                <h4>Ajouter une action</h4>
-                                <textarea name="content" id="action" cols="30" rows="2"
-                                          class="form-control form-control-alternative"
-                                          v-model="action"
-                                          placeholder="Votre action"></textarea>
-                                <button type="submit" class="btn-primary btn float-right mt-2 btn-sm">Ajouter</button>
-                            </form>
-                        </div>
-                    </div>
+                    <attachments-component :ticket="ticket"></attachments-component>
+                    <action-component :ticket="ticket"></action-component>
                 </div>
             </div>
         </div>
@@ -270,42 +183,27 @@
 </template>
 
 <script>
+import actionComponent from './TicketActionsComponent'
+
+import AttachmentsComponent from './TicketAttachmentsComponent'
 
 export default {
+    components: {
+        actionComponent,
+        AttachmentsComponent
+    },
     data() {
         return {
             unauthorized: false,
             ticket: {},
-            action: '',
-            message: '',
-            actions: [],
-            errors : []
+            errors : [],
+            message : '',
+            messages : {}
         }
     }
     ,
     methods: {
-        addAction() {
-            $('#addAction').modal('show')
-        },
-        addMessage() {
-            this.$Progress.start();
-            axios.post('/api/message/' + this.ticket.id, {
-                content: this.message
-            }).then(result => {
-                this.$Progress.finish();
-                this.message = ""
-                this.$toasted.global.flash({message: "Votre commentaire à bien été ajouté"});
-                Fire.$emit('addMessage')
-            }).catch(error => {
-                console.log(error)
-                this.errors = error.response.data.errors;
-                this.$Progress.fail();
-            })
-        },
-        editMessage(message){
-            console.log(message)
-            $('#message'+ message.id).replaceWith('')
-        },
+
         getProfilePhoto(tech) {
             if (tech['user']) {
                 if (tech['user'].photo !== 'profile.png') {
@@ -314,16 +212,6 @@ export default {
                     return '/img/profile/profile.png'
                 }
             }
-        },
-        getProfilePhotoFrom(from) {
-            if (from) {
-                if (from.photo !== 'profile.png') {
-                    return '/img/profile/' + from.name + '/' + from.photo
-                } else {
-                    return '/img/profile/profile.png'
-                }
-            }
-
         },
         updateTicket() {
             this.$Progress.start()
@@ -367,22 +255,6 @@ export default {
                     }
                 });
         },
-        createAction() {
-            this.$Progress.start()
-            axios.post('/api/addAction/' + this.ticket.id, {
-                content: this.action
-            }).then(result => {
-                $('#addAction').modal('hide')
-                this.action = ""
-                this.$toasted.global.flash({message: "L'action à bien été ajoutée."});
-                Fire.$emit('addAction')
-                this.$Progress.finish()
-
-            }).catch(rerror => {
-
-            })
-        },
-
         loadTicket() {
             let ticket = this.$route.params.id;
 
@@ -394,33 +266,51 @@ export default {
                 this.sources = result.data.sources
                 this.technicians = result.data.technicians
                 this.states = result.data.states
-                this.actions = result.data.ticket.actions.reverse()
+                this.messages = result.data.messages
                 if (!this.ticket.technician) {
                     this.ticket.technician = {}
                 }
             })
         },
-        loadAction() {
-            let ticket = this.$route.params.id
-            axios.get('/api/tickets/' + ticket).then(result => {
-                this.actions = result.data.ticket.actions.reverse()
+        addMessage() {
+            this.$Progress.start();
+            axios.post('/api/message/' + this.ticket.id, {
+                content: this.message
+            }).then(result => {
+                this.$Progress.finish();
+                this.message = ""
+                this.$toasted.global.flash({message: "Votre commentaire à bien été ajouté"});
+                Fire.$emit('addMessage', this.ticket.id)
+                console.log(result)
+            }).catch(error => {
+                console.log(error)
+                this.errors = error.response.data.errors;
+                this.$Progress.fail();
             })
         },
+
     }
     ,
     mounted() {
 
         this.loadTicket()
-        Fire.$on('addAction', () => {
-            this.loadTicket()
-        })
-        Fire.$on('addMessage', () => {
-            this.loadTicket()
+
+        Fire.$on('addMessage', (id) => {
+            axios.get('/api/message',{
+                params: {
+                    ticket: id,
+                }
+            }).then(response => {
+                console.log(response)
+                this.messages = response.data.messages
+            })
         })
         Fire.$on('updateTicket', () => {
             this.loadAction()
         })
-
+        Fire.$on('addAction', () => {
+            this.loadTicket()
+        })
     }
 }
 </script>
