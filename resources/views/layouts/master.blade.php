@@ -71,10 +71,10 @@
                         <div class=" dropdown-header noti-title">
                             <h6 class="text-overflow m-0">Welcome!</h6>
                         </div>
-                        <a href="./examples/profile.html" class="dropdown-item">
+                        <router-link to="/profile" class="dropdown-item">
                             <i class="ni ni-single-02"></i>
-                            <span>My profile</span>
-                        </a>
+                            <span>Mon profile</span>
+                        </router-link>
                         <div class="dropdown-divider"></div>
                         <a href="#!" class="dropdown-item">
                             <i class="ni ni-user-run"></i>
@@ -89,9 +89,9 @@
                 <div class="navbar-collapse-header d-md-none">
                     <div class="row">
                         <div class="col-6 collapse-brand">
-                            <a href="./index.html">
+                            <router-link to="/">
                                 <img src="/argon/img/brand/blue.png">
-                            </a>
+                            </router-link>
                         </div>
                         <div class="col-6 collapse-close">
                             <button type="button" class="navbar-toggler" data-toggle="collapse"
@@ -224,10 +224,10 @@
                             <div class=" dropdown-header noti-title">
                                 <h6 class="text-overflow m-0">Welcome!</h6>
                             </div>
-                            <a href="./examples/profile.html" class="dropdown-item">
+                            <router-link to="/profile" class="dropdown-item">
                                 <i class="ni ni-single-02"></i>
-                                <span>My profile</span>
-                            </a>
+                                <span>Mon profile</span>
+                            </router-link>
                             <div class="dropdown-divider"></div>
                             <a href="#" class="dropdown-item"
                                onclick="event.preventDefault(); document.getElementById('form-logout').submit()">

@@ -90,6 +90,7 @@ const routes = [
     {path: '/', component: require('./components/DashboardComponent.vue').default},
     {path: '/profile', component: require('./components/Profile/ProfileComponent.vue').default},
     {path: '/users', component: require('./components/Users/UsersComponent.vue').default},
+    {path: '/logins', component: require('./components/Logins/LoginsComponent').default},
     {path: '/societies', component: require('./components/SocietiesComponent').default},
     {path: '/developper', component: require('./components/DevelopperComponent').default},
     {path: '/tickets', name: 'tickets', component: require('./components/Tickets/TicketsComponent').default},

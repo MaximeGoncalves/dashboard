@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Action extends Model
 {
     private $content;
+    protected $with = ['ticket', 'from'];
 
     public function ticket()
     {

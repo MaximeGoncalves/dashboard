@@ -171,7 +171,7 @@
                 </div>
                 <div class="col-12 col-md-4">
                     <attachments-component :ticket="ticket"></attachments-component>
-                    <action-component :ticket="ticket"></action-component>
+                    <action-component :actions="actions" :ticket="ticket"></action-component>
                 </div>
             </div>
         </div>
@@ -196,9 +196,10 @@ export default {
         return {
             unauthorized: false,
             ticket: {},
-            errors : [],
-            message : '',
-            messages : {}
+            errors: [],
+            message: '',
+            messages: {},
+            actions: {}
         }
     }
     ,
@@ -228,7 +229,7 @@ export default {
             }).then(result => {
                 this.$toasted.global.flash({message: "Le ticket à été mis à jour"});
                 this.$Progress.finish()
-                Fire.$emit('updateTicket')
+                Fire.$emit('updateTicket', this.ticket.id)
             })
         },
         deleteTicket() {
@@ -267,6 +268,7 @@ export default {
                 this.technicians = result.data.technicians
                 this.states = result.data.states
                 this.messages = result.data.messages
+                this.actions = result.data.actions.reverse()
                 if (!this.ticket.technician) {
                     this.ticket.technician = {}
                 }
@@ -288,28 +290,38 @@ export default {
                 this.$Progress.fail();
             })
         },
+        loadAction(id) {
+            axios.get('/api/actions', {
+                params: {
+                    ticket: id,
+                }
+            }).then(response => {
+                console.log(response)
+                this.actions = response.data.actions.reverse()
+            })
+        },
 
     }
     ,
     mounted() {
 
         this.loadTicket()
-
+        Fire.$on('addAction', (id) => {
+            this.loadAction(id)
+        })
         Fire.$on('addMessage', (id) => {
-            axios.get('/api/message',{
+            axios.get('/api/message', {
                 params: {
                     ticket: id,
                 }
             }).then(response => {
-                console.log(response)
                 this.messages = response.data.messages
             })
+            this.loadAction(id)
         })
-        Fire.$on('updateTicket', () => {
-            this.loadAction()
-        })
-        Fire.$on('addAction', () => {
+        Fire.$on('updateTicket', (id) => {
             this.loadTicket()
+            this.loadAction(id)
         })
     }
 }

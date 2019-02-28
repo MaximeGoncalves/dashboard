@@ -10,19 +10,21 @@ use Illuminate\Support\Facades\Auth;
 
 class ActionsController extends Controller
 {
+    public function index (Request $request){
+
+        $actions = Action::where('ticket_id', $request->get('ticket'))->get();
+        return response()->json(['actions' => $actions]);
+    }
+
     public function store(Request $request, $id)
     {
-
-//        $request->session()->put('previous-route', "action.store");
-
-
         $ticket = Ticket::findOrFail($id);
         $action = new Action();
         $action->content = $request->get('content');
         $action->from_id = Auth::user()->id;
         $action->ticket()->associate($ticket);
         $action->save();
-        return response()->json(['message' => 'success']);
+        return response()->json(['action' => $action ]);
 //        return redirect(route('ticket.show', ['id' => $ticket->id]));
     }
 

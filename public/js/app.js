@@ -2850,6 +2850,297 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Logins/LoginsComponent.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Logins/LoginsComponent.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _ModalLoginsComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ModalLoginsComponent */ "./resources/js/components/Logins/ModalLoginsComponent.vue");
+/* harmony import */ var crypto_js_enc_base64__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! crypto-js/enc-base64 */ "./node_modules/crypto-js/enc-base64.js");
+/* harmony import */ var crypto_js_enc_base64__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(crypto_js_enc_base64__WEBPACK_IMPORTED_MODULE_2__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    LoginsModal: _ModalLoginsComponent__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  data: function data() {
+    return {
+      user: {
+        society: {}
+      },
+      society: [],
+      errors: [],
+      logins: {},
+      editMode: true,
+      selected: "",
+      key: "ITPl8kGKDzILfMHnZQH/AAUQHham4catr9KllIn/zWE="
+    };
+  },
+  methods: {
+    loadLogins: function loadLogins() {
+      var _this = this;
+
+      axios.get('/api/logins').then(function (response) {
+        _this.logins = response.data.logins;
+      });
+    },
+    UpdateUser: function UpdateUser(user) {
+      var _this2 = this;
+
+      this.$Progress.start();
+      axios.put('/api/user/' + user, {
+        name: this.user.name,
+        fullname: this.user.fullname,
+        email: this.user.email,
+        password: this.user.password,
+        role: this.user.role,
+        society: this.user.society_id,
+        profession: this.user.profession,
+        phone: this.user.phone
+      }).then(function (response) {
+        $('#addNewUser').modal('hide');
+        Fire.$emit('UpdateUser');
+
+        _this2.$toasted.global.flash({
+          message: "L'utilisateur à été mis à jour"
+        });
+
+        _this2.$Progress.finish();
+      }).catch(function (error) {
+        _this2.errors = error.response.data.errors;
+
+        _this2.$Progress.fail();
+      });
+    },
+    EditUser: function () {
+      var _EditUser = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(user) {
+        var _this3 = this;
+
+        var getUser;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                this.errors = [];
+                this.editMode = true;
+                _context.next = 4;
+                return axios.get('/api/user/' + user).then(function (user) {
+                  _this3.user = user.data;
+                });
+
+              case 4:
+                getUser = _context.sent;
+                this.selected = this.user.society_id;
+                $('#addNewUser').modal('show');
+
+              case 7:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function EditUser(_x) {
+        return _EditUser.apply(this, arguments);
+      }
+
+      return EditUser;
+    }(),
+    NewModal: function NewModal() {
+      this.editMode = false;
+      this.errors = [];
+      this.user.name = '';
+      this.user.fullname = '';
+      this.user.email = '';
+      this.user.password = '';
+      this.user.role = '';
+      this.user.society = '';
+      $('#addNewUser').modal('show');
+    },
+    createUser: function createUser() {
+      var _this4 = this;
+
+      this.$Progress.start();
+      axios.post('/api/user', {
+        name: this.user.name,
+        fullname: this.user.fullname,
+        email: this.user.email,
+        password: this.user.password,
+        role: this.user.role.value,
+        society: this.user.society.id,
+        profession: this.user.profession,
+        phone: this.user.phone
+      }).then(function (response) {
+        Fire.$emit('CreateUser');
+
+        _this4.$Progress.finish();
+
+        $('#addNewUser').modal('hide');
+
+        _this4.$toasted.global.flash({
+          message: "L'utilisateur à été créé."
+        });
+
+        _this4.errors = [];
+      }).catch(function (error) {
+        _this4.errors = error.response.data.errors;
+
+        _this4.$Progress.fail();
+      });
+    },
+    deleteUser: function deleteUser(id) {
+      var _this5 = this;
+
+      swal({
+        title: "Etes vous sur ? ",
+        text: "Cette manipulation est irréversible !",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true
+      }).then(function (willDelete) {
+        if (willDelete) {
+          axios.delete('/api/user/' + id).then(function () {
+            swal("L'utilisateur à été supprimé.", {
+              icon: "success"
+            });
+            Fire.$emit('UpdateUser');
+          }).catch(function (error) {
+            _this5.errors = error.response.data.message;
+            swal(_this5.errors);
+          });
+        } else {
+          swal("Ok on annule !");
+        }
+      });
+    },
+    getSociety: function getSociety() {
+      var _this6 = this;
+
+      axios.get('/api/society').then(function (society) {
+        _this6.society = society.data;
+      });
+    }
+  },
+  created: function created() {
+    var _this7 = this;
+
+    if (this.$gate.isAdmin()) {
+      this.loadLogins();
+      Fire.$on('CreateUser', function () {
+        _this7.$Progress.start();
+
+        _this7.loadUsers();
+
+        _this7.$Progress.finish();
+      });
+      Fire.$on('UpdateUser', function () {
+        _this7.$Progress.start();
+
+        _this7.loadUsers();
+
+        _this7.$Progress.finish();
+      });
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Profile/ProfileComponent.vue?vue&type=script&lang=js&":
 /*!***********************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Profile/ProfileComponent.vue?vue&type=script&lang=js& ***!
@@ -3755,25 +4046,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['ticket'],
+  props: ['actions', 'ticket'],
   data: function data() {
     return {
-      action: '',
-      actions: []
+      action: ''
     };
   },
-  watch: {
-    ticket: 'loadAction'
-  },
   methods: {
-    loadAction: function loadAction() {
-      var _this = this;
-
-      var ticket = this.$route.params.id;
-      axios.get('/api/tickets/' + ticket).then(function (result) {
-        _this.actions = result.data.ticket.actions.reverse();
-      });
-    },
+    // loadAction() {
+    //     let ticket = this.$route.params.id
+    //     axios.get('/api/tickets/' + ticket).then(result => {
+    //         this.actions = result.data.ticket.actions.reverse()
+    //     })
+    // },
     getProfilePhotoFrom: function getProfilePhotoFrom(from) {
       if (from) {
         if (from.photo !== 'profile.png') {
@@ -3786,29 +4071,30 @@ __webpack_require__.r(__webpack_exports__);
     addAction: function addAction() {
       $('#addAction').modal('show');
     },
-    createAction: function createAction() {
-      var _this2 = this;
+    createAction: function createAction(id) {
+      var _this = this;
 
       this.$Progress.start();
-      axios.post('/api/addAction/' + this.ticket.id, {
+      axios.post('/api/addAction/' + id, {
         content: this.action
-      }).then(function (result) {
+      }).then(function (response) {
         $('#addAction').modal('hide');
-        _this2.action = "";
+        _this.action = "";
 
-        _this2.$toasted.global.flash({
+        _this.$toasted.global.flash({
           message: "L'action à bien été ajoutée."
         });
 
-        Fire.$emit('addAction');
+        Fire.$emit('addAction', id);
 
-        _this2.$Progress.finish();
+        _this.$Progress.finish();
       }).catch(function (rerror) {});
     }
-  },
-  mounted: function mounted() {
-    this.loadAction();
-  }
+  } // mounted() {
+  //     this.loadAction()
+  //
+  // }
+
 });
 
 /***/ }),
@@ -4069,7 +4355,8 @@ __webpack_require__.r(__webpack_exports__);
       ticket: {},
       errors: [],
       message: '',
-      messages: {}
+      messages: {},
+      actions: {}
     };
   },
   methods: {
@@ -4105,7 +4392,7 @@ __webpack_require__.r(__webpack_exports__);
 
         _this.$Progress.finish();
 
-        Fire.$emit('updateTicket');
+        Fire.$emit('updateTicket', _this.ticket.id);
       });
     },
     deleteTicket: function deleteTicket() {
@@ -4150,6 +4437,7 @@ __webpack_require__.r(__webpack_exports__);
         _this3.technicians = result.data.technicians;
         _this3.states = result.data.states;
         _this3.messages = result.data.messages;
+        _this3.actions = result.data.actions.reverse();
 
         if (!_this3.ticket.technician) {
           _this3.ticket.technician = {};
@@ -4179,27 +4467,42 @@ __webpack_require__.r(__webpack_exports__);
 
         _this4.$Progress.fail();
       });
+    },
+    loadAction: function loadAction(id) {
+      var _this5 = this;
+
+      axios.get('/api/actions', {
+        params: {
+          ticket: id
+        }
+      }).then(function (response) {
+        console.log(response);
+        _this5.actions = response.data.actions.reverse();
+      });
     }
   },
   mounted: function mounted() {
-    var _this5 = this;
+    var _this6 = this;
 
     this.loadTicket();
+    Fire.$on('addAction', function (id) {
+      _this6.loadAction(id);
+    });
     Fire.$on('addMessage', function (id) {
       axios.get('/api/message', {
         params: {
           ticket: id
         }
       }).then(function (response) {
-        console.log(response);
-        _this5.messages = response.data.messages;
+        _this6.messages = response.data.messages;
       });
+
+      _this6.loadAction(id);
     });
-    Fire.$on('updateTicket', function () {
-      _this5.loadAction();
-    });
-    Fire.$on('addAction', function () {
-      _this5.loadTicket();
+    Fire.$on('updateTicket', function (id) {
+      _this6.loadTicket();
+
+      _this6.loadAction(id);
     });
   }
 });
@@ -10752,6 +11055,907 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 }));
 //# sourceMappingURL=bootstrap.js.map
 
+
+/***/ }),
+
+/***/ "./node_modules/crypto-js/core.js":
+/*!****************************************!*\
+  !*** ./node_modules/crypto-js/core.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+;(function (root, factory) {
+	if (true) {
+		// CommonJS
+		module.exports = exports = factory();
+	}
+	else {}
+}(this, function () {
+
+	/**
+	 * CryptoJS core components.
+	 */
+	var CryptoJS = CryptoJS || (function (Math, undefined) {
+	    /*
+	     * Local polyfil of Object.create
+	     */
+	    var create = Object.create || (function () {
+	        function F() {};
+
+	        return function (obj) {
+	            var subtype;
+
+	            F.prototype = obj;
+
+	            subtype = new F();
+
+	            F.prototype = null;
+
+	            return subtype;
+	        };
+	    }())
+
+	    /**
+	     * CryptoJS namespace.
+	     */
+	    var C = {};
+
+	    /**
+	     * Library namespace.
+	     */
+	    var C_lib = C.lib = {};
+
+	    /**
+	     * Base object for prototypal inheritance.
+	     */
+	    var Base = C_lib.Base = (function () {
+
+
+	        return {
+	            /**
+	             * Creates a new object that inherits from this object.
+	             *
+	             * @param {Object} overrides Properties to copy into the new object.
+	             *
+	             * @return {Object} The new object.
+	             *
+	             * @static
+	             *
+	             * @example
+	             *
+	             *     var MyType = CryptoJS.lib.Base.extend({
+	             *         field: 'value',
+	             *
+	             *         method: function () {
+	             *         }
+	             *     });
+	             */
+	            extend: function (overrides) {
+	                // Spawn
+	                var subtype = create(this);
+
+	                // Augment
+	                if (overrides) {
+	                    subtype.mixIn(overrides);
+	                }
+
+	                // Create default initializer
+	                if (!subtype.hasOwnProperty('init') || this.init === subtype.init) {
+	                    subtype.init = function () {
+	                        subtype.$super.init.apply(this, arguments);
+	                    };
+	                }
+
+	                // Initializer's prototype is the subtype object
+	                subtype.init.prototype = subtype;
+
+	                // Reference supertype
+	                subtype.$super = this;
+
+	                return subtype;
+	            },
+
+	            /**
+	             * Extends this object and runs the init method.
+	             * Arguments to create() will be passed to init().
+	             *
+	             * @return {Object} The new object.
+	             *
+	             * @static
+	             *
+	             * @example
+	             *
+	             *     var instance = MyType.create();
+	             */
+	            create: function () {
+	                var instance = this.extend();
+	                instance.init.apply(instance, arguments);
+
+	                return instance;
+	            },
+
+	            /**
+	             * Initializes a newly created object.
+	             * Override this method to add some logic when your objects are created.
+	             *
+	             * @example
+	             *
+	             *     var MyType = CryptoJS.lib.Base.extend({
+	             *         init: function () {
+	             *             // ...
+	             *         }
+	             *     });
+	             */
+	            init: function () {
+	            },
+
+	            /**
+	             * Copies properties into this object.
+	             *
+	             * @param {Object} properties The properties to mix in.
+	             *
+	             * @example
+	             *
+	             *     MyType.mixIn({
+	             *         field: 'value'
+	             *     });
+	             */
+	            mixIn: function (properties) {
+	                for (var propertyName in properties) {
+	                    if (properties.hasOwnProperty(propertyName)) {
+	                        this[propertyName] = properties[propertyName];
+	                    }
+	                }
+
+	                // IE won't copy toString using the loop above
+	                if (properties.hasOwnProperty('toString')) {
+	                    this.toString = properties.toString;
+	                }
+	            },
+
+	            /**
+	             * Creates a copy of this object.
+	             *
+	             * @return {Object} The clone.
+	             *
+	             * @example
+	             *
+	             *     var clone = instance.clone();
+	             */
+	            clone: function () {
+	                return this.init.prototype.extend(this);
+	            }
+	        };
+	    }());
+
+	    /**
+	     * An array of 32-bit words.
+	     *
+	     * @property {Array} words The array of 32-bit words.
+	     * @property {number} sigBytes The number of significant bytes in this word array.
+	     */
+	    var WordArray = C_lib.WordArray = Base.extend({
+	        /**
+	         * Initializes a newly created word array.
+	         *
+	         * @param {Array} words (Optional) An array of 32-bit words.
+	         * @param {number} sigBytes (Optional) The number of significant bytes in the words.
+	         *
+	         * @example
+	         *
+	         *     var wordArray = CryptoJS.lib.WordArray.create();
+	         *     var wordArray = CryptoJS.lib.WordArray.create([0x00010203, 0x04050607]);
+	         *     var wordArray = CryptoJS.lib.WordArray.create([0x00010203, 0x04050607], 6);
+	         */
+	        init: function (words, sigBytes) {
+	            words = this.words = words || [];
+
+	            if (sigBytes != undefined) {
+	                this.sigBytes = sigBytes;
+	            } else {
+	                this.sigBytes = words.length * 4;
+	            }
+	        },
+
+	        /**
+	         * Converts this word array to a string.
+	         *
+	         * @param {Encoder} encoder (Optional) The encoding strategy to use. Default: CryptoJS.enc.Hex
+	         *
+	         * @return {string} The stringified word array.
+	         *
+	         * @example
+	         *
+	         *     var string = wordArray + '';
+	         *     var string = wordArray.toString();
+	         *     var string = wordArray.toString(CryptoJS.enc.Utf8);
+	         */
+	        toString: function (encoder) {
+	            return (encoder || Hex).stringify(this);
+	        },
+
+	        /**
+	         * Concatenates a word array to this word array.
+	         *
+	         * @param {WordArray} wordArray The word array to append.
+	         *
+	         * @return {WordArray} This word array.
+	         *
+	         * @example
+	         *
+	         *     wordArray1.concat(wordArray2);
+	         */
+	        concat: function (wordArray) {
+	            // Shortcuts
+	            var thisWords = this.words;
+	            var thatWords = wordArray.words;
+	            var thisSigBytes = this.sigBytes;
+	            var thatSigBytes = wordArray.sigBytes;
+
+	            // Clamp excess bits
+	            this.clamp();
+
+	            // Concat
+	            if (thisSigBytes % 4) {
+	                // Copy one byte at a time
+	                for (var i = 0; i < thatSigBytes; i++) {
+	                    var thatByte = (thatWords[i >>> 2] >>> (24 - (i % 4) * 8)) & 0xff;
+	                    thisWords[(thisSigBytes + i) >>> 2] |= thatByte << (24 - ((thisSigBytes + i) % 4) * 8);
+	                }
+	            } else {
+	                // Copy one word at a time
+	                for (var i = 0; i < thatSigBytes; i += 4) {
+	                    thisWords[(thisSigBytes + i) >>> 2] = thatWords[i >>> 2];
+	                }
+	            }
+	            this.sigBytes += thatSigBytes;
+
+	            // Chainable
+	            return this;
+	        },
+
+	        /**
+	         * Removes insignificant bits.
+	         *
+	         * @example
+	         *
+	         *     wordArray.clamp();
+	         */
+	        clamp: function () {
+	            // Shortcuts
+	            var words = this.words;
+	            var sigBytes = this.sigBytes;
+
+	            // Clamp
+	            words[sigBytes >>> 2] &= 0xffffffff << (32 - (sigBytes % 4) * 8);
+	            words.length = Math.ceil(sigBytes / 4);
+	        },
+
+	        /**
+	         * Creates a copy of this word array.
+	         *
+	         * @return {WordArray} The clone.
+	         *
+	         * @example
+	         *
+	         *     var clone = wordArray.clone();
+	         */
+	        clone: function () {
+	            var clone = Base.clone.call(this);
+	            clone.words = this.words.slice(0);
+
+	            return clone;
+	        },
+
+	        /**
+	         * Creates a word array filled with random bytes.
+	         *
+	         * @param {number} nBytes The number of random bytes to generate.
+	         *
+	         * @return {WordArray} The random word array.
+	         *
+	         * @static
+	         *
+	         * @example
+	         *
+	         *     var wordArray = CryptoJS.lib.WordArray.random(16);
+	         */
+	        random: function (nBytes) {
+	            var words = [];
+
+	            var r = (function (m_w) {
+	                var m_w = m_w;
+	                var m_z = 0x3ade68b1;
+	                var mask = 0xffffffff;
+
+	                return function () {
+	                    m_z = (0x9069 * (m_z & 0xFFFF) + (m_z >> 0x10)) & mask;
+	                    m_w = (0x4650 * (m_w & 0xFFFF) + (m_w >> 0x10)) & mask;
+	                    var result = ((m_z << 0x10) + m_w) & mask;
+	                    result /= 0x100000000;
+	                    result += 0.5;
+	                    return result * (Math.random() > .5 ? 1 : -1);
+	                }
+	            });
+
+	            for (var i = 0, rcache; i < nBytes; i += 4) {
+	                var _r = r((rcache || Math.random()) * 0x100000000);
+
+	                rcache = _r() * 0x3ade67b7;
+	                words.push((_r() * 0x100000000) | 0);
+	            }
+
+	            return new WordArray.init(words, nBytes);
+	        }
+	    });
+
+	    /**
+	     * Encoder namespace.
+	     */
+	    var C_enc = C.enc = {};
+
+	    /**
+	     * Hex encoding strategy.
+	     */
+	    var Hex = C_enc.Hex = {
+	        /**
+	         * Converts a word array to a hex string.
+	         *
+	         * @param {WordArray} wordArray The word array.
+	         *
+	         * @return {string} The hex string.
+	         *
+	         * @static
+	         *
+	         * @example
+	         *
+	         *     var hexString = CryptoJS.enc.Hex.stringify(wordArray);
+	         */
+	        stringify: function (wordArray) {
+	            // Shortcuts
+	            var words = wordArray.words;
+	            var sigBytes = wordArray.sigBytes;
+
+	            // Convert
+	            var hexChars = [];
+	            for (var i = 0; i < sigBytes; i++) {
+	                var bite = (words[i >>> 2] >>> (24 - (i % 4) * 8)) & 0xff;
+	                hexChars.push((bite >>> 4).toString(16));
+	                hexChars.push((bite & 0x0f).toString(16));
+	            }
+
+	            return hexChars.join('');
+	        },
+
+	        /**
+	         * Converts a hex string to a word array.
+	         *
+	         * @param {string} hexStr The hex string.
+	         *
+	         * @return {WordArray} The word array.
+	         *
+	         * @static
+	         *
+	         * @example
+	         *
+	         *     var wordArray = CryptoJS.enc.Hex.parse(hexString);
+	         */
+	        parse: function (hexStr) {
+	            // Shortcut
+	            var hexStrLength = hexStr.length;
+
+	            // Convert
+	            var words = [];
+	            for (var i = 0; i < hexStrLength; i += 2) {
+	                words[i >>> 3] |= parseInt(hexStr.substr(i, 2), 16) << (24 - (i % 8) * 4);
+	            }
+
+	            return new WordArray.init(words, hexStrLength / 2);
+	        }
+	    };
+
+	    /**
+	     * Latin1 encoding strategy.
+	     */
+	    var Latin1 = C_enc.Latin1 = {
+	        /**
+	         * Converts a word array to a Latin1 string.
+	         *
+	         * @param {WordArray} wordArray The word array.
+	         *
+	         * @return {string} The Latin1 string.
+	         *
+	         * @static
+	         *
+	         * @example
+	         *
+	         *     var latin1String = CryptoJS.enc.Latin1.stringify(wordArray);
+	         */
+	        stringify: function (wordArray) {
+	            // Shortcuts
+	            var words = wordArray.words;
+	            var sigBytes = wordArray.sigBytes;
+
+	            // Convert
+	            var latin1Chars = [];
+	            for (var i = 0; i < sigBytes; i++) {
+	                var bite = (words[i >>> 2] >>> (24 - (i % 4) * 8)) & 0xff;
+	                latin1Chars.push(String.fromCharCode(bite));
+	            }
+
+	            return latin1Chars.join('');
+	        },
+
+	        /**
+	         * Converts a Latin1 string to a word array.
+	         *
+	         * @param {string} latin1Str The Latin1 string.
+	         *
+	         * @return {WordArray} The word array.
+	         *
+	         * @static
+	         *
+	         * @example
+	         *
+	         *     var wordArray = CryptoJS.enc.Latin1.parse(latin1String);
+	         */
+	        parse: function (latin1Str) {
+	            // Shortcut
+	            var latin1StrLength = latin1Str.length;
+
+	            // Convert
+	            var words = [];
+	            for (var i = 0; i < latin1StrLength; i++) {
+	                words[i >>> 2] |= (latin1Str.charCodeAt(i) & 0xff) << (24 - (i % 4) * 8);
+	            }
+
+	            return new WordArray.init(words, latin1StrLength);
+	        }
+	    };
+
+	    /**
+	     * UTF-8 encoding strategy.
+	     */
+	    var Utf8 = C_enc.Utf8 = {
+	        /**
+	         * Converts a word array to a UTF-8 string.
+	         *
+	         * @param {WordArray} wordArray The word array.
+	         *
+	         * @return {string} The UTF-8 string.
+	         *
+	         * @static
+	         *
+	         * @example
+	         *
+	         *     var utf8String = CryptoJS.enc.Utf8.stringify(wordArray);
+	         */
+	        stringify: function (wordArray) {
+	            try {
+	                return decodeURIComponent(escape(Latin1.stringify(wordArray)));
+	            } catch (e) {
+	                throw new Error('Malformed UTF-8 data');
+	            }
+	        },
+
+	        /**
+	         * Converts a UTF-8 string to a word array.
+	         *
+	         * @param {string} utf8Str The UTF-8 string.
+	         *
+	         * @return {WordArray} The word array.
+	         *
+	         * @static
+	         *
+	         * @example
+	         *
+	         *     var wordArray = CryptoJS.enc.Utf8.parse(utf8String);
+	         */
+	        parse: function (utf8Str) {
+	            return Latin1.parse(unescape(encodeURIComponent(utf8Str)));
+	        }
+	    };
+
+	    /**
+	     * Abstract buffered block algorithm template.
+	     *
+	     * The property blockSize must be implemented in a concrete subtype.
+	     *
+	     * @property {number} _minBufferSize The number of blocks that should be kept unprocessed in the buffer. Default: 0
+	     */
+	    var BufferedBlockAlgorithm = C_lib.BufferedBlockAlgorithm = Base.extend({
+	        /**
+	         * Resets this block algorithm's data buffer to its initial state.
+	         *
+	         * @example
+	         *
+	         *     bufferedBlockAlgorithm.reset();
+	         */
+	        reset: function () {
+	            // Initial values
+	            this._data = new WordArray.init();
+	            this._nDataBytes = 0;
+	        },
+
+	        /**
+	         * Adds new data to this block algorithm's buffer.
+	         *
+	         * @param {WordArray|string} data The data to append. Strings are converted to a WordArray using UTF-8.
+	         *
+	         * @example
+	         *
+	         *     bufferedBlockAlgorithm._append('data');
+	         *     bufferedBlockAlgorithm._append(wordArray);
+	         */
+	        _append: function (data) {
+	            // Convert string to WordArray, else assume WordArray already
+	            if (typeof data == 'string') {
+	                data = Utf8.parse(data);
+	            }
+
+	            // Append
+	            this._data.concat(data);
+	            this._nDataBytes += data.sigBytes;
+	        },
+
+	        /**
+	         * Processes available data blocks.
+	         *
+	         * This method invokes _doProcessBlock(offset), which must be implemented by a concrete subtype.
+	         *
+	         * @param {boolean} doFlush Whether all blocks and partial blocks should be processed.
+	         *
+	         * @return {WordArray} The processed data.
+	         *
+	         * @example
+	         *
+	         *     var processedData = bufferedBlockAlgorithm._process();
+	         *     var processedData = bufferedBlockAlgorithm._process(!!'flush');
+	         */
+	        _process: function (doFlush) {
+	            // Shortcuts
+	            var data = this._data;
+	            var dataWords = data.words;
+	            var dataSigBytes = data.sigBytes;
+	            var blockSize = this.blockSize;
+	            var blockSizeBytes = blockSize * 4;
+
+	            // Count blocks ready
+	            var nBlocksReady = dataSigBytes / blockSizeBytes;
+	            if (doFlush) {
+	                // Round up to include partial blocks
+	                nBlocksReady = Math.ceil(nBlocksReady);
+	            } else {
+	                // Round down to include only full blocks,
+	                // less the number of blocks that must remain in the buffer
+	                nBlocksReady = Math.max((nBlocksReady | 0) - this._minBufferSize, 0);
+	            }
+
+	            // Count words ready
+	            var nWordsReady = nBlocksReady * blockSize;
+
+	            // Count bytes ready
+	            var nBytesReady = Math.min(nWordsReady * 4, dataSigBytes);
+
+	            // Process blocks
+	            if (nWordsReady) {
+	                for (var offset = 0; offset < nWordsReady; offset += blockSize) {
+	                    // Perform concrete-algorithm logic
+	                    this._doProcessBlock(dataWords, offset);
+	                }
+
+	                // Remove processed words
+	                var processedWords = dataWords.splice(0, nWordsReady);
+	                data.sigBytes -= nBytesReady;
+	            }
+
+	            // Return processed words
+	            return new WordArray.init(processedWords, nBytesReady);
+	        },
+
+	        /**
+	         * Creates a copy of this object.
+	         *
+	         * @return {Object} The clone.
+	         *
+	         * @example
+	         *
+	         *     var clone = bufferedBlockAlgorithm.clone();
+	         */
+	        clone: function () {
+	            var clone = Base.clone.call(this);
+	            clone._data = this._data.clone();
+
+	            return clone;
+	        },
+
+	        _minBufferSize: 0
+	    });
+
+	    /**
+	     * Abstract hasher template.
+	     *
+	     * @property {number} blockSize The number of 32-bit words this hasher operates on. Default: 16 (512 bits)
+	     */
+	    var Hasher = C_lib.Hasher = BufferedBlockAlgorithm.extend({
+	        /**
+	         * Configuration options.
+	         */
+	        cfg: Base.extend(),
+
+	        /**
+	         * Initializes a newly created hasher.
+	         *
+	         * @param {Object} cfg (Optional) The configuration options to use for this hash computation.
+	         *
+	         * @example
+	         *
+	         *     var hasher = CryptoJS.algo.SHA256.create();
+	         */
+	        init: function (cfg) {
+	            // Apply config defaults
+	            this.cfg = this.cfg.extend(cfg);
+
+	            // Set initial values
+	            this.reset();
+	        },
+
+	        /**
+	         * Resets this hasher to its initial state.
+	         *
+	         * @example
+	         *
+	         *     hasher.reset();
+	         */
+	        reset: function () {
+	            // Reset data buffer
+	            BufferedBlockAlgorithm.reset.call(this);
+
+	            // Perform concrete-hasher logic
+	            this._doReset();
+	        },
+
+	        /**
+	         * Updates this hasher with a message.
+	         *
+	         * @param {WordArray|string} messageUpdate The message to append.
+	         *
+	         * @return {Hasher} This hasher.
+	         *
+	         * @example
+	         *
+	         *     hasher.update('message');
+	         *     hasher.update(wordArray);
+	         */
+	        update: function (messageUpdate) {
+	            // Append
+	            this._append(messageUpdate);
+
+	            // Update the hash
+	            this._process();
+
+	            // Chainable
+	            return this;
+	        },
+
+	        /**
+	         * Finalizes the hash computation.
+	         * Note that the finalize operation is effectively a destructive, read-once operation.
+	         *
+	         * @param {WordArray|string} messageUpdate (Optional) A final message update.
+	         *
+	         * @return {WordArray} The hash.
+	         *
+	         * @example
+	         *
+	         *     var hash = hasher.finalize();
+	         *     var hash = hasher.finalize('message');
+	         *     var hash = hasher.finalize(wordArray);
+	         */
+	        finalize: function (messageUpdate) {
+	            // Final message update
+	            if (messageUpdate) {
+	                this._append(messageUpdate);
+	            }
+
+	            // Perform concrete-hasher logic
+	            var hash = this._doFinalize();
+
+	            return hash;
+	        },
+
+	        blockSize: 512/32,
+
+	        /**
+	         * Creates a shortcut function to a hasher's object interface.
+	         *
+	         * @param {Hasher} hasher The hasher to create a helper for.
+	         *
+	         * @return {Function} The shortcut function.
+	         *
+	         * @static
+	         *
+	         * @example
+	         *
+	         *     var SHA256 = CryptoJS.lib.Hasher._createHelper(CryptoJS.algo.SHA256);
+	         */
+	        _createHelper: function (hasher) {
+	            return function (message, cfg) {
+	                return new hasher.init(cfg).finalize(message);
+	            };
+	        },
+
+	        /**
+	         * Creates a shortcut function to the HMAC's object interface.
+	         *
+	         * @param {Hasher} hasher The hasher to use in this HMAC helper.
+	         *
+	         * @return {Function} The shortcut function.
+	         *
+	         * @static
+	         *
+	         * @example
+	         *
+	         *     var HmacSHA256 = CryptoJS.lib.Hasher._createHmacHelper(CryptoJS.algo.SHA256);
+	         */
+	        _createHmacHelper: function (hasher) {
+	            return function (message, key) {
+	                return new C_algo.HMAC.init(hasher, key).finalize(message);
+	            };
+	        }
+	    });
+
+	    /**
+	     * Algorithm namespace.
+	     */
+	    var C_algo = C.algo = {};
+
+	    return C;
+	}(Math));
+
+
+	return CryptoJS;
+
+}));
+
+/***/ }),
+
+/***/ "./node_modules/crypto-js/enc-base64.js":
+/*!**********************************************!*\
+  !*** ./node_modules/crypto-js/enc-base64.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+;(function (root, factory) {
+	if (true) {
+		// CommonJS
+		module.exports = exports = factory(__webpack_require__(/*! ./core */ "./node_modules/crypto-js/core.js"));
+	}
+	else {}
+}(this, function (CryptoJS) {
+
+	(function () {
+	    // Shortcuts
+	    var C = CryptoJS;
+	    var C_lib = C.lib;
+	    var WordArray = C_lib.WordArray;
+	    var C_enc = C.enc;
+
+	    /**
+	     * Base64 encoding strategy.
+	     */
+	    var Base64 = C_enc.Base64 = {
+	        /**
+	         * Converts a word array to a Base64 string.
+	         *
+	         * @param {WordArray} wordArray The word array.
+	         *
+	         * @return {string} The Base64 string.
+	         *
+	         * @static
+	         *
+	         * @example
+	         *
+	         *     var base64String = CryptoJS.enc.Base64.stringify(wordArray);
+	         */
+	        stringify: function (wordArray) {
+	            // Shortcuts
+	            var words = wordArray.words;
+	            var sigBytes = wordArray.sigBytes;
+	            var map = this._map;
+
+	            // Clamp excess bits
+	            wordArray.clamp();
+
+	            // Convert
+	            var base64Chars = [];
+	            for (var i = 0; i < sigBytes; i += 3) {
+	                var byte1 = (words[i >>> 2]       >>> (24 - (i % 4) * 8))       & 0xff;
+	                var byte2 = (words[(i + 1) >>> 2] >>> (24 - ((i + 1) % 4) * 8)) & 0xff;
+	                var byte3 = (words[(i + 2) >>> 2] >>> (24 - ((i + 2) % 4) * 8)) & 0xff;
+
+	                var triplet = (byte1 << 16) | (byte2 << 8) | byte3;
+
+	                for (var j = 0; (j < 4) && (i + j * 0.75 < sigBytes); j++) {
+	                    base64Chars.push(map.charAt((triplet >>> (6 * (3 - j))) & 0x3f));
+	                }
+	            }
+
+	            // Add padding
+	            var paddingChar = map.charAt(64);
+	            if (paddingChar) {
+	                while (base64Chars.length % 4) {
+	                    base64Chars.push(paddingChar);
+	                }
+	            }
+
+	            return base64Chars.join('');
+	        },
+
+	        /**
+	         * Converts a Base64 string to a word array.
+	         *
+	         * @param {string} base64Str The Base64 string.
+	         *
+	         * @return {WordArray} The word array.
+	         *
+	         * @static
+	         *
+	         * @example
+	         *
+	         *     var wordArray = CryptoJS.enc.Base64.parse(base64String);
+	         */
+	        parse: function (base64Str) {
+	            // Shortcuts
+	            var base64StrLength = base64Str.length;
+	            var map = this._map;
+	            var reverseMap = this._reverseMap;
+
+	            if (!reverseMap) {
+	                    reverseMap = this._reverseMap = [];
+	                    for (var j = 0; j < map.length; j++) {
+	                        reverseMap[map.charCodeAt(j)] = j;
+	                    }
+	            }
+
+	            // Ignore padding
+	            var paddingChar = map.charAt(64);
+	            if (paddingChar) {
+	                var paddingIndex = base64Str.indexOf(paddingChar);
+	                if (paddingIndex !== -1) {
+	                    base64StrLength = paddingIndex;
+	                }
+	            }
+
+	            // Convert
+	            return parseLoop(base64Str, base64StrLength, reverseMap);
+
+	        },
+
+	        _map: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='
+	    };
+
+	    function parseLoop(base64Str, base64StrLength, reverseMap) {
+	      var words = [];
+	      var nBytes = 0;
+	      for (var i = 0; i < base64StrLength; i++) {
+	          if (i % 4) {
+	              var bits1 = reverseMap[base64Str.charCodeAt(i - 1)] << ((i % 4) * 2);
+	              var bits2 = reverseMap[base64Str.charCodeAt(i)] >>> (6 - (i % 4) * 2);
+	              words[nBytes >>> 2] |= (bits1 | bits2) << (24 - (nBytes % 4) * 8);
+	              nBytes++;
+	          }
+	      }
+	      return WordArray.create(words, nBytes);
+	    }
+	}());
+
+
+	return CryptoJS.enc.Base64;
+
+}));
 
 /***/ }),
 
@@ -64824,6 +66028,810 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Logins/LoginsComponent.vue?vue&type=template&id=0c70ed19&":
+/*!*************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Logins/LoginsComponent.vue?vue&type=template&id=0c70ed19& ***!
+  \*************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col" }, [
+          _vm.$gate.isAdmin()
+            ? _c("div", { staticClass: "card shadow" }, [
+                _c("div", { staticClass: "card-header border-0" }, [
+                  _c("div", { staticClass: "row align-items-center" }, [
+                    _vm._m(0),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-4 text-right" }, [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "btn btn-sm btn-primary",
+                          attrs: { href: "#" },
+                          on: { click: _vm.NewModal }
+                        },
+                        [_vm._v("Add\n                                Login")]
+                      )
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "table-responsive" }, [
+                  _c(
+                    "table",
+                    { staticClass: "table align-items-center table-flush" },
+                    [
+                      _vm._m(1),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.logins, function(login) {
+                          return _c("tr", [
+                            _c("td", [_vm._v(_vm._s(login.name))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(login.url))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(login.username))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(login.password))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(login.society.name))]),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "text-right" }, [
+                              _c("div", { staticClass: "dropdown" }, [
+                                _vm._m(2, true),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "dropdown-menu dropdown-menu-right dropdown-menu-arrow"
+                                  },
+                                  [
+                                    _c(
+                                      "form",
+                                      {
+                                        attrs: {
+                                          action:
+                                            "https://argon-dashboard-laravel.creative-tim.com/user/8642",
+                                          method: "post"
+                                        }
+                                      },
+                                      [
+                                        _c("input", {
+                                          attrs: {
+                                            type: "hidden",
+                                            name: "_token",
+                                            value:
+                                              "F3fqjyIFWnoHEzAeYoetOWiaHkr9ZdnoaXaxFsx7"
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c("input", {
+                                          attrs: {
+                                            type: "hidden",
+                                            name: "_method",
+                                            value: "delete"
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "a",
+                                          {
+                                            staticClass: "dropdown-item",
+                                            attrs: { href: "#" },
+                                            on: {
+                                              click: function($event) {
+                                                $event.preventDefault()
+                                                return _vm.EditLogin(login.id)
+                                              }
+                                            }
+                                          },
+                                          [_vm._v("Edit")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "a",
+                                          {
+                                            staticClass: "dropdown-item",
+                                            attrs: { href: "#" },
+                                            on: {
+                                              click: function($event) {
+                                                $event.preventDefault()
+                                                return _vm.deleteLogin(login.id)
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                                                Delete\n                                            "
+                                            )
+                                          ]
+                                        )
+                                      ]
+                                    )
+                                  ]
+                                )
+                              ])
+                            ])
+                          ])
+                        }),
+                        0
+                      )
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "card-footer py-4" })
+              ])
+            : _c("div", [_c("not-found")], 1)
+        ])
+      ]),
+      _vm._v(" "),
+      _c("logins-modal")
+    ],
+    1
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-8" }, [
+      _c("h3", { staticClass: "mb-0" }, [_vm._v("Users")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", { staticClass: "thead-light" }, [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Service")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Url")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Identifiant")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Password")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Société")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Modify")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      {
+        staticClass: "btn btn-sm btn-icon-only text-light",
+        attrs: {
+          href: "#",
+          role: "button",
+          "data-toggle": "dropdown",
+          "aria-haspopup": "true",
+          "aria-expanded": "false"
+        }
+      },
+      [_c("i", { staticClass: "fas fa-ellipsis-v" })]
+    )
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Logins/ModalLoginsComponent.vue?vue&type=template&id=461d35d0&":
+/*!******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Logins/ModalLoginsComponent.vue?vue&type=template&id=461d35d0& ***!
+  \******************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "modal fade",
+      attrs: {
+        id: "addNewUser",
+        tabindex: "-1",
+        role: "dialog",
+        "aria-labelledby": "addNewUser",
+        "aria-hidden": "true"
+      }
+    },
+    [
+      _c(
+        "div",
+        {
+          staticClass: "modal-dialog modal-dialog-centered",
+          attrs: { role: "document" }
+        },
+        [
+          _c("div", { staticClass: "modal-content" }, [
+            _c("div", { staticClass: "modal-header" }, [
+              _c(
+                "h5",
+                {
+                  staticClass: "modal-title",
+                  attrs: { id: "exampleModalLabel" }
+                },
+                [
+                  _vm._v(
+                    _vm._s(
+                      _vm.editMode
+                        ? "Modification de : " + _vm.user.fullname
+                        : "Nouvelle utilisateur"
+                    )
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _vm._m(0)
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "modal-body" }, [
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      _vm.editMode
+                        ? _vm.UpdateUser(_vm.user.id)
+                        : _vm.createUser()
+                    }
+                  }
+                },
+                [
+                  _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col-md-6" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "form-group ",
+                          class: _vm.errors.name ? "has-danger" : ""
+                        },
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.user.name,
+                                expression: "user.name"
+                              }
+                            ],
+                            staticClass:
+                              "form-control form-control-alternative",
+                            class: _vm.errors.name ? "is-invalid" : "",
+                            attrs: {
+                              type: "text",
+                              name: "name",
+                              placeholder: "Username"
+                            },
+                            domProps: { value: _vm.user.name },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(_vm.user, "name", $event.target.value)
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm._l(_vm.errors.name, function(error) {
+                            return _vm.errors.name
+                              ? _c(
+                                  "small",
+                                  {
+                                    class: _vm.errors.name ? "text-danger" : ""
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(error) +
+                                        "\n                                "
+                                    )
+                                  ]
+                                )
+                              : _vm._e()
+                          })
+                        ],
+                        2
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-6" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "form-group",
+                          class: _vm.errors.fullname ? "has-danger" : ""
+                        },
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.user.fullname,
+                                expression: "user.fullname"
+                              }
+                            ],
+                            staticClass:
+                              "form-control form-control-alternative",
+                            class: _vm.errors.fullname ? "is-invalid" : "",
+                            attrs: {
+                              type: "text",
+                              name: "fullname",
+                              placeholder: "Fullname"
+                            },
+                            domProps: { value: _vm.user.fullname },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.user,
+                                  "fullname",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm._l(_vm.errors.fullname, function(error) {
+                            return _vm.errors.fullname
+                              ? _c(
+                                  "small",
+                                  {
+                                    class: _vm.errors.fullname
+                                      ? "text-danger"
+                                      : ""
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(error) +
+                                        "\n                                "
+                                    )
+                                  ]
+                                )
+                              : _vm._e()
+                          })
+                        ],
+                        2
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col-md-6" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "form-group",
+                          class: _vm.errors.email ? "has-danger" : ""
+                        },
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.user.email,
+                                expression: "user.email"
+                              }
+                            ],
+                            staticClass:
+                              "form-control form-control-alternative",
+                            class: _vm.errors.email ? "is-invalid" : "",
+                            attrs: {
+                              type: "email",
+                              name: "email",
+                              placeholder: "Email"
+                            },
+                            domProps: { value: _vm.user.email },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(_vm.user, "email", $event.target.value)
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm._l(_vm.errors.email, function(error) {
+                            return _vm.errors.email
+                              ? _c(
+                                  "small",
+                                  {
+                                    class: _vm.errors.email ? "text-danger" : ""
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(error) +
+                                        "\n                                "
+                                    )
+                                  ]
+                                )
+                              : _vm._e()
+                          })
+                        ],
+                        2
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-6" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "form-group",
+                          class: _vm.errors.password ? "has-danger" : ""
+                        },
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.user.password,
+                                expression: "user.password"
+                              }
+                            ],
+                            staticClass:
+                              "form-control form-control-alternative",
+                            class: _vm.errors.password ? "is-invalid" : "",
+                            attrs: {
+                              type: "password",
+                              name: "password",
+                              placeholder: "Password"
+                            },
+                            domProps: { value: _vm.user.password },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.user,
+                                  "password",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm._l(_vm.errors.password, function(error) {
+                            return _vm.errors.password
+                              ? _c(
+                                  "small",
+                                  {
+                                    class: _vm.errors.password
+                                      ? "text-danger"
+                                      : ""
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(error) +
+                                        "\n                                "
+                                    )
+                                  ]
+                                )
+                              : _vm._e()
+                          })
+                        ],
+                        2
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col-md-6" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "form-group",
+                          class: _vm.errors.profession ? "has-danger" : ""
+                        },
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.user.profession,
+                                expression: "user.profession"
+                              }
+                            ],
+                            staticClass:
+                              "form-control form-control-alternative",
+                            class: _vm.errors.profession ? "is-invalid" : "",
+                            attrs: {
+                              name: "profession",
+                              id: "profession",
+                              placeholder: "Profession"
+                            },
+                            domProps: { value: _vm.user.profession },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.user,
+                                  "profession",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm._l(_vm.errors.profession, function(error) {
+                            return _vm.errors.profession
+                              ? _c(
+                                  "small",
+                                  {
+                                    class: _vm.errors.profession
+                                      ? "text-danger"
+                                      : ""
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(error) +
+                                        "\n                                "
+                                    )
+                                  ]
+                                )
+                              : _vm._e()
+                          })
+                        ],
+                        2
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-6" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "form-group",
+                          class: _vm.errors.phone ? "has-danger" : ""
+                        },
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.user.phone,
+                                expression: "user.phone"
+                              }
+                            ],
+                            staticClass:
+                              "form-control form-control-alternative",
+                            class: _vm.errors.phone ? "is-invalid" : "",
+                            attrs: {
+                              name: "phone",
+                              id: "phone",
+                              placeholder: "Téléphone"
+                            },
+                            domProps: { value: _vm.user.phone },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(_vm.user, "phone", $event.target.value)
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm._l(_vm.errors.phone, function(error) {
+                            return _vm.errors.phone
+                              ? _c(
+                                  "small",
+                                  {
+                                    class: _vm.errors.phone ? "text-danger" : ""
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(error) +
+                                        "\n                                "
+                                    )
+                                  ]
+                                )
+                              : _vm._e()
+                          })
+                        ],
+                        2
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col-md-6" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "form-group",
+                          class: _vm.errors.society ? "has-danger" : ""
+                        },
+                        [
+                          _c("v-select", {
+                            staticClass: "form-control-alternative",
+                            attrs: {
+                              label: "name",
+                              options: _vm.society,
+                              placeholder: "Société"
+                            },
+                            model: {
+                              value: _vm.user.society,
+                              callback: function($$v) {
+                                _vm.$set(_vm.user, "society", $$v)
+                              },
+                              expression: "user.society"
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm._l(_vm.errors.society, function(error) {
+                            return _vm.errors.society
+                              ? _c(
+                                  "small",
+                                  {
+                                    class: _vm.errors.society
+                                      ? "text-danger"
+                                      : ""
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(error) +
+                                        "\n                                "
+                                    )
+                                  ]
+                                )
+                              : _vm._e()
+                          })
+                        ],
+                        2
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-6" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "form-group",
+                          class: _vm.errors.role ? "has-danger" : ""
+                        },
+                        [
+                          _c("v-select", {
+                            staticClass: "form-control-alternative",
+                            attrs: {
+                              options: [
+                                { label: "User", value: "user" },
+                                { label: "Leader", value: "leader" },
+                                { label: "Admin", value: "admin" }
+                              ],
+                              placeholder: "Technicien"
+                            },
+                            model: {
+                              value: _vm.user.role,
+                              callback: function($$v) {
+                                _vm.$set(_vm.user, "role", $$v)
+                              },
+                              expression: "user.role"
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm._l(_vm.errors.role, function(error) {
+                            return _vm.errors.role
+                              ? _c(
+                                  "small",
+                                  {
+                                    class: _vm.errors.role ? "text-danger" : ""
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(error) +
+                                        "\n                                "
+                                    )
+                                  ]
+                                )
+                              : _vm._e()
+                          })
+                        ],
+                        2
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-footer" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary",
+                        attrs: { type: "button", "data-dismiss": "modal" }
+                      },
+                      [_vm._v("Close")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit" }
+                      },
+                      [
+                        _vm._v(
+                          _vm._s(_vm.editMode ? "Save changes" : "CreateUser") +
+                            "\n                        "
+                        )
+                      ]
+                    )
+                  ])
+                ]
+              )
+            ])
+          ])
+        ]
+      )
+    ]
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Profile/ProfileComponent.vue?vue&type=template&id=0b8f50f6&":
 /*!***************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Profile/ProfileComponent.vue?vue&type=template&id=0b8f50f6& ***!
@@ -66388,7 +68396,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _vm.ticket.actions && _vm.ticket.actions[0]
+    _vm.actions
       ? _c("div", { staticClass: "card" }, [
           _c("div", { staticClass: "card-body" }, [
             _c(
@@ -66482,7 +68490,7 @@ var render = function() {
                     on: {
                       submit: function($event) {
                         $event.preventDefault()
-                        return _vm.createAction()
+                        return _vm.createAction(_vm.ticket.id)
                       }
                     }
                   },
@@ -67194,7 +69202,9 @@ var render = function() {
               [
                 _c("attachments-component", { attrs: { ticket: _vm.ticket } }),
                 _vm._v(" "),
-                _c("action-component", { attrs: { ticket: _vm.ticket } })
+                _c("action-component", {
+                  attrs: { actions: _vm.actions, ticket: _vm.ticket }
+                })
               ],
               1
             )
@@ -86817,6 +88827,9 @@ var routes = [{
   path: '/users',
   component: __webpack_require__(/*! ./components/Users/UsersComponent.vue */ "./resources/js/components/Users/UsersComponent.vue").default
 }, {
+  path: '/logins',
+  component: __webpack_require__(/*! ./components/Logins/LoginsComponent */ "./resources/js/components/Logins/LoginsComponent.vue").default
+}, {
   path: '/societies',
   component: __webpack_require__(/*! ./components/SocietiesComponent */ "./resources/js/components/SocietiesComponent.vue").default
 }, {
@@ -87151,6 +89164,128 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DevelopperComponent_vue_vue_type_template_id_2cd44ea2___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DevelopperComponent_vue_vue_type_template_id_2cd44ea2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Logins/LoginsComponent.vue":
+/*!************************************************************!*\
+  !*** ./resources/js/components/Logins/LoginsComponent.vue ***!
+  \************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _LoginsComponent_vue_vue_type_template_id_0c70ed19___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LoginsComponent.vue?vue&type=template&id=0c70ed19& */ "./resources/js/components/Logins/LoginsComponent.vue?vue&type=template&id=0c70ed19&");
+/* harmony import */ var _LoginsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LoginsComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/Logins/LoginsComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _LoginsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _LoginsComponent_vue_vue_type_template_id_0c70ed19___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _LoginsComponent_vue_vue_type_template_id_0c70ed19___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Logins/LoginsComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Logins/LoginsComponent.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/components/Logins/LoginsComponent.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LoginsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./LoginsComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Logins/LoginsComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LoginsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Logins/LoginsComponent.vue?vue&type=template&id=0c70ed19&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/components/Logins/LoginsComponent.vue?vue&type=template&id=0c70ed19& ***!
+  \*******************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LoginsComponent_vue_vue_type_template_id_0c70ed19___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./LoginsComponent.vue?vue&type=template&id=0c70ed19& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Logins/LoginsComponent.vue?vue&type=template&id=0c70ed19&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LoginsComponent_vue_vue_type_template_id_0c70ed19___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LoginsComponent_vue_vue_type_template_id_0c70ed19___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Logins/ModalLoginsComponent.vue":
+/*!*****************************************************************!*\
+  !*** ./resources/js/components/Logins/ModalLoginsComponent.vue ***!
+  \*****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ModalLoginsComponent_vue_vue_type_template_id_461d35d0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ModalLoginsComponent.vue?vue&type=template&id=461d35d0& */ "./resources/js/components/Logins/ModalLoginsComponent.vue?vue&type=template&id=461d35d0&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+var script = {}
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__["default"])(
+  script,
+  _ModalLoginsComponent_vue_vue_type_template_id_461d35d0___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ModalLoginsComponent_vue_vue_type_template_id_461d35d0___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Logins/ModalLoginsComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Logins/ModalLoginsComponent.vue?vue&type=template&id=461d35d0&":
+/*!************************************************************************************************!*\
+  !*** ./resources/js/components/Logins/ModalLoginsComponent.vue?vue&type=template&id=461d35d0& ***!
+  \************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ModalLoginsComponent_vue_vue_type_template_id_461d35d0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./ModalLoginsComponent.vue?vue&type=template&id=461d35d0& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Logins/ModalLoginsComponent.vue?vue&type=template&id=461d35d0&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ModalLoginsComponent_vue_vue_type_template_id_461d35d0___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ModalLoginsComponent_vue_vue_type_template_id_461d35d0___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

@@ -159,6 +159,7 @@ class TicketController extends Controller
     {
         $ticket = Ticket::with('user', 'society', 'state', 'technician.user', 'source', 'attachments', 'actions.from', 'messages.from')->findOrfail($id);
         $messages = Message::where('ticket_id', $id)->whereNull('to_id')->get();
+        $actions = Action::where('ticket_id', $id)->get();
         if (Gate::allows('isYourTicket', $ticket)) {
             $techs = Technician::get()->load('user');
             $technicians = [];
@@ -169,7 +170,13 @@ class TicketController extends Controller
             $user = User::all();
             $sources = Source::all();
 
-            return response()->json(['states' => $states, 'ticket' => $ticket, 'technicians' => $technicians, 'sources' => $sources, 'messages' => $messages]);
+            return response()->json(['states' => $states,
+                'ticket' => $ticket,
+                'technicians' => $technicians,
+                'sources' => $sources,
+                'messages' => $messages,
+                'actions' => $actions,
+            ]);
         } else {
             return response()->json(['unauthorized' => '404']);
         }

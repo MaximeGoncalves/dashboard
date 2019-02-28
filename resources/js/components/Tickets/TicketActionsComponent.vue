@@ -2,7 +2,7 @@
     <div>
 
 
-        <div class="card" v-if="ticket.actions && ticket.actions[0]">
+        <div class="card" v-if="actions">
             <div class="card-body">
                 <div class="d-flex align-items-center justify-content-between">
                     <h4 class="header-title mb-2">Activités récentes</h4>
@@ -32,7 +32,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <form @submit.prevent="createAction()">
+                        <form @submit.prevent="createAction(ticket.id)">
                             <h4>Ajouter une action</h4>
                             <textarea name="content" id="action" cols="30" rows="2"
                                       class="form-control form-control-alternative"
@@ -50,23 +50,19 @@
 <script>
 
 export default {
-    props: ['ticket'],
+    props: ['actions', 'ticket'],
     data() {
         return {
             action: '',
-            actions: [],
         }
     },
-    watch : {
-      ticket : 'loadAction'
-    },
     methods: {
-        loadAction() {
-            let ticket = this.$route.params.id
-            axios.get('/api/tickets/' + ticket).then(result => {
-                this.actions = result.data.ticket.actions.reverse()
-            })
-        },
+        // loadAction() {
+        //     let ticket = this.$route.params.id
+        //     axios.get('/api/tickets/' + ticket).then(result => {
+        //         this.actions = result.data.ticket.actions.reverse()
+        //     })
+        // },
         getProfilePhotoFrom(from) {
             if (from) {
                 if (from.photo !== 'profile.png') {
@@ -80,15 +76,15 @@ export default {
         addAction() {
             $('#addAction').modal('show')
         },
-        createAction() {
+        createAction(id) {
             this.$Progress.start()
-            axios.post('/api/addAction/' + this.ticket.id, {
+            axios.post('/api/addAction/' + id, {
                 content: this.action
-            }).then(result => {
+            }).then(response => {
                 $('#addAction').modal('hide')
                 this.action = ""
                 this.$toasted.global.flash({message: "L'action à bien été ajoutée."});
-                Fire.$emit('addAction')
+                Fire.$emit('addAction', id)
                 this.$Progress.finish()
 
             }).catch(rerror => {
@@ -96,9 +92,9 @@ export default {
             })
         },
     },
-    mounted() {
-        this.loadAction()
-
-    }
+    // mounted() {
+    //     this.loadAction()
+    //
+    // }
 }
 </script>
