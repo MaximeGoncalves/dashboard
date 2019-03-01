@@ -300,7 +300,6 @@ export default {
                 this.actions = response.data.actions.reverse()
             })
         },
-
     }
     ,
     mounted() {

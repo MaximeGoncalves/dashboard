@@ -98,11 +98,6 @@ class TicketController extends Controller
             $ticket->society()->associate($user->society->id);
             $ticket->save();
 
-            $action = new Action();
-            $action->from()->associate(Auth::user());
-            $action->ticket()->associate($ticket);
-            $action->content = 'à ouvert un ticket';
-            $action->save();
         } else {
             $this->validate($request, [
                 'topic' => 'required',
@@ -142,6 +137,12 @@ class TicketController extends Controller
                 endforeach;
             endif;
         endif;
+
+        $action = new Action();
+        $action->from()->associate(Auth::user());
+        $action->ticket()->associate($ticket);
+        $action->content = 'à ouvert un ticket';
+        $action->save();
 
         return response(['message' => "success"]);
 

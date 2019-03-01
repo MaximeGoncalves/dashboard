@@ -158,9 +158,16 @@
                             <i class="fas fa-file-alt text-primary"></i> Ticket Software
                         </router-link>
                     </li>
+                    @can('isAdmin')
+                        <li class="nav-item">
+                            <router-link class="nav-link" to="/logins">
+                                <i class="fas fa-lock text-dark"></i> Logins
+                            </router-link>
+                        </li>
+                    @endcan()
                     <li class="nav-item">
                         <router-link class="nav-link" to="/nkeep">
-                            <i class="fas fa-file-alt text-primary"></i> nkeep
+                            <i class="fas fa-sort text-blue "></i> nkeep
                         </router-link>
                     </li>
                     <li class="nav-item">

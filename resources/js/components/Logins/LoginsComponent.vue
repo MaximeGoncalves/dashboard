@@ -6,7 +6,7 @@
                     <div class="card-header border-0">
                         <div class="row align-items-center">
                             <div class="col-8">
-                                <h3 class="mb-0">Users</h3>
+                                <h3 class="mb-0">Logins</h3>
                             </div>
                             <div class="col-4 text-right">
                                 <a href="#"
@@ -42,8 +42,7 @@
                                             <i class="fas fa-ellipsis-v"></i>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                            <form action="https://argon-dashboard-laravel.creative-tim.com/user/8642"
-                                                  method="post">
+                                            <form method="post">
                                                 <input type="hidden" name="_token"
                                                        value="F3fqjyIFWnoHEzAeYoetOWiaHkr9ZdnoaXaxFsx7">
                                                 <input
@@ -71,106 +70,170 @@
                 </div>
             </div>
         </div>
-
         <!-- Modal -->
-            <logins-modal></logins-modal>
+        <div class="modal fade" id="addNewLogin" tabindex="-1" role="dialog" aria-labelledby="addNewLogin"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">{{ editMode ? "Modification de : " +
+                            login.name : 'Nouvelle utilisateur'}}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form @submit.prevent="editMode ? Update(login.id)  : create()">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group " :class="errors.name ? 'has-danger' : ''">
+                                        <input type="text" v-model="login.name"
+                                               class="form-control form-control-alternative"
+                                               :class="errors.name ? 'is-invalid' : ''" name="name"
+                                               placeholder="Service">
+                                        <small v-if="errors.name" :class="errors.name ? 'text-danger' : ''"
+                                               v-for="error in errors.name">{{ error }}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" :class="errors.url ? 'has-danger' : ''">
+                                        <input type="text" v-model="login.url"
+                                               class="form-control form-control-alternative" name="url"
+                                               :class="errors.url ? 'is-invalid' : ''"
+                                               placeholder="Url">
+                                        <small v-if="errors.url" :class="errors.url ? 'text-danger' : ''"
+                                               v-for="error in errors.url">{{ error }}
+                                        </small>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group" :class="errors.username ? 'has-danger' : ''">
+                                        <input type="text" v-model="login.username"
+                                               class="form-control form-control-alternative" name="username"
+                                               :class="errors.username ? 'is-invalid' : ''"
+                                               placeholder="username">
+                                        <small v-if="errors.username" :class="errors.username ? 'text-danger' : ''"
+                                               v-for="error in errors.username">{{ error }}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" :class="errors.password ? 'has-danger' : ''">
+                                        <input type="text" v-model="login.password"
+                                               class="form-control form-control-alternative" name="password"
+                                               :class="errors.password ? 'is-invalid' : ''"
+                                               placeholder="password">
+                                        <small v-if="errors.password" :class="errors.password ? 'text-danger' : ''"
+                                               v-for="error in errors.password">{{ error }}
+                                        </small>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group" :class="errors.society ? 'has-danger' : ''">
+                                        <v-select label="name"
+                                                  :options="societies"
+                                                  v-model="login.society"
+                                                  class="form-control-alternative"
+                                                  placeholder="Société"></v-select>
+                                        <small v-if="errors.society" :class="errors.society ? 'text-danger' : ''"
+                                               v-for="error in errors.society">{{ error }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">{{ editMode ? 'Save changes' :
+                                    'Create login'}}
+                                </button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </template>
 
 <script>
-import LoginsModal from './ModalLoginsComponent'
-import Base64 from 'crypto-js/enc-base64';
+
+
 export default {
-    components : {
-      LoginsModal
-    },
     data() {
         return {
-            user: {
-                society:{}
-            },
-            society: [],
+            login: {},
+            societies: [],
             errors: [],
             logins: {},
             editMode: true,
-            selected: "",
-            key: "ITPl8kGKDzILfMHnZQH/AAUQHham4catr9KllIn/zWE="
         }
     },
     methods: {
         loadLogins() {
             axios.get('/api/logins').then((response) => {
                 this.logins = response.data.logins
+                this.societies = response.data.societies
             });
-
         },
-        UpdateUser(user) {
+        create() {
             this.$Progress.start();
-            axios.put('/api/user/' + user, {
-                name: this.user.name,
-                fullname: this.user.fullname,
-                email: this.user.email,
-                password: this.user.password,
-                role: this.user.role,
-                society: this.user.society_id,
-                profession: this.user.profession,
-                phone: this.user.phone,
-            }).then((response) => {
-                $('#addNewUser').modal('hide')
-                Fire.$emit('UpdateUser')
-                this.$toasted.global.flash({message: "L'utilisateur à été mis à jour"});
-
+            axios.post('/api/logins', {
+                ...this.login
+            }).then(response => {
+                Fire.$emit('CreateLogin')
                 this.$Progress.finish();
+                $('#addNewLogin').modal('hide')
+                this.$toasted.global.flash({message: "Le login à été créé."});
+                this.errors = []
             }).catch(error => {
                 this.errors = error.response.data.errors;
                 this.$Progress.fail()
             })
         },
-        async EditUser(user) {
+        async EditLogin(login) {
             this.errors = []
             this.editMode = true
-            let getUser = await axios.get('/api/user/' + user).then((user) => {
-                this.user = user.data
+            let getLogin = await axios.get('/api/logins/' + login).then((response) => {
+                console.log(response)
+                this.login = response.data.login
             })
-            this.selected = this.user.society_id
-            $('#addNewUser').modal('show')
+            $('#addNewLogin').modal('show')
+        },
+        Update(login) {
+            this.$Progress.start();
+            axios.put('/api/logins/' + login, {
+                ...this.login
+            }).then((response) => {
+                $('#addNewLogin').modal('hide')
+                Fire.$emit('UpdateLogin')
+
+                this.$toasted.global.flash({message: "L'utilisateur à été mis à jour"});
+                this.$Progress.finish();
+            }).catch(error => {
+                this.errors = error.response.data.errors;
+                this.$Progress.fail()
+            })
         },
         NewModal() {
             this.editMode = false
             this.errors = []
-            this.user.name = ''
-            this.user.fullname = ''
-            this.user.email = ''
-            this.user.password = ''
-            this.user.role = ''
-            this.user.society = ''
-            $('#addNewUser').modal('show')
+            this.login.name = ''
+            this.login.username = ''
+            this.login.url = ''
+            this.login.society = {}
+            this.login.password = ''
+            $('#addNewLogin').modal('show')
         },
-        createUser() {
-            this.$Progress.start();
-            axios.post('/api/user', {
-                name: this.user.name,
-                fullname: this.user.fullname,
-                email: this.user.email,
-                password: this.user.password,
-                role: this.user.role.value,
-                society: this.user.society.id,
-                profession: this.user.profession,
-                phone: this.user.phone,
-            }).then(response => {
-                Fire.$emit('CreateUser')
-                this.$Progress.finish();
-                $('#addNewUser').modal('hide')
-                this.$toasted.global.flash({message: "L'utilisateur à été créé."});
-                this.errors = []
-            }).catch(error => {
-
-                this.errors = error.response.data.errors;
-                this.$Progress.fail()
-
-            })
-        },
-        deleteUser(id) {
+        deleteLogin(id) {
             swal({
                 title: "Etes vous sur ? ",
                 text: "Cette manipulation est irréversible !",
@@ -180,11 +243,11 @@ export default {
             })
                 .then((willDelete) => {
                     if (willDelete) {
-                        axios.delete('/api/user/' + id).then(() => {
-                            swal("L'utilisateur à été supprimé.", {
+                        axios.delete('/api/logins/' + id).then(() => {
+                            swal("Le login à été supprimé.", {
                                 icon: "success",
                             });
-                            Fire.$emit('UpdateUser')
+                            Fire.$emit('UpdateLogin')
                         }).catch(error => {
                             this.errors = error.response.data.message;
                             swal(this.errors);
@@ -194,27 +257,15 @@ export default {
                     }
                 });
         },
-        getSociety() {
-            axios.get('/api/society').then((society) => {
-                this.society = society.data
-            })
-
-        },
-
     },
     created() {
         if (this.$gate.isAdmin()) {
             this.loadLogins()
-            Fire.$on('CreateUser', () => {
-                this.$Progress.start();
-                this.loadUsers()
-                this.$Progress.finish();
+            Fire.$on('CreateLogin', () => {
+                this.loadLogins()
             })
-            Fire.$on('UpdateUser', () => {
-                this.$Progress.start();
-
-                this.loadUsers()
-                this.$Progress.finish();
+            Fire.$on('UpdateLogin', () => {
+                this.loadLogins()
             })
         }
     },

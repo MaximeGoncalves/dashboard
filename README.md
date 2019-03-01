@@ -15,11 +15,12 @@
 - [x] Changer les icones des tabs dans un ticket
 - [x] Restrindre l'affichage pour les clients Tickets
 - [x] Empecher l'acces au ticket X via url
-- [ ] Mettre en place la pagination
+- [x] Mettre en place la pagination
+- [ ] Envoyer mail de confirmation
 
 
 ## Login
-- [ ] Créer, afficher, modifier supprimé un login
+- [x] Créer, afficher, modifier supprimé un login
 
 ## Base de connaissance
 - [ ] Possibilité de créer une catégorie
