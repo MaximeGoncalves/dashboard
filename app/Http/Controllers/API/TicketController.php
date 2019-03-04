@@ -5,6 +5,9 @@ namespace App\Http\Controllers\API;
 use App\Action;
 use App\Attachment;
 use App\Filter;
+use App\Jobs\CloseTicketJob;
+use App\Jobs\NewTicketJob;
+use App\Mail\NewTicketEmail;
 use App\Message;
 use App\Source;
 use App\State;
@@ -15,7 +18,10 @@ use App\Society;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class TicketController extends Controller
 {
@@ -97,6 +103,7 @@ class TicketController extends Controller
             $ticket->technician()->associate($technicien);
             $ticket->society()->associate($user->society->id);
             $ticket->save();
+            $this->dispatch(new NewTicketJob($ticket, $user));
 
         } else {
             $this->validate($request, [
@@ -106,16 +113,18 @@ class TicketController extends Controller
             ]);
             //utilisateur user ou leader
             $ticket = new Ticket();
+            $user = User::where('id', Auth::user()->id)->first();
             $ticket->topic = $request->topic;
             $ticket->description = $request->description;
             $ticket->importance = $request->importance;
-            $ticket->user()->associate(Auth::user()->id);
+            $ticket->user()->associate($user->id);
             $ticket->society()->associate(Auth::user()->society->id);
             $ticket->save();
+            $this->dispatch(new NewTicketJob($ticket, $user));
+
         }
 
         if ($request->hasFile('files')):
-
             $pathSociety = $ticket->user->society->name;
             $appPath = public_path() . '/app/SfTicket' . '/' . $pathSociety;
             if (!file_exists($appPath)):
@@ -126,16 +135,16 @@ class TicketController extends Controller
             $destinationPath = $appPath . '/' . $ticket->id;
 
             $files = $request->file('files');
-            if ($request->hasFile('files')):
-                foreach ($files as $file):
-                    $file->move($destinationPath, '/' . $file->getClientOriginalName());
-                    $pj = new Attachment();
-                    $pj->name = $file->getClientOriginalName();
-                    $pj->link = '/app/SfTicket/' . $pathSociety . '/' . $ticket->id . '/' . $file->getClientOriginalName();
-                    $pj->ticket()->associate($ticket);
-                    $pj->save();
-                endforeach;
-            endif;
+            foreach ($files as $file):
+                $file->move($destinationPath, '/' . $file->getClientOriginalName());
+                $pj = new Attachment();
+                $pj->name = $file->getClientOriginalName();
+                $pj->url = '/app/SfTicket/' . $pathSociety . '/' . $ticket->id . '/' . $file->getClientOriginalName();
+                $pj->attachable_type = Ticket::class;
+                $pj->attachable_id = $ticket->id;
+                $pj->name = $file->getClientOriginalName();
+                $pj->save();
+            endforeach;
         endif;
 
         $action = new Action();
@@ -206,6 +215,10 @@ class TicketController extends Controller
         $ticket->source()->associate($request->source);
         $ticket->save();
 
+        if ($request->state == '4') {
+            $user = User::where('id', $ticket->user_id)->first();
+            $this->dispatch(new CloseTicketJob($ticket, $user));
+        }
         return response('ok');
     }
 
@@ -217,7 +230,13 @@ class TicketController extends Controller
      */
     public function destroy($id)
     {
+        $ticket = Ticket::find($id);
         Ticket::destroy($id);
+        Storage::deleteDirectory('/SfTicket/' . $ticket->society->name . '/' . $ticket->id);
+        foreach ($ticket->attachments()->get() as $attach) {
+            File::delete($attach->url);
+        }
+        $ticket->attachments()->delete();
         return response()->json(['response' => 'Ticket supprimé']);
     }
 
@@ -250,6 +269,11 @@ class TicketController extends Controller
             $action->ticket()->associate($ticket);
             $action->save();
         }
+    }
+
+    protected function sendEmail($id)
+    {
+
     }
 
 }

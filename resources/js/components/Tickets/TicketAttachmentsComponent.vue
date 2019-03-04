@@ -11,7 +11,7 @@
                             </div>
                             <div class="col pl-0">
                                 <a class="text-muted font-weight-bold"
-                                   :href="attachment.link"
+                                   :href="attachment.url"
                                    download>
                                     {{ attachment.name }}
                                 </a>

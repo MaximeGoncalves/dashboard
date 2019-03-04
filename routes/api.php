@@ -32,4 +32,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::put('/message/{message}', 'API\MessageController@update');
     Route::get('/tickets/filter', 'API\TicketController@filter');
     Route::apiResource('/knowledges', 'API\KnowledgesController');
+
+    Route::post('/attachements', 'API\UserController@profile')->name('attachments.store');
+
 });

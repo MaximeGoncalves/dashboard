@@ -19,12 +19,11 @@ class Ticket extends Model
     {
         return $this->hasMany(Message::class);
     }
-
     public function attachments()
     {
-        return $this->hasMany(Attachment::class);
+//        return $this->hasMany(Attachment::class);
+        return $this->morphMany(Attachment::class, 'attachable');
     }
-
     public function technician()
     {
         return $this->belongsTo(Technician::class);
@@ -37,4 +36,5 @@ class Ticket extends Model
     {
         return $this->hasMany(Action::class);
     }
+
 }
