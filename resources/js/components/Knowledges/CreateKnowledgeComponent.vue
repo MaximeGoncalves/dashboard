@@ -37,6 +37,7 @@
 
 <script>
 import {Editor} from '@toast-ui/vue-editor';
+import knowledgeComponent from './KnowledgeComponent'
 
 export default {
     components: {
@@ -84,6 +85,7 @@ export default {
         };
     },
     methods: {
+        //
         save() {
             this.$Progress.start()
             axios.post('/api/knowledges', {

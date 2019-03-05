@@ -67,7 +67,10 @@ class KnowledgesController extends Controller
      */
     public function show($id)
     {
-        return $k = Knowledges::findOrFail($id);
+        $knowledge = Knowledges::findOrFail($id);
+        $knowledge->load('category');
+        $categories = KnowledgesCategory::all();
+        return response()->json(['response' => compact('knowledge', 'categories')]);
 
     }
 
@@ -80,7 +83,21 @@ class KnowledgesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $k = Knowledges::findOrFail($id);
+        $k->title = $request->title;
+        $k->content = $request->get('content');
+        $c = KnowledgesCategory::where('name', $request->category['name'])->first();
+        if($c){
+            $k->category()->associate($c);
+        }else{
+            $c = new KnowledgesCategory();
+            $c->name = $request->category['name'];
+            $c->save();
+            $k->category()->associate($c);
+        }
+        $k->save();
+        return response()->json($k);
+
     }
 
     /**
