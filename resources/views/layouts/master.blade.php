@@ -19,6 +19,7 @@
     <!-- Icons -->
     <link href="/argon/vendor/nucleo/css/nucleo.css" rel="stylesheet">
     <link href="/argon/vendor/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.5/styles/atom-one-dark.min.css">
 
     <!-- Argon CSS -->
     <link type="text/css" href="/argon/css/argon.min.css" rel="stylesheet">
@@ -147,8 +148,9 @@
                         </li>
 
                     </ul>
-                @endcan()
+
                 <hr class="my-3">
+                @endcan()
                 <h6 class="navbar-heading text-muted">Software</h6>
 
                 <ul class="navbar-nav">
@@ -178,7 +180,6 @@
 
                 </ul>
                 <!-- Divider -->
-                <hr class="my-3">
                 <!-- Heading -->
                 @can('isAdmin')
                     <h6 class="navbar-heading text-muted">Documentation</h6>

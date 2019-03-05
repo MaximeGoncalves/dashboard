@@ -95,7 +95,9 @@ const routes = [
     {path: '/developper', component: require('./components/DevelopperComponent').default},
     {path: '/tickets', name: 'tickets', component: require('./components/Tickets/TicketsComponent').default},
     {path: '/tickets/:id', name: 'ticket', params: {id : ''}, component: require('./components/Tickets/TicketComponent').default},
-    {path: '/knowledges', component: require('./components/underConstruction').default},
+    {path: '/knowledges', component: require('./components/Knowledges/KnowledgesComponent').default},
+    {path: '/knowledges/:id', component: require('./components/Knowledges/KnowledgeComponent').default},
+    {path: '/addKnowledge', component: require('./components/Knowledges/CreateKnowledgeComponent').default},
     {path: '/projects', component: require('./components/underConstruction').default},
     {path: '/nkeep', component: require('./components/underConstruction').default},
 

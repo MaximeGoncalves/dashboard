@@ -236,6 +236,9 @@ class TicketController extends Controller
         foreach ($ticket->attachments()->get() as $attach) {
             File::delete($attach->url);
         }
+        foreach ($ticket->actions()->get() as $action){
+            $action->delete();
+        }
         $ticket->attachments()->delete();
         return response()->json(['response' => 'Ticket supprimé']);
     }

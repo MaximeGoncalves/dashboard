@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Knowledges;
 use App\KnowledgesCategory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class KnowledgesController extends Controller
 {
@@ -15,22 +17,46 @@ class KnowledgesController extends Controller
      */
     public function index()
     {
-        $category = KnowledgesCategory::all();
+        $categories = KnowledgesCategory::with('knowledges')->get();
+        $knowledges = Knowledges::with('category')->get();
 
         return response()->json([
-            'category' => $category,
+            'knowledges' => $knowledges,
+            'categories' => $categories,
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required',
+            'content' => 'required',
+            'category' => 'required',
+        ]);
+
+        $k = new Knowledges();
+        $k->title = $request->get('title');
+        $k->content = $request->get('content');
+        $k->user()->associate(Auth::user());
+        $c = KnowledgesCategory::where('name', $request->category['name'])->first();
+        if($c){
+            $k->category()->associate($c);
+        }else{
+            $c = new KnowledgesCategory();
+            $c->name = $request->category['name'];
+            $c->save();
+            $k->category()->associate($c);
+        }
+        $k->save();
+
+        return response()->json($k);
     }
 
     /**
@@ -41,7 +67,8 @@ class KnowledgesController extends Controller
      */
     public function show($id)
     {
-        //
+        return $k = Knowledges::findOrFail($id);
+
     }
 
     /**
@@ -66,4 +93,13 @@ class KnowledgesController extends Controller
     {
         //
     }
+
+    public function createCategory(Request $request){
+        $category = New KnowledgesCategory();
+        $category->name = $request->name;
+        $category->save();
+
+        return response()->json(['category' => $category]);
+    }
+
 }
