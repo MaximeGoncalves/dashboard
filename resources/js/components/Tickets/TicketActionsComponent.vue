@@ -16,7 +16,7 @@
                              class="timeline-avatar timeline-icon">
                         <div class="timeline-item-info">
                             <a href="#"
-                               class="text-primary font-weight-bold mb-1 d-block">{{action.from.name}}</a>
+                               class="text-primary font-weight-bold mb-1 d-block">{{action.from.fullname}}</a>
                             <small v-html="action.content">
                             </small>
                             <p class="mb-0 pb-2">

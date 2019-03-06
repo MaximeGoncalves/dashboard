@@ -37,6 +37,9 @@ export default {
     },
 
     created() {
+        if (window.user.role === "user") {
+            this.$router.push({path: '/'})
+        }
         axios.get('/api/knowledges').then(response => {
             console.log(response)
             this.knowledges = response.data.knowledges;

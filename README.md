@@ -16,7 +16,8 @@
 - [x] Restrindre l'affichage pour les clients Tickets
 - [x] Empecher l'acces au ticket X via url
 - [x] Mettre en place la pagination
-- [ ] Envoyer mail de confirmation
+- [x] Envoyer mail de confirmation
+- [ ] Envoyer mail de lors d'un commentaire
 
 
 ## Login

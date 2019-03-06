@@ -15,6 +15,7 @@ use App\Technician;
 use App\Ticket;
 use App\User;
 use App\Society;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -274,9 +275,19 @@ class TicketController extends Controller
         }
     }
 
-    protected function sendEmail($id)
-    {
+    /**
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function stats(){
+        $date = Carbon::now();
+        $data = Ticket::whereYear('created_at', $date->year)->get()->groupBy(function ($val) {
+            return Carbon::parse($val->created_at)->format('m');
+        });
 
+        $tickets = [];
+        foreach($data as $ticket){
+            $tickets[] = $ticket->count();
+        }
+        return response()->json($tickets);
     }
-
 }

@@ -50,7 +50,7 @@
                                                 <input type="hidden" name="_token"
                                                        value="F3fqjyIFWnoHEzAeYoetOWiaHkr9ZdnoaXaxFsx7">
                                                 <input
-                                                type="hidden" name="_method" value="delete">
+                                                    type="hidden" name="_method" value="delete">
                                                 <a class="dropdown-item"
                                                    href="#" @click.prevent="EditUser(user.id)">Edit</a>
                                                 <a class="dropdown-item" href="#"
@@ -204,11 +204,11 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group" :class="errors.society ? 'has-danger' : ''">
-                                            <v-select label="name"
-                                                      :options="society"
-                                                      v-model="user.society"
-                                                      class="form-control-alternative"
-                                                      placeholder="Société"></v-select>
+                                        <v-select label="name"
+                                                  :options="society"
+                                                  v-model="user.society"
+                                                  class="form-control-alternative"
+                                                  placeholder="Société"></v-select>
                                         <small v-if="errors.society" :class="errors.society ? 'text-danger' : ''"
                                                v-for="error in errors.society">{{ error }}
                                         </small>
@@ -217,12 +217,12 @@
                                 <div class="col-md-6">
                                     <div class="form-group" :class="errors.role ? 'has-danger' : ''">
                                         <v-select
-                                                  :options="[{label: 'User', value: 'user'},
+                                            :options="[{label: 'User', value: 'user'},
                                                   {label: 'Leader', value: 'leader'},
                                                   {label: 'Admin', value: 'admin'}]"
-                                                  v-model="user.role"
-                                                  class="form-control-alternative"
-                                                  placeholder="Technicien"></v-select>
+                                            v-model="user.role"
+                                            class="form-control-alternative"
+                                            placeholder="Technicien"></v-select>
                                         <small v-if="errors.role" :class="errors.role ? 'text-danger' : ''"
                                                v-for="error in errors.role">{{
                                             error }}
@@ -251,7 +251,7 @@ export default {
     data() {
         return {
             user: {
-                society:{}
+                society: {}
             },
             society: [],
             errors: [],
@@ -367,23 +367,17 @@ export default {
 
     },
     created() {
-        if (this.$gate.isAdmin()) {
-            this.$Progress.start();
-            this.loadUsers()
-            this.getSociety()
-            this.$Progress.finish();
-            Fire.$on('CreateUser', () => {
-                this.$Progress.start();
-                this.loadUsers()
-                this.$Progress.finish();
-            })
-            Fire.$on('UpdateUser', () => {
-                this.$Progress.start();
-
-                this.loadUsers()
-                this.$Progress.finish();
-            })
+        if (window.user.role === "user") {
+            this.$router.push({path: '/'})
         }
+        this.loadUsers()
+        this.getSociety()
+        Fire.$on('CreateUser', () => {
+            this.loadUsers()
+        })
+        Fire.$on('UpdateUser', () => {
+            this.loadUsers()
+        })
     },
 }
 </script>

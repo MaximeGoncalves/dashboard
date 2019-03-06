@@ -38,7 +38,6 @@ class CloseTicketEmail extends Mailable
     public function build()
     {
         $actions = Action::where('ticket_id', $this->ticket->id)->get();
-        $this->actions = $actions;
         return $this->subject('Cloture ticket n°' . $this->ticket->id)
         ->markdown('emails.ticket.close');
     }

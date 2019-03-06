@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 Route::group(['middleware' => 'auth:api'], function () {
     Route::apiResource('user', 'API\UserController');
     Route::apiResource('society', 'API\SocietyController');
+    Route::get('/tickets/stats', 'API\TicketController@stats');
     Route::apiResource('tickets', 'API\TicketController');
     Route::apiResource('logins', 'API\LoginsController');
     Route::get('/profile', 'API\UserController@profile');
@@ -30,7 +31,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/actions', 'API\ActionsController@index');
     Route::post('/message/{ticket}', 'API\MessageController@store');
     Route::put('/message/{message}', 'API\MessageController@update');
-    Route::get('/tickets/filter', 'API\TicketController@filter');
+
     Route::apiResource('/knowledges', 'API\KnowledgesController');
     Route::post('/attachements', 'API\UserController@profile')->name('attachments.store');
 

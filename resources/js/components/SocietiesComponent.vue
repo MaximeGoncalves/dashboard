@@ -341,6 +341,9 @@ export default {
         }
     },
     created() {
+        if(window.user.role === "user"){
+            this.$router.push({path: '/'})
+        }
         this.loadSocieties()
         Fire.$on('createSociety', () => {
             this.loadSocieties()

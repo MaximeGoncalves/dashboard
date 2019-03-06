@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API;
 
 use App\Action;
 use App\Http\Controllers\Controller;
+use App\Jobs\NewMessageJob;
+use App\Mail\NewMessageEmail;
 use App\Message;
 use App\Notifications\NewMessage;
 use App\Ticket;
@@ -47,16 +49,22 @@ class MessageController extends Controller
             $action->from_id = Auth::user()->id;
             $action->ticket()->associate($ticket);
             $action->save();
+            $this->dispatch(new NewMessageJob($ticket, $toId->from, $response = true));
         else:
             $action = new Action();
             $action->content = 'à poster un message';
             $action->from_id = Auth::user()->id;
             $action->ticket()->associate($ticket);
             $action->save();
+            $user = User::findOrFail($ticket->user_id);
+            $this->dispatch(new NewMessageJob($ticket, $user, $response = false));
+
         endif;
         $message->save();
 
         $message->load('from');
+
+
 //        $user = User::find($message->to_id);
         //send message
 //        if($user->id !== 1){

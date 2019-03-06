@@ -87,7 +87,7 @@ import VueRouter from 'vue-router'
 
 const routes = [
     {path: '*', redirect: '/' },
-    {path: '/', component: require('./components/DashboardComponent.vue').default},
+    {path: '/', component: require('./components/Dashboard/DashboardComponent.vue').default},
     {path: '/profile', component: require('./components/Profile/ProfileComponent.vue').default},
     {path: '/users', component: require('./components/Users/UsersComponent.vue').default},
     {path: '/logins', component: require('./components/Logins/LoginsComponent').default},
@@ -99,6 +99,7 @@ const routes = [
     {path: '/knowledges/:id', component: require('./components/Knowledges/KnowledgeComponent').default},
     {path: '/addKnowledge', component: require('./components/Knowledges/CreateKnowledgeComponent').default},
     {path: '/projects', component: require('./components/underConstruction').default},
+    // {path: '/projects/project', component: require('./components/Projects/ProjectComponent').default},
     {path: '/nkeep', component: require('./components/underConstruction').default},
 
 ]
