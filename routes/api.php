@@ -18,21 +18,32 @@ use Illuminate\Http\Request;
 //});
 
 Route::group(['middleware' => 'auth:api'], function () {
+
+    Route::get('/user/search', 'API\UserController@search');
     Route::apiResource('user', 'API\UserController');
+
+    Route::get('/society/search', 'API\SocietyController@search');
     Route::apiResource('society', 'API\SocietyController');
+
+    Route::post('/uploadFiles', 'API\TicketController@uploadFiles');
     Route::get('/tickets/stats', 'API\TicketController@stats');
     Route::apiResource('tickets', 'API\TicketController');
+
+    Route::get('/logins/search', 'API\LoginsController@search');
     Route::apiResource('logins', 'API\LoginsController');
+
     Route::get('/profile', 'API\UserController@profile');
     Route::put('/updateProfile', 'API\UserController@updateProfile');
-    Route::post('/uploadFiles', 'API\TicketController@uploadFiles');
-    Route::post('/addAction/{ticket}', 'API\ActionsController@store');
-    Route::get('/message', 'API\MessageController@index');
+
     Route::get('/actions', 'API\ActionsController@index');
+    Route::post('/addAction/{ticket}', 'API\ActionsController@store');
+
+    Route::get('/message', 'API\MessageController@index');
     Route::post('/message/{ticket}', 'API\MessageController@store');
     Route::put('/message/{message}', 'API\MessageController@update');
 
     Route::apiResource('/knowledges', 'API\KnowledgesController');
+
     Route::post('/attachements', 'API\UserController@profile')->name('attachments.store');
 
 });

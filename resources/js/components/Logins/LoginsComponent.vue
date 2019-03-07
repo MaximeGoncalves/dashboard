@@ -5,13 +5,26 @@
                 <div class="card shadow" v-if="$gate.isAdmin()">
                     <div class="card-header border-0">
                         <div class="row align-items-center">
-                            <div class="col-8">
+                            <div class="col-12 col-md-7 mb-2 mb-md-0">
                                 <h3 class="mb-0">Logins</h3>
                             </div>
-                            <div class="col-4 text-right">
-                                <a href="#"
-                                   class="btn btn-sm btn-primary" @click="NewModal">Add
-                                    Login</a>
+                            <div class="col-12 col-md-5 text-right">
+                                <div class="row align-items-center">
+                                    <div class="col-12 col-md-9 mb-2 mb-md-0">
+                                        <div class="form-group mb-0">
+                                            <div class="input-group input-group-alternative">
+                                                <div class="input-group-prepend"><span class="input-group-text"><i
+                                                    class="fas fa-search"></i></span></div>
+                                                <input placeholder="Search" type="text" class="form-control" @input="search" v-model="searchData"></div>
+                                        </div>
+                                    </div>
+                                    <!--<input type="text" @input="search" v-model="searchData">-->
+                                   <div class="col-auto">
+                                       <a href="#"
+                                          class="btn btn-sm btn-primary" @click="NewModal">Add
+                                           Login</a>
+                                   </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -29,7 +42,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="login in logins">
+                            <tr v-if="logins" v-for="login in logins">
                                 <td>{{ login.name }}</td>
                                 <td>{{ login.url }}</td>
                                 <td>{{ login.username }}</td>
@@ -60,9 +73,6 @@
                             </tr>
                             </tbody>
                         </table>
-                    </div>
-                    <div class="card-footer py-4">
-
                     </div>
                 </div>
                 <div v-else>
@@ -175,6 +185,7 @@ export default {
             errors: [],
             logins: {},
             editMode: true,
+            searchData: ''
         }
     },
     methods: {
@@ -183,6 +194,16 @@ export default {
                 this.logins = response.data.logins
                 this.societies = response.data.societies
             });
+        },
+        search() {
+            axios.get('/api/logins/search', {
+                params: {
+                    search: this.searchData
+                }
+            }).then(response => {
+                console.log(response.data)
+                this.logins = response.data
+            })
         },
         create() {
             this.$Progress.start();
@@ -203,7 +224,6 @@ export default {
             this.errors = []
             this.editMode = true
             let getLogin = await axios.get('/api/logins/' + login).then((response) => {
-                console.log(response)
                 this.login = response.data.login
             })
             $('#addNewLogin').modal('show')

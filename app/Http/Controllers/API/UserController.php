@@ -58,7 +58,7 @@ class UserController extends Controller
         $user->fullname = $request->get('fullname');
         $user->email = $request->get('email');
         $user->role = $request->get('role');
-        $user->password = Hash::make($request->get('password'));
+        $user->password = bcrypt($request->get('password'));
         $user->society_id = $request->get('society');
         $user->profession = $request->profession;
         $user->phone = $request->phone;
@@ -70,11 +70,11 @@ class UserController extends Controller
      * Display the specified resource.
      *
      * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @return User|User[]|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
      */
     public function show($id)
     {
-        return $user = User::findOrFail($id);
+        return $user = User::with('society')->findOrFail($id);
     }
 
     /**
@@ -93,7 +93,6 @@ class UserController extends Controller
             'name' => 'required|string|max:191|unique:users,name,' . $user->id,
             'fullname' => 'required|string|max:191',
             'email' => 'required|email|max:191',
-            'password' => 'required|string|min:6',
             'society' => 'required',
             'profession' => 'nullable|string|max:191',
             'phone' => 'nullable|numeric|digits:10',
@@ -104,7 +103,6 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->society()->associate($request->society);
         $user->role = $request->role;
-        $user->password = bcrypt($request->password);
         $user->profession = $request->profession;
         $user->phone = $request->phone;
         $user->save();
@@ -170,6 +168,14 @@ class UserController extends Controller
 
         $user->save();
         return response(['message' => 'Success']);
+    }
+
+    public function search(Request $request)
+    {
+        $search = $request->search;
+        return $users = User::with('society')
+            ->where('name', 'like', "%$search%")
+            ->orWhere('fullname', 'like', "%$search%")->get();
 
     }
 }

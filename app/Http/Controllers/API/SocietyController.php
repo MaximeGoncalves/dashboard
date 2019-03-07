@@ -32,7 +32,7 @@ class SocietyController extends Controller
         $this->validate($request, [
             'name' => 'required|string|max:191|unique:societies',
             'email' => 'nullable|email|max:191',
-            'cp' => 'nullable|digits:6',
+            'cp' => 'nullable|digits:5',
             'phone' => 'nullable|digits:10',
             'fax' => 'nullable|digits:10',
         ]);
@@ -103,5 +103,12 @@ class SocietyController extends Controller
     {
         Society::destroy($id);
         return ['message' => 'Société supprimé'];
+    }
+
+    public function search(Request $request)
+    {
+        $search = $request->search;
+        return $society = Society::where('name', 'like', "%$search%")->get();
+
     }
 }
