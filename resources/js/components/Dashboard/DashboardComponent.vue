@@ -3,6 +3,9 @@
         <!-- Page content -->
         <div v-if="$gate.isAdmin()">
             <div class="row">
+
+            </div>
+            <div class="row">
                 <div class="col-xl-8 mb-5 mb-xl-0">
                     <div class="card bg-gradient-default shadow">
                         <div class="card-header bg-transparent">
@@ -37,11 +40,10 @@
                             <!-- Chart -->
                             <div class="chart">
                                 <!--<canvas id="chart-sales" class="chart-canvas"></canvas>-->
-                                <line-chart :chartdata="chartData"
+                                <line-chart :chartdata="chartDataTickets"
                                             class="chart-canvas"
                                             :width="300"
                                             :height="300"
-                                            :options="options"
                                             v-if="loaded"/>
                             </div>
                         </div>
@@ -51,31 +53,54 @@
                     <div class="card shadow">
                         <div class="card-header bg-transparent">
                             <div class="row align-items-center">
-                                <div class="col">
+                                <div class="col-auto">
                                     <h6 class="text-uppercase text-muted ls-1 mb-1">Performance</h6>
-                                    <h2 class="mb-0">Total orders</h2>
+                                    <h2 class="mb-0">Tickets - 5 derniers jours</h2>
+                                    <small class="text-muted"></small>
+                                </div>
+                                <div class="col">
+                                    <ul class="nav nav-pills justify-content-end">
+                                        <li class="nav-item mr-2 mr-md-0" data-toggle="chart"
+                                            data-target="#chart-visit">
+                                            <a href="#" class="nav-link py-2 px-3 active" data-toggle="tab">
+                                                <span class="d-none d-md-block">Month</span>
+                                                <span class="d-md-none">M</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item" data-toggle="chart"
+                                            data-target="#chart-visit">
+                                            <a href="#" class="nav-link py-2 px-3" data-toggle="tab">
+                                                <span class="d-none d-md-block">Week</span>
+                                                <span class="d-md-none">W</span>
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
                         <div class="card-body">
                             <!-- Chart -->
                             <div class="chart">
-                                <canvas id="chart-orders" class="chart-canvas"></canvas>
+                                <!--<canvas id="chart-orders" class="chart-canvas"></canvas>-->
+                                <bar-chart :chartdata="chartDataLastFiveDays"
+                                           class="chart-canvas"
+                                           id="chart-visit"
+                                           :width="300"
+                                           :height="300"
+                                           v-if="loaded"/>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="row mt-5">
                 <div class="col-xl-8 mb-5 mb-xl-0">
                     <div class="card shadow">
                         <div class="card-header border-0">
                             <div class="row align-items-center">
                                 <div class="col">
-                                    <h3 class="mb-0">Page visits</h3>
-                                </div>
-                                <div class="col text-right">
-                                    <a href="#!" class="btn btn-sm btn-primary">See all</a>
+                                    <h3 class="mb-0">Ticket Pending</h3>
                                 </div>
                             </div>
                         </div>
@@ -84,81 +109,27 @@
                             <table class="table align-items-center table-flush">
                                 <thead class="thead-light">
                                 <tr>
-                                    <th scope="col">Page name</th>
-                                    <th scope="col">Visitors</th>
-                                    <th scope="col">Unique users</th>
-                                    <th scope="col">Bounce rate</th>
+                                    <th scope="col">Topic</th>
+                                    <th scope="col">Utilisateur</th>
+                                    <th scope="col">Priorité</th>
+                                    <th scope="col">editer</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
+                                <tr v-for="ticket in tickets">
                                     <th scope="row">
-                                        /argon/
+                                        {{ ticket.topic}}
                                     </th>
                                     <td>
-                                        4,569
+                                        {{ ticket.user.name }}
                                     </td>
                                     <td>
-                                        340
+                                        {{ ticket.importance }}
                                     </td>
                                     <td>
-                                        <i class="fas fa-arrow-up text-success mr-3"></i> 46,53%
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">
-                                        /argon/index.html
-                                    </th>
-                                    <td>
-                                        3,985
-                                    </td>
-                                    <td>
-                                        319
-                                    </td>
-                                    <td>
-                                        <i class="fas fa-arrow-down text-warning mr-3"></i> 46,53%
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">
-                                        /argon/charts.html
-                                    </th>
-                                    <td>
-                                        3,513
-                                    </td>
-                                    <td>
-                                        294
-                                    </td>
-                                    <td>
-                                        <i class="fas fa-arrow-down text-warning mr-3"></i> 36,49%
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">
-                                        /argon/tables.html
-                                    </th>
-                                    <td>
-                                        2,050
-                                    </td>
-                                    <td>
-                                        147
-                                    </td>
-                                    <td>
-                                        <i class="fas fa-arrow-up text-success mr-3"></i> 50,87%
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">
-                                        /argon/profile.html
-                                    </th>
-                                    <td>
-                                        1,795
-                                    </td>
-                                    <td>
-                                        190
-                                    </td>
-                                    <td>
-                                        <i class="fas fa-arrow-down text-danger mr-3"></i> 46,53%
+                                        <router-link :to="{name: 'ticket', params: {id: ticket.id }}">
+                                            <i class="fas fa-edit"></i>
+                                        </router-link>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -171,10 +142,9 @@
                         <div class="card-header border-0">
                             <div class="row align-items-center">
                                 <div class="col">
-                                    <h3 class="mb-0">Social traffic</h3>
+                                    <h3 class="mb-0">(A venir)</h3>
                                 </div>
                                 <div class="col text-right">
-                                    <a href="#!" class="btn btn-sm btn-primary">See all</a>
                                 </div>
                             </div>
                         </div>
@@ -302,8 +272,10 @@
                     <h1 class="display-4">Support Softease</h1>
                     <p class="lead">Softease vous présente la nouvelle interface de son support.</p>
                     <hr class="my-4">
-                    <p>Si vous rencontré des difficultés ou des améliorations à effectuer, merci de nous envoyer un email via le boutton ci-dessous.</p>
-                    <a class="btn btn-primary btn-lg" href="mailto:technique@softease.fr?subject=Support%20Problèmes%20/%20Amélioration" role="button">Contact</a>
+                    <p>Si vous rencontré des difficultés ou des améliorations à effectuer, merci de nous envoyer un
+                        email via le boutton ci-dessous.</p>
+                    <a class="btn btn-primary btn-lg"
+                       href="mailto:technique@softease.fr?subject=Support%20Problèmes%20/%20Amélioration" role="button">Contact</a>
                 </div>
             </div>
         </div>
@@ -312,210 +284,97 @@
 
 <script>
 import LineChart from './LineComponent'
+import BarChart from './BarComponent'
+import moment from "moment/moment";
 
+moment.locale('fr');
 export default {
     name: 'LineChartContainer',
-    components: {LineChart},
+    components: {LineChart, BarChart},
     data() {
         return {
             loaded: false,
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                defaultColor: '#8898aa',
-                defaultFontColor: '#8898aa',
-                defaultFontSize: 13,
-                layout: {
-                    padding: 0
-                },
-                legend: {
-                    display: false,
-                    position: 'bottom',
-                    labels: {
-                        usePointStyle: true,
-                        padding: 16
-                    }
-                },
-                elements: {
-                    point: {
-                        radius: 0,
-                        backgroundColor: '#5e72e4'
-                    },
-                    line: {
-                        tension: .4,
-                        borderWidth: 4,
-                        borderColor: '#5e72e4',
-                        backgroundColor: 'transparent',
-                        borderCapStyle: '#fb6340'
-                    },
-                    rectangle: {
-                        backgroundColor: '#fb6340'
-                    },
-                    arc: {
-                        backgroundColor: '#5e72e4',
-                        borderColor: '#8898aa',
-                        borderWidth: 4
-                    }
-                },
-                tooltips: {
-                    enabled: false,
-                    mode: 'index',
-                    intersect: false,
-                    custom: function (model) {
-
-                        // Get tooltip
-                        var $tooltip = $('#chart-tooltip');
-
-                        // Create tooltip on first render
-                        if (!$tooltip.length) {
-                            $tooltip = $('<div id="chart-tooltip" class="popover bs-popover-top" role="tooltip"></div>');
-                            // Append to body
-                            $('body').append($tooltip);
-                        }
-
-                        // Hide if no tooltip
-                        if (model.opacity === 0) {
-                            $tooltip.css('display', 'none');
-                            return;
-                        }
-
-                        function getBody(bodyItem) {
-                            return bodyItem.lines;
-                        }
-
-                        // Fill with content
-                        if (model.body) {
-                            var titleLines = model.title || [];
-                            var bodyLines = model.body.map(getBody);
-                            var html = '';
-
-                            // Add arrow
-                            html += '<div class="arrow"></div>';
-
-                            // Add header
-                            titleLines.forEach(function (title) {
-                                html += '<h3 class="popover-header text-center">' + title + '</h3>';
-                            });
-
-                            // Add body
-                            bodyLines.forEach(function (body, i) {
-                                var colors = model.labelColors[i];
-                                var styles = 'background-color: ' + colors.backgroundColor;
-                                var indicator = '<span class="badge badge-dot"><i class="bg-primary"></i></span>';
-                                var align = (bodyLines.length > 1) ? 'justify-content-left' : 'justify-content-center';
-                                html += '<div class="popover-body d-flex align-items-center ' + align + '">' + indicator + body + '</div>';
-                            });
-
-                            $tooltip.html(html);
-                        }
-
-                        // Get tooltip position
-                        var $canvas = $(this._chart.canvas);
-
-                        var canvasWidth = $canvas.outerWidth();
-                        var canvasHeight = $canvas.outerHeight();
-
-                        var canvasTop = $canvas.offset().top;
-                        var canvasLeft = $canvas.offset().left;
-
-                        var tooltipWidth = $tooltip.outerWidth();
-                        var tooltipHeight = $tooltip.outerHeight();
-
-                        var top = canvasTop + model.caretY - tooltipHeight - 16;
-                        var left = canvasLeft + model.caretX - tooltipWidth / 2;
-
-                        // Display tooltip
-                        $tooltip.css({
-                            'top': top + 'px',
-                            'left': left + 'px',
-                            'display': 'block',
-                            'z-index': '100'
-                        });
-
-                    },
-                    callbacks: {
-                        label: function (item, data) {
-                            var label = data.datasets[item.datasetIndex].label || '';
-                            var yLabel = item.yLabel;
-                            var content = '';
-
-                            if (data.datasets.length > 1) {
-                                content += '<span class="badge badge-primary mr-auto">' + label + '</span>';
-                            }
-
-                            content += '<span class="popover-body-value">' + yLabel + '</span>';
-                            return content;
-                        }
-                    }
-                },
-                scales: {
-                    xAxes: [{
-                        ticks: {
-                            padding: 20,
-                            fontColor: '#dee2e6',
-                            fontStyle: "normal"
-                        },
-                        borderWidth: 0,
-                        gridLines: {
-                            display: false,
-                            drawBorder: false,
-                        }
-                    }],
-                    yAxes: [{
-                        gridLines: {
-                            borderDash: [2],
-                            borderDashOffset: [2],
-                            color: 'rgba(222, 226, 230, 0.1)',
-                            drawBorder: false,
-                            drawTicks: false,
-                            lineWidth: 0,
-                            zeroLineWidth: 0,
-                            zeroLineColor: 'rgba(222, 226, 230, 0.1)',
-                            zeroLineBorderDash: [2],
-                            zeroLineBorderDashOffset: [2]
-                        },
-                        ticks: {
-                            beginAtZero: false,
-                            padding: 10,
-                            callback: function(value) {
-                                if (!(value % 10)) {
-                                    return value
-                                }
-                            }
-                        }
-                    }]
-                }
-            },
-            chartData: {}
+            chartDataTickets: {},
+            chartDataLastFiveDays :{},
+            tickets: {}
         }
     },
-    async mounted() {
-        this.loaded = false
-        try {
-            await axios.get('/api/tickets/stats').then(response => {
-                this.$set(this.chartData, "labels", [])
-                this.$set(this.chartData, "datasets", [])
-                this.chartData.labels.push('Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre')
-                this.chartData.datasets.push({
-                    data: response.data,
-                    label: "# de tickets",
-                    borderColor: "#6772E5",
-                    pointBorderColor: "transparent",
-                    pointBackgroundColor: "transparent",
-                    pointHoverBackgroundColor: "#6772E5",
-                    pointHoverBorderColor: "#6772E5",
-                    pointBorderWidth: 2,
-                    pointHoverRadius: 5,
-                    pointHoverBorderWidth: 1,
-                    pointRadius: 10,
-                    fill: false,
-                    borderWidth: 4,
+    methods :{
+        statsInit(){
+            this.$set(this.chartDataTickets, "labels", [])
+            this.$set(this.chartDataTickets, "datasets", [])
+            this.$set(this.chartDataLastFiveDays, "labels", [])
+            this.$set(this.chartDataLastFiveDays, "datasets", [])
+        },
+        async loadData(){
+            this.$Progress.start()
+            this.loaded = false
+            try {
+                await axios.get('/api/tickets/stats').then(response => {
+                    console.log(response)
+                    this.statsInit()
+                    // Ticket sur l'année
+                    var last = [0,0,0,0]
+                    for(var i = 0 ; i < response.data.lastYear.length; i++){
+                        last.push(response.data.lastYear[i])
+                    }
+                    console.log(last)
+                    this.chartDataTickets.labels.push('Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre')
+                    this.chartDataTickets.datasets.push({
+                        data: response.data.ticket,
+                        label: "# de tickets",
+                        borderColor: "#6772E5",
+                        pointBorderColor: "transparent",
+                        pointBackgroundColor: "transparent",
+                        pointHoverBackgroundColor: "#6772E5",
+                        pointHoverBorderColor: "#6772E5",
+                        pointBorderWidth: 2,
+                        pointHoverRadius: 5,
+                        pointHoverBorderWidth: 1,
+                        pointRadius: 10,
+                        fill: false,
+                        borderWidth: 4,
+                    }, {
+                        data:last ,
+                        label: "# de tickets (N-1)",
+                        borderColor: "rgba(222, 226, 230, 0.3)",
+                        pointBorderColor: "transparent",
+                        pointBackgroundColor: "transparent",
+                        pointHoverBackgroundColor: "rgba(222, 226, 230, 0.3)",
+                        pointHoverBorderColor: 'rgba(222, 226, 230, 0.3)',
+                        pointBorderWidth: 2,
+                        pointHoverRadius: 5,
+                        pointHoverBorderWidth: 1,
+                        pointRadius: 10,
+                        fill: false,
+                        borderWidth: 1,
+                    })
+
+                    // Ticket sur les 5 derniers jours
+                    this.chartDataLastFiveDays.labels =  Object.keys(response.data.lastFive)
+                    var data = []
+                    for(var i =0; i< response.data.count.length; i++){
+                        data.push(response.data.count[i])
+                    }
+                    this.chartDataLastFiveDays.datasets.push({
+                        data: data,
+                        label: "# de tickets",
+                        backgroundColor: '#6772E5',
+                        hoverBackgroundColor: '#6672E5',
+                    })
+
+                    // Ticket status pending
+                    this.tickets = response.data.pending
+
+                    this.loaded = true
                 })
-                this.loaded = true
-            })
-        } catch (e) {
-            console.error(e)
-        }
+            } catch (e) {
+                console.error(e)
+            }
+        },
+    },
+    mounted() {
+        this.loadData()
     }
 }
 </script>

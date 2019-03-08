@@ -19,6 +19,9 @@ use Illuminate\Http\Request;
 
 Route::group(['middleware' => 'auth:api'], function () {
 
+    Route::get('/analytics/getViews', 'API\AnalyticsController@getViews');
+    Route::get('/analytics/getData', 'API\AnalyticsController@getData');
+
     Route::get('/user/search', 'API\UserController@search');
     Route::apiResource('user', 'API\UserController');
 

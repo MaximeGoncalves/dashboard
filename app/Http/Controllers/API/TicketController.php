@@ -151,7 +151,7 @@ class TicketController extends Controller
         $action = new Action();
         $action->from()->associate(Auth::user());
         $action->ticket()->associate($ticket);
-        $action->content = 'à ouvert un ticket';
+        $action->content = 'à créé un ticket';
         $action->save();
 
         return response(['message' => "success"]);
@@ -279,15 +279,44 @@ class TicketController extends Controller
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function stats(){
+
         $date = Carbon::now();
         $data = Ticket::whereYear('created_at', $date->year)->get()->groupBy(function ($val) {
             return Carbon::parse($val->created_at)->format('m');
         });
-
         $tickets = [];
         foreach($data as $ticket){
             $tickets[] = $ticket->count();
         }
-        return response()->json($tickets);
+
+        $lastYear = Carbon::now()->subYears(1)->year;
+        $data = Ticket::whereYear('created_at', $lastYear)->get()->groupBy(function ($val) {
+            return Carbon::parse($val->created_at)->format('m');
+        });
+        $ticketsLastYear = [];
+        foreach($data as $ticket){
+            $ticketsLastYear[] = $ticket->count();
+        }
+
+        $ticketsPending = Ticket::with('user')->where('state_id', 1)->get();
+
+        $lastFive = Ticket::whereDate('created_at','>=', $date->subDays(7))->get()->groupBy(function ($val) {
+            return Carbon::parse($val->created_at)->format('d');
+        });
+        $lastTab = [];
+        foreach ($lastFive as $last){
+            $lastTab[] = $last->count();
+        }
+
+//        $totalTicket = Ticket::all();
+//        $ticketPerSociety = Ticket::with('society')->get()->groupBy('society_id');
+//        $society = [];
+
+        return response()->json([
+            'ticket'=> $tickets,
+            'lastFive' =>$lastFive,
+            'count' => $lastTab,
+            'pending' => $ticketsPending,
+            'lastYear' => $ticketsLastYear]);
     }
 }

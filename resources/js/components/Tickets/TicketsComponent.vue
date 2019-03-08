@@ -455,22 +455,22 @@ export default {
             if (window.user.role === 'admin') {
                 let formData = new FormData();
                 if (this.ticket.topic) {
-                    formData.set('topic', this.ticket.topic)
+                    formData.append('topic', this.ticket.topic)
                 }
                 if (this.ticket.description) {
-                    formData.set('description', this.ticket.description)
+                    formData.append('description', this.ticket.description)
                 }
                 if (this.ticket.importance) {
-                    formData.set('importance', this.ticket.importance)
+                    formData.append('importance', this.ticket.importance)
                 }
                 if (this.ticket.user) {
-                    formData.set('user', this.ticket.user.id)
+                    formData.append('user', this.ticket.user.id)
                 }
                 if (this.ticket.technician) {
-                    formData.set('technician', this.ticket.technician.id)
+                    formData.append('technician', this.ticket.technician.id)
                 }
                 if (this.ticket.source) {
-                    formData.set('source', this.ticket.source.id)
+                    formData.append('source', this.ticket.source.id)
                 }
                 for (var i = 0; i < this.files.length; i++) {
                     let file = this.files[i];

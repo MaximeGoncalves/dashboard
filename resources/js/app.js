@@ -88,6 +88,7 @@ import VueRouter from 'vue-router'
 const routes = [
     {path: '*', redirect: '/' },
     {path: '/', component: require('./components/Dashboard/DashboardComponent.vue').default},
+    {path: '/analytics', component: require('./components/Dashboard/DashboardAnalyticsComponent').default},
     {path: '/profile', component: require('./components/Profile/ProfileComponent.vue').default},
     {path: '/users', component: require('./components/Users/UsersComponent.vue').default},
     {path: '/logins', component: require('./components/Logins/LoginsComponent').default},

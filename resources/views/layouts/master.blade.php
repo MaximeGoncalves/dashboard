@@ -19,7 +19,8 @@
     <!-- Icons -->
     <link href="/argon/vendor/nucleo/css/nucleo.css" rel="stylesheet">
     <link href="/argon/vendor/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.5/styles/atom-one-dark.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.5/styles/atom-one-dark.min.css">
 
     <!-- Argon CSS -->
     <link type="text/css" href="/argon/css/argon.min.css" rel="stylesheet">
@@ -47,17 +48,17 @@
             <!-- User -->
             <ul class="nav align-items-center d-md-none">
                 {{--<li class="nav-item dropdown">--}}
-                    {{--<a class="nav-link nav-link-icon" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"--}}
-                       {{--aria-expanded="false">--}}
-                        {{--<i class="ni ni-bell-55"></i>--}}
-                    {{--</a>--}}
-                    {{--<div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right"--}}
-                         {{--aria-labelledby="navbar-default_dropdown_1">--}}
-                        {{--<a class="dropdown-item" href="#">Action</a>--}}
-                        {{--<a class="dropdown-item" href="#">Another action</a>--}}
-                        {{--<div class="dropdown-divider"></div>--}}
-                        {{--<a class="dropdown-item" href="#">Something else here</a>--}}
-                    {{--</div>--}}
+                {{--<a class="nav-link nav-link-icon" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"--}}
+                {{--aria-expanded="false">--}}
+                {{--<i class="ni ni-bell-55"></i>--}}
+                {{--</a>--}}
+                {{--<div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right"--}}
+                {{--aria-labelledby="navbar-default_dropdown_1">--}}
+                {{--<a class="dropdown-item" href="#">Action</a>--}}
+                {{--<a class="dropdown-item" href="#">Another action</a>--}}
+                {{--<div class="dropdown-divider"></div>--}}
+                {{--<a class="dropdown-item" href="#">Something else here</a>--}}
+                {{--</div>--}}
                 {{--</li>--}}
                 <li class="nav-item dropdown">
                     <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
@@ -123,6 +124,13 @@
                             <i class="ni ni-tv-2 text-primary"></i> Dashboard
                         </router-link>
                     </li>
+                    @can('isAdmin')
+                        <li class="nav-item">
+                            <router-link class="nav-link" to="/analytics">
+                                <i class="ni ni-tv-2 text-primary"></i> Analytics
+                            </router-link>
+                        </li>
+                    @endcan()
                 </ul>
                 <!-- Divider -->
                 <hr class="my-3">
@@ -149,7 +157,7 @@
 
                     </ul>
 
-                <hr class="my-3">
+                    <hr class="my-3">
                 @endcan()
                 <h6 class="navbar-heading text-muted">Software</h6>
 
