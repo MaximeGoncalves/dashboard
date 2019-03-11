@@ -27,17 +27,26 @@ class AnalyticsController extends Controller
         $this->helper = $helper;
     }
 
-    public function getViews(){
+    public function getViews()
+    {
 
         return $views = Analytic::all();
     }
 
-    public function getData(Request $request){
+    public function getData(Request $request)
+    {
 
 
         $MyTinyLamp = $this->helper->getView($request->view);
         $pages = $MyTinyLamp->fetchMostVisitedPages(Period::days(7), 5);
-        $refered = $MyTinyLamp->fetchTopReferrers(Period::days(7));
+        $refered = $MyTinyLamp->performQuery(Period::days(30), 'ga:pageviews', ['dimensions' => 'ga:fullReferrer', 'sort' => '-ga:pageviews','max-results' => 5, ]);
+        $refereds = collect($refered['rows'] ?? [])
+            ->map(function (array $pageRow) {
+                return [
+                    'name' => $pageRow[0],
+                    'count' => $pageRow[1],
+                ];
+            });
         $visitors = $MyTinyLamp->fetchTotalVisitorsAndPageViews(Period::days(5));
         $query = $MyTinyLamp->performQuery(Period::days(7), 'ga:pageviews,ga:sessionDuration,ga:exits', ['dimensions' => 'ga:source']);
         $ca = $MyTinyLamp->performQuery(Period::days(30), 'ga:transactionRevenue', ['dimensions' => 'ga:date']);
@@ -48,8 +57,17 @@ class AnalyticsController extends Controller
                     'ca' => $pageRow[1],
                 ];
             });
-        return response()->json(['pages' => $pages, 'visitors' => $visitors, 'refered' => $refered, 'CA' => $ca]);
+        return response()->json(['pages' => $pages, 'visitors' => $visitors, 'refered' => $refereds, 'CA' => $ca]);
 
+    }
+
+    public function store(Request $request)
+    {
+        $view = new Analytic();
+        $view->name = $request->name;
+        $view->view = $request->view;
+        $view->save();
+        return $view;
     }
 
 

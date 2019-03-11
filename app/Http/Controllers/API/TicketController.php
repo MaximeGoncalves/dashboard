@@ -220,7 +220,7 @@ class TicketController extends Controller
             $user = User::where('id', $ticket->user_id)->first();
             $this->dispatch(new CloseTicketJob($ticket, $user));
         }
-        return response('ok');
+        return response()->json(['response' => 'success']);
     }
 
     /**
@@ -237,7 +237,7 @@ class TicketController extends Controller
         foreach ($ticket->attachments()->get() as $attach) {
             File::delete($attach->url);
         }
-        foreach ($ticket->actions()->get() as $action){
+        foreach ($ticket->actions()->get() as $action) {
             $action->delete();
         }
         $ticket->attachments()->delete();
@@ -278,45 +278,61 @@ class TicketController extends Controller
     /**
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function stats(){
+    public function stats()
+    {
 
+        // Graphique des tickets à l'année
         $date = Carbon::now();
+        setlocale(LC_TIME, 'fr');
         $data = Ticket::whereYear('created_at', $date->year)->get()->groupBy(function ($val) {
             return Carbon::parse($val->created_at)->format('m');
         });
         $tickets = [];
-        foreach($data as $ticket){
+        foreach ($data as $ticket) {
             $tickets[] = $ticket->count();
         }
 
+        // Graphique des tickets à l'année N-1
         $lastYear = Carbon::now()->subYears(1)->year;
         $data = Ticket::whereYear('created_at', $lastYear)->get()->groupBy(function ($val) {
             return Carbon::parse($val->created_at)->format('m');
         });
         $ticketsLastYear = [];
-        foreach($data as $ticket){
+        foreach ($data as $ticket) {
             $ticketsLastYear[] = $ticket->count();
         }
 
+        //Tickets en attente
         $ticketsPending = Ticket::with('user')->where('state_id', 1)->get();
 
-        $lastFive = Ticket::whereDate('created_at','>=', $date->subDays(7))->get()->groupBy(function ($val) {
-            return Carbon::parse($val->created_at)->format('d');
+        //Tickets créer ces 5 derniers jours
+        $lastFiveCreated = Ticket::whereDate('created_at', '>=', $date->subDays(7))->get()->groupBy(function ($val) {
+            return Carbon::parse($val->created_at)->format('d l');
         });
-        $lastTab = [];
-        foreach ($lastFive as $last){
-            $lastTab[] = $last->count();
+        $created = [];
+        foreach ($lastFiveCreated as $last) {
+            $created[] = $last->count();
+        }
+        //Tickets clos ces 5 derniers jours
+        $lastFiveClosed = Ticket::where('state_id', 4)->whereDate('created_at', '>=', $date->subDays(7))->get()->groupBy(function ($val) {
+            return Carbon::parse($val->created_at)->format('D');
+        });
+        $closed = [];
+        foreach ($lastFiveClosed as $last) {
+            $closed[] = $last->count();
         }
 
-//        $totalTicket = Ticket::all();
-//        $ticketPerSociety = Ticket::with('society')->get()->groupBy('society_id');
-//        $society = [];
+        //Tickets par sociétés.
+        $society = Society::withCount('tickets as count')->groupBy('name')->orderBy('count', 'DSC')->take(5)->get();
 
         return response()->json([
-            'ticket'=> $tickets,
-            'lastFive' =>$lastFive,
-            'count' => $lastTab,
+            'ticket' => $tickets,
+            'lastFive' => $lastFiveCreated,
+            'createdCount' => $created,
+            'closedCount' => $closed,
             'pending' => $ticketsPending,
-            'lastYear' => $ticketsLastYear]);
+            'lastYear' => $ticketsLastYear,
+            'ticketSociety' => $society]);
     }
+
 }

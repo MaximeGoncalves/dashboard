@@ -2,13 +2,19 @@
     <div>
         <!-- Page content -->
         <div v-if="$gate.isAdmin()">
-            <div class="row">
-                <v-select class="form-control-alternative"
-                label="name"
-                :options="views"
-                v-model="view"
-                @input="loadData">
-                </v-select>
+            <div class="row mb-2 align-items-center">
+                <div class="col col-md-3">
+                    <v-select class="form-control-alternative"
+                              label="name"
+                              :options="views"
+                              v-model="view"
+                              :clearable="false"
+                              @input="loadData">
+                    </v-select>
+                </div>
+                <div class="col">
+                    <button class="btn btn-primary" @click="showModal">Ajouter une view</button>
+                </div>
             </div>
             <div class="row">
                 <div class="col-xl-8 mb-5 mb-xl-0">
@@ -17,34 +23,13 @@
                             <div class="row align-items-center">
                                 <div class="col">
                                     <h6 class="text-uppercase text-light ls-1 mb-1">Overview</h6>
-                                    <h2 class="text-white mb-0">CA 30 derniers jours</h2>
-                                </div>
-                                <div class="col">
-                                    <ul class="nav nav-pills justify-content-end">
-                                        <li class="nav-item mr-2 mr-md-0" data-toggle="chart" data-target="#chart-sales"
-                                            data-update='{"data":{"datasets":[{"data":[0, 100, 10, 30, 15, 40, 20, 60, 60]}]}}'
-                                            data-prefix="$" data-suffix="k">
-                                            <a href="#" class="nav-link py-2 px-3 active" data-toggle="tab">
-                                                <span class="d-none d-md-block">Month</span>
-                                                <span class="d-md-none">M</span>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item" data-toggle="chart" data-target="#chart-sales"
-                                            data-update='{"data":{"datasets":[{"data":[0, 1000, 5, 25, 10, 30, 15, 40, 40]}]}}'
-                                            data-prefix="$" data-suffix="k">
-                                            <a href="#" class="nav-link py-2 px-3" data-toggle="tab">
-                                                <span class="d-none d-md-block">Week</span>
-                                                <span class="d-md-none">W</span>
-                                            </a>
-                                        </li>
-                                    </ul>
+                                    <h2 class="text-white mb-0">CA 30J - {{ ca.toFixed(2) }} $</h2>
                                 </div>
                             </div>
                         </div>
                         <div class="card-body">
                             <!-- Chart -->
                             <div class="chart">
-                                <!--<canvas id="chart-sales" class="chart-canvas"></canvas>-->
                                 <line-chart :chartdata="chartDataCA"
                                             class="chart-canvas"
                                             :width="300"
@@ -104,7 +89,7 @@
                         <div class="card-header border-0">
                             <div class="row align-items-center">
                                 <div class="col">
-                                    <h3 class="mb-0">Page visits</h3>
+                                    <h3 class="mb-0">Nbr de visites par pages - 7 derniers jours</h3>
                                 </div>
                                 <div class="col text-right">
                                     <a href="#!" class="btn btn-sm btn-primary">See all</a>
@@ -140,130 +125,53 @@
                     </div>
                 </div>
                 <div class="col-xl-4">
-                    <div class="card shadow">
-                        <div class="card-header border-0">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <h3 class="mb-0">Social traffic</h3>
-                                </div>
-                                <div class="col text-right">
-                                    <a href="#!" class="btn btn-sm btn-primary">See all</a>
-                                </div>
-                            </div>
+                    <progress-state :items="socials" :total="total" :array="['Site', 'Visteurs']" title="Social Traffic"></progress-state>
+                </div>
+            </div>
+
+            <div class="modal fade" id="addNewView" tabindex="-1" role="dialog" aria-labelledby="addNewView"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5>Ajouter une view</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
-                        <div class="table-responsive">
-                            <!-- Projects table -->
-                            <table class="table align-items-center table-flush">
-                                <thead class="thead-light">
-                                <tr>
-                                    <th scope="col">Referral</th>
-                                    <th scope="col">Visitors</th>
-                                    <th scope="col"></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <th scope="row">
-                                        Facebook
-                                    </th>
-                                    <td>
-                                        1,480
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="mr-2">60%</span>
-                                            <div>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-gradient-danger" role="progressbar"
-                                                         aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
-                                                         style="width: 60%;"></div>
-                                                </div>
-                                            </div>
+                        <div class="modal-body">
+                            <form @submit.prevent="addView">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group " :class="errors.name ? 'has-danger' : ''">
+                                            <input type="text" v-model="NewView.name"
+                                                   class="form-control form-control-alternative"
+                                                   :class="errors.name ? 'is-invalid' : ''" name="name"
+                                                   placeholder="Nom">
+                                            <small v-if="errors.name" :class="errors.name ? 'text-danger' : ''"
+                                                   v-for="error in errors.name">{{ error }}
+                                            </small>
                                         </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">
-                                        Facebook
-                                    </th>
-                                    <td>
-                                        5,480
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="mr-2">70%</span>
-                                            <div>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-gradient-success" role="progressbar"
-                                                         aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"
-                                                         style="width: 70%;"></div>
-                                                </div>
-                                            </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group" :class="errors.url ? 'has-danger' : ''">
+                                            <input type="text" v-model="NewView.view"
+                                                   class="form-control form-control-alternative" name="url"
+                                                   :class="errors.url ? 'is-invalid' : ''"
+                                                   placeholder="View ID">
+                                            <small v-if="errors.url" :class="errors.url ? 'text-danger' : ''"
+                                                   v-for="error in errors.url">{{ error }}
+                                            </small>
+
                                         </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">
-                                        Google
-                                    </th>
-                                    <td>
-                                        4,807
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="mr-2">80%</span>
-                                            <div>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-gradient-primary" role="progressbar"
-                                                         aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"
-                                                         style="width: 80%;"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">
-                                        Instagram
-                                    </th>
-                                    <td>
-                                        3,678
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="mr-2">75%</span>
-                                            <div>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-gradient-info" role="progressbar"
-                                                         aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"
-                                                         style="width: 75%;"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">
-                                        twitter
-                                    </th>
-                                    <td>
-                                        2,645
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="mr-2">30%</span>
-                                            <div>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-gradient-warning" role="progressbar"
-                                                         aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"
-                                                         style="width: 30%;"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Ajouter</button>
+                                </div>
+                            </form>
+
                         </div>
                     </div>
                 </div>
@@ -290,37 +198,60 @@
 import LineChart from './LineComponent'
 import BarChart from './BarComponent'
 import moment from "moment/moment";
+import ProgressState from './Components/ProgressStateComponent'
+
 
 moment.locale('fr');
 export default {
     name: 'LineChartContainer',
-    components: {LineChart, BarChart},
+    components: {LineChart, BarChart, ProgressState},
     data() {
         return {
             loaded: false,
             analytics: {},
             chartDataVisit: {},
             chartDataCA: {},
-            pages : {},
-            views : [],
-            view: {}
+            pages: {},
+            views: [],
+            view: {},
+            errors: [],
+            NewView: {},
+            ca: 0,
+            socials:{},
+            total : 0
         }
     },
-    methods :{
-        loadView (){
+    methods: {
+        showModal() {
+            $('#addNewView').modal('show')
+        },
+        addView() {
+            this.$Progress.start()
+            axios.post('/api/analytics', {
+                ...this.NewView
+            }).then(response => {
+                console.log(response)
+                this.views.push(response.data)
+                this.$toasted.global.flash({message: "La vue à été ajoutée"});
+                $('#addNewView').modal('hide')
+                this.$Progress.finish()
+
+            })
+        },
+        loadView() {
             axios.get('/api/analytics/getViews').then(response => {
                 this.views = response.data
                 this.view = response.data[0]
                 this.loadData()
             })
         },
-        async loadData(){
+        async loadData() {
             this.$Progress.start()
             this.loaded = false
             try {
                 await axios.get('/api/analytics/getData', {
                     params: {
-                        view : this.view.view
+                        view: this.view.view
                     }
                 }).then(response => {
                     console.log(response)
@@ -329,10 +260,13 @@ export default {
                     this.$set(this.chartDataCA, "datasets", [])
 
                     var data = []
-                    for(var i = 0 ; i < response.data.CA.length; i++){
+                    var ca = 0
+                    for (var i = 0; i < response.data.CA.length; i++) {
                         this.chartDataCA.labels.push(moment(response.data.CA[i].date).format('DD'))
                         data.push(response.data.CA[i].ca)
+                        ca = ca + parseFloat(response.data.CA[i].ca)
                     }
+                    this.ca = ca
                     this.chartDataCA.datasets.push({
                         data: data,
                         label: "# de tickets",
@@ -353,7 +287,7 @@ export default {
                     let visit = []
                     this.$set(this.chartDataVisit, "labels", [])
                     this.$set(this.chartDataVisit, "datasets", [])
-                    for(var i = 0 ; i < response.data.visitors.length; i++){
+                    for (var i = 0; i < response.data.visitors.length; i++) {
                         this.chartDataVisit.labels.push(moment(response.data.visitors[i].date.date).format('DD'))
                         visit.push(response.data.visitors[i].visitors)
                     }
@@ -366,6 +300,12 @@ export default {
 
                     // Tableau des pages visités
                     this.pages = response.data.pages
+
+                    //Social trafique
+                    this.socials = response.data.refered
+                    for(var i = 0 ; i < response.data.refered.length; i++){
+                        this.total = this.total +  parseInt(response.data.refered[i].count)
+                    }
 
                     //affichage des données dans la vue.
                     this.loaded = true

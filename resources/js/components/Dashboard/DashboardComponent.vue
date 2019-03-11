@@ -138,131 +138,10 @@
                     </div>
                 </div>
                 <div class="col-xl-4">
-                    <div class="card shadow">
-                        <div class="card-header border-0">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <h3 class="mb-0">(A venir)</h3>
-                                </div>
-                                <div class="col text-right">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="table-responsive">
-                            <!-- Projects table -->
-                            <table class="table align-items-center table-flush">
-                                <thead class="thead-light">
-                                <tr>
-                                    <th scope="col">Referral</th>
-                                    <th scope="col">Visitors</th>
-                                    <th scope="col"></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <th scope="row">
-                                        Facebook
-                                    </th>
-                                    <td>
-                                        1,480
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="mr-2">60%</span>
-                                            <div>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-gradient-danger" role="progressbar"
-                                                         aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
-                                                         style="width: 60%;"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">
-                                        Facebook
-                                    </th>
-                                    <td>
-                                        5,480
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="mr-2">70%</span>
-                                            <div>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-gradient-success" role="progressbar"
-                                                         aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"
-                                                         style="width: 70%;"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">
-                                        Google
-                                    </th>
-                                    <td>
-                                        4,807
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="mr-2">80%</span>
-                                            <div>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-gradient-primary" role="progressbar"
-                                                         aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"
-                                                         style="width: 80%;"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">
-                                        Instagram
-                                    </th>
-                                    <td>
-                                        3,678
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="mr-2">75%</span>
-                                            <div>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-gradient-info" role="progressbar"
-                                                         aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"
-                                                         style="width: 75%;"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">
-                                        twitter
-                                    </th>
-                                    <td>
-                                        2,645
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="mr-2">30%</span>
-                                            <div>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-gradient-warning" role="progressbar"
-                                                         aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"
-                                                         style="width: 30%;"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                    <progress-state :items="ticketPerSociety"
+                                    title="Tickets par société"
+                                    :array="['Société', 'Total']"
+                                    :total="total"></progress-state>
                 </div>
             </div>
         </div>
@@ -286,27 +165,33 @@
 import LineChart from './LineComponent'
 import BarChart from './BarComponent'
 import moment from "moment/moment";
+import ProgressState from './Components/ProgressStateComponent'
 
 moment.locale('fr');
 export default {
     name: 'LineChartContainer',
-    components: {LineChart, BarChart},
+    components: {LineChart, BarChart, ProgressState},
     data() {
         return {
             loaded: false,
             chartDataTickets: {},
-            chartDataLastFiveDays :{},
-            tickets: {}
+            chartDataLastFiveDays: {},
+            tickets: {},
+            ticketPerSociety: {},
+            total: 0
         }
     },
-    methods :{
-        statsInit(){
+    methods: {
+        width() {
+            return 'width:' + (100 * society / this.total).toFixed(2);
+        },
+        statsInit() {
             this.$set(this.chartDataTickets, "labels", [])
             this.$set(this.chartDataTickets, "datasets", [])
             this.$set(this.chartDataLastFiveDays, "labels", [])
             this.$set(this.chartDataLastFiveDays, "datasets", [])
         },
-        async loadData(){
+        async loadData() {
             this.$Progress.start()
             this.loaded = false
             try {
@@ -314,11 +199,11 @@ export default {
                     console.log(response)
                     this.statsInit()
                     // Ticket sur l'année
-                    var last = [0,0,0,0]
-                    for(var i = 0 ; i < response.data.lastYear.length; i++){
+                    var last = [0, 0, 0, 0]
+                    for (var i = 0; i < response.data.lastYear.length; i++) {
                         last.push(response.data.lastYear[i])
                     }
-                    console.log(last)
+
                     this.chartDataTickets.labels.push('Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre')
                     this.chartDataTickets.datasets.push({
                         data: response.data.ticket,
@@ -335,7 +220,7 @@ export default {
                         fill: false,
                         borderWidth: 4,
                     }, {
-                        data:last ,
+                        data: last,
                         label: "# de tickets (N-1)",
                         borderColor: "rgba(222, 226, 230, 0.3)",
                         pointBorderColor: "transparent",
@@ -351,22 +236,38 @@ export default {
                     })
 
                     // Ticket sur les 5 derniers jours
-                    this.chartDataLastFiveDays.labels =  Object.keys(response.data.lastFive)
-                    var data = []
-                    for(var i =0; i< response.data.count.length; i++){
-                        data.push(response.data.count[i])
+                    this.chartDataLastFiveDays.labels = Object.keys(response.data.lastFive)
+                    var created = []
+                    var closed = []
+                    for (var i = 0; i < response.data.createdCount.length; i++) {
+                        created.push(response.data.createdCount[i])
+                        closed.push(response.data.closedCount[i])
                     }
                     this.chartDataLastFiveDays.datasets.push({
-                        data: data,
+                        data: created,
                         label: "# de tickets",
                         backgroundColor: '#6772E5',
                         hoverBackgroundColor: '#6672E5',
+                    }, {
+                        data: closed,
+                        label: "# de tickets clos",
+                        backgroundColor: '#19194D',
+                        hoverBackgroundColor: '#19194D',
                     })
 
                     // Ticket status pending
                     this.tickets = response.data.pending
 
+                    this.ticketPerSociety = response.data.ticketSociety
+
+                    for (var i = 0; i < response.data.ticketSociety.length; i++) {
+
+                        this.total = this.total + response.data.ticketSociety[i].count
+                    }
+                    this.$Progress.finish()
+
                     this.loaded = true
+
                 })
             } catch (e) {
                 console.error(e)
