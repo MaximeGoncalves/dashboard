@@ -15,6 +15,29 @@
                 <div class="col">
                     <button class="btn btn-primary" @click="showModal">Ajouter une view</button>
                 </div>
+                <div class="col">
+                    <v-select
+                        label="label"
+                        :options="options"
+                        class="form-control-alternative"
+                        :clearable="false"
+                        v-model="period">
+                    </v-select>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-xl-3 col-lg-6">
+                    <card-stats :data="newUser" title="New Visitor" icon-class="fas fa-user-plus" bgColor="bg-primary"></card-stats>
+                </div>
+                <div class="col-xl-3 col-lg-6">
+                    <card-stats :data="returningUser" title="Returning visitor" icon-class="fas fa-user-check" bgColor="bg-success"></card-stats>
+                </div>
+                <div class="col-xl-3 col-lg-6">
+                    <card-stats :data="parseFloat(bounceRate).toFixed(2)" :percent="true" title="Bounce Rate" icon-class="fas fa-percent" bgColor="bg-info"></card-stats>
+                </div>
+                <div class="col-xl-3 col-lg-6">
+                    <card-stats :data="parseFloat(sessionDuration).toFixed(2)" title="Average session time (seconds)" icon-class="fas fa-clock" bgColor="bg-warning"></card-stats>
+                </div>
             </div>
             <div class="row">
                 <div class="col-xl-8 mb-5 mb-xl-0">
@@ -23,7 +46,7 @@
                             <div class="row align-items-center">
                                 <div class="col">
                                     <h6 class="text-uppercase text-light ls-1 mb-1">Overview</h6>
-                                    <h2 class="text-white mb-0">CA 30J - {{ ca.toFixed(2) }} $</h2>
+                                    <h2 class="text-white mb-0">CA {{ period.label }} - {{ ca.toFixed(2) }} $</h2>
                                 </div>
                             </div>
                         </div>
@@ -45,7 +68,7 @@
                             <div class="row align-items-center">
                                 <div class="col-auto">
                                     <h6 class="text-uppercase text-muted ls-1 mb-1">Performance</h6>
-                                    <h2 class="mb-0">Visites - 5 derniers jours</h2>
+                                    <h2 class="mb-0">Visites - {{ period.label }}</h2>
                                     <small class="text-muted"></small>
                                 </div>
                                 <div class="col">
@@ -89,7 +112,7 @@
                         <div class="card-header border-0">
                             <div class="row align-items-center">
                                 <div class="col">
-                                    <h3 class="mb-0">Nbr de visites par pages - 7 derniers jours</h3>
+                                    <h3 class="mb-0">Nbr de visites par pages - {{ period.label }}</h3>
                                 </div>
                                 <div class="col text-right">
                                     <a href="#!" class="btn btn-sm btn-primary">See all</a>
@@ -103,20 +126,19 @@
                                 <tr>
                                     <th scope="col">Page name</th>
                                     <th scope="col">Visitors</th>
-                                    <th scope="col">Unique users</th>
-                                    <th scope="col">Bounce rate</th>
+                                    <th scope="col">Average Time</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr v-for="page in pages">
                                     <th scope="row">
-                                        {{ page.url}}
+                                        {{ page.pageTitle }}
                                     </th>
                                     <td>
                                         {{ page.pageViews }}
                                     </td>
                                     <td>
-                                        <i class="fas fa-arrow-up text-success mr-3"></i> 46,53%
+                                        {{ (parseInt(page.AverageTime) / 60).toFixed(2) }} min
                                     </td>
                                 </tr>
                                 </tbody>
@@ -125,7 +147,8 @@
                     </div>
                 </div>
                 <div class="col-xl-4">
-                    <progress-state :items="socials" :total="total" :array="['Site', 'Visteurs']" title="Social Traffic"></progress-state>
+                    <progress-state :items="socials" :total="total" :array="['Site', 'Visteurs']"
+                                    title="Social Traffic"></progress-state>
                 </div>
             </div>
 
@@ -197,17 +220,24 @@
 <script>
 import LineChart from './LineComponent'
 import BarChart from './BarComponent'
-import moment from "moment/moment";
+import moment from "moment/moment"
 import ProgressState from './Components/ProgressStateComponent'
-
+import CardStats from './Components/CardStatsComponent'
 
 moment.locale('fr');
 export default {
     name: 'LineChartContainer',
-    components: {LineChart, BarChart, ProgressState},
+    components: {LineChart, BarChart, ProgressState,CardStats},
     data() {
         return {
             loaded: false,
+            options: [
+                {label: "Aujourd'hui", value: 1},
+                {label: "Hier", value: -1},
+                {label: '1 semaine', value: 7},
+                {label: '1 mois', value: 30},
+            ],
+            period: {label: '1 semaine', value: 7},
             analytics: {},
             chartDataVisit: {},
             chartDataCA: {},
@@ -217,8 +247,12 @@ export default {
             errors: [],
             NewView: {},
             ca: 0,
-            socials:{},
-            total : 0
+            socials: {},
+            total: 0,
+            newUser: 0,
+            returningUser: 0,
+            bounceRate: 0,
+            sessionDuration: 0,
         }
     },
     methods: {
@@ -245,67 +279,90 @@ export default {
                 this.loadData()
             })
         },
+        fetchVisits(response) {
+            let visit = []
+            this.$set(this.chartDataVisit, "labels", [])
+            this.$set(this.chartDataVisit, "datasets", [])
+            for (var i = 0; i < response.data.visitors.length; i++) {
+                this.chartDataVisit.labels.push(moment(response.data.visitors[i].date.date).format('DD'))
+                visit.push(response.data.visitors[i].visitors)
+            }
+            this.chartDataVisit.datasets.push({
+                data: visit,
+                label: "# de visites",
+                backgroundColor: '#6772E5',
+                hoverBackgroundColor: '#6672E5',
+            })
+        },
+        fetchTotalCA(response) {
+            this.$set(this.chartDataCA, "labels", [])
+            this.$set(this.chartDataCA, "datasets", [])
+
+            var data = []
+            var ca = 0
+
+            if (this.period.value === 365) {
+                this.chartDataCA.labels.push(moment(response.data.CA.date).format('M'))
+                for (var i = 0; i < response.data.CA.length; i++) {
+                    data.push(response.data.CA[i].ca)
+                    ca = ca + parseFloat(response.data.CA[i].ca)
+                }
+            }else{
+                for (var i = 0; i < response.data.CA.length; i++) {
+                    this.chartDataCA.labels.push(moment(response.data.CA[i].date).format('DD'))
+                    data.push(response.data.CA[i].ca)
+                    ca = ca + parseFloat(response.data.CA[i].ca)
+                }
+            }
+
+            this.ca = ca
+            this.chartDataCA.datasets.push({
+                data: data,
+                label: "# de tickets",
+                borderColor: "#6772E5",
+                pointBorderColor: "transparent",
+                pointBackgroundColor: "transparent",
+                pointHoverBackgroundColor: "#6772E5",
+                pointHoverBorderColor: "#6772E5",
+                pointBorderWidth: 2,
+                pointHoverRadius: 5,
+                pointHoverBorderWidth: 1,
+                pointRadius: 10,
+                fill: false,
+                borderWidth: 4,
+            })
+        },
         async loadData() {
             this.$Progress.start()
             this.loaded = false
             try {
                 await axios.get('/api/analytics/getData', {
                     params: {
-                        view: this.view.view
+                        view: this.view.view,
+                        period: this.period.value
                     }
                 }).then(response => {
                     console.log(response)
                     // Graphique CA
-                    this.$set(this.chartDataCA, "labels", [])
-                    this.$set(this.chartDataCA, "datasets", [])
-
-                    var data = []
-                    var ca = 0
-                    for (var i = 0; i < response.data.CA.length; i++) {
-                        this.chartDataCA.labels.push(moment(response.data.CA[i].date).format('DD'))
-                        data.push(response.data.CA[i].ca)
-                        ca = ca + parseFloat(response.data.CA[i].ca)
-                    }
-                    this.ca = ca
-                    this.chartDataCA.datasets.push({
-                        data: data,
-                        label: "# de tickets",
-                        borderColor: "#6772E5",
-                        pointBorderColor: "transparent",
-                        pointBackgroundColor: "transparent",
-                        pointHoverBackgroundColor: "#6772E5",
-                        pointHoverBorderColor: "#6772E5",
-                        pointBorderWidth: 2,
-                        pointHoverRadius: 5,
-                        pointHoverBorderWidth: 1,
-                        pointRadius: 10,
-                        fill: false,
-                        borderWidth: 4,
-                    })
+                    this.fetchTotalCA(response)
 
                     // Visites Graphique
-                    let visit = []
-                    this.$set(this.chartDataVisit, "labels", [])
-                    this.$set(this.chartDataVisit, "datasets", [])
-                    for (var i = 0; i < response.data.visitors.length; i++) {
-                        this.chartDataVisit.labels.push(moment(response.data.visitors[i].date.date).format('DD'))
-                        visit.push(response.data.visitors[i].visitors)
-                    }
-                    this.chartDataVisit.datasets.push({
-                        data: visit,
-                        label: "# de visites",
-                        backgroundColor: '#6772E5',
-                        hoverBackgroundColor: '#6672E5',
-                    })
+                    this.fetchVisits(response)
 
                     // Tableau des pages visités
                     this.pages = response.data.pages
 
                     //Social trafique
                     this.socials = response.data.refered
-                    for(var i = 0 ; i < response.data.refered.length; i++){
-                        this.total = this.total +  parseInt(response.data.refered[i].count)
+                    for (var i = 0; i < response.data.refered.length; i++) {
+                        this.total = this.total + parseInt(response.data.refered[i].count)
                     }
+
+                    // Datas about New User, Returning User bounceRate and sessionDuration
+                    this.newUser = response.data.userVsReturning.NewUser
+                    this.returningUser = response.data.userVsReturning.ReturningUser
+                    this.bounceRate = response.data.bounceRate
+                    this.sessionDuration = response.data.sessionDuration
 
                     //affichage des données dans la vue.
                     this.loaded = true
@@ -316,6 +373,11 @@ export default {
                 console.error(e)
             }
         },
+    },
+    watch: {
+        period: function () {
+            this.loadData()
+        }
     },
     mounted() {
         this.loadView()
