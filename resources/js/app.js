@@ -100,6 +100,7 @@ const routes = [
     {path: '/knowledges/:id', component: require('./components/Knowledges/KnowledgeComponent').default},
     {path: '/addKnowledge', component: require('./components/Knowledges/CreateKnowledgeComponent').default},
     {path: '/projects', component: require('./components/underConstruction').default},
+    {path: '/licences', component: require('./components/Licences/LicenceComponent').default},
     // {path: '/projects/project', component: require('./components/Projects/ProjectComponent').default},
     {path: '/nkeep', component: require('./components/underConstruction').default},
 

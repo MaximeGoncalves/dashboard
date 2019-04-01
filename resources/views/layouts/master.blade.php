@@ -150,6 +150,11 @@
                             </router-link>
                         </li>
                         <li class="nav-item">
+                            <router-link class="nav-link" to="/licences">
+                                <i class="fas fa-key text-default"></i> Licences
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
                             <router-link class="nav-link" to="/developper">
                                 <i class="ni ni-pin-3 text-orange"></i> Developpeur
                             </router-link>

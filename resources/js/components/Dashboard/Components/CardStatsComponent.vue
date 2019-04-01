@@ -15,8 +15,12 @@
                 </div>
             </div>
             <p class="mt-3 mb-0 text-muted text-sm">
-                <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
-                <span class="text-nowrap">Since last month</span>
+                <span class="text-danger mr-2" v-if="dataPercent.includes('-')"><i class="fa fa-arrow-down"></i> {{dataPercent}} %</span>
+                <span class="text-success mr-2" v-else><i class="fa fa-arrow-up"></i> {{dataPercent}} %</span>
+                <span class="text-nowrap" v-if="period.value=== 1">Depuis hier</span>
+                <span class="text-nowrap" v-if="period.value=== -1">Depuis hier</span>
+                <span class="text-nowrap" v-if="period.value=== 7">Depuis la semaine dernière</span>
+                <span class="text-nowrap" v-if="period.value=== 30">Depuis le mois dernier</span>
             </p>
         </div>
     </div>
@@ -32,6 +36,7 @@ export default {
         data: {
             required: true,
         },
+        dataPercent : {},
         iconClass: {
             type: String,
             required: false,
@@ -42,6 +47,9 @@ export default {
         percent: {
             type: Boolean,
             default: false,
+        },
+        period : {
+
         }
     }
 }

@@ -6,7 +6,7 @@
 
 {{ $ticket->description }}
 
-@component('mail::button', ['url' => '/tickets/' . $ticket->id])
+@component('mail::button', ['url' =>  env('APP_URL'). '/tickets/' . $ticket->id])
 Consulter
 @endcomponent
 

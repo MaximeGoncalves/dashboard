@@ -29,3 +29,7 @@ p {
   top: -5px;
 }
 
+.btn-icon-only.btn {
+  padding: 0;
+}
+

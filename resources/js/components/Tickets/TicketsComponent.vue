@@ -495,9 +495,9 @@ export default {
                 });
             } else {
                 let formData = new FormData();
-                formData.set('topic', this.ticket.topic)
-                formData.set('description', this.ticket.description)
-                formData.set('importance', this.ticket.importance)
+                formData.append('topic', this.ticket.topic)
+                formData.append('description', this.ticket.description)
+                formData.append('importance', this.ticket.importance)
                 for (var i = 0; i < this.files.length; i++) {
                     let file = this.files[i];
                     formData.append('files[' + i + ']', file);

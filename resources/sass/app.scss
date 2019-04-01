@@ -1,7 +1,6 @@
 $sf-red:#ca1d3d;
 $sf-red-light:#FF233C;
 
-
 .router-link-exact-active {
     //color: #222222 !important;
     font-weight: bold;
@@ -29,6 +28,10 @@ p{
     position: relative;
     top: -5px;
 }
+.btn-icon-only.btn{
+    padding: 0;
+}
+
 // MASTER.BLADE.PHP
 
 

@@ -27,20 +27,30 @@
             </div>
             <div class="row mb-2">
                 <div class="col-xl-3 col-lg-6">
-                    <card-stats :data="newUser" title="New Visitor" icon-class="fas fa-user-plus" bgColor="bg-primary"></card-stats>
+                    <card-stats :data="UserAndReturning.NewUser" title="New Visitor" icon-class="fas fa-user-plus"
+                                bgColor="bg-primary" :data-percent="parseFloat(UserAndReturning.PercentNew).toFixed(2)"
+                    :period="period"></card-stats>
                 </div>
                 <div class="col-xl-3 col-lg-6">
-                    <card-stats :data="returningUser" title="Returning visitor" icon-class="fas fa-user-check" bgColor="bg-success"></card-stats>
+                    <card-stats :data="UserAndReturning.ReturningUser" title="Returning visitor" icon-class="fas fa-user-check"
+                                bgColor="bg-success" :data-percent="parseFloat(UserAndReturning.PercentReturning).toFixed(2)"
+                                :period="period"></card-stats>
                 </div>
                 <div class="col-xl-3 col-lg-6">
-                    <card-stats :data="parseFloat(bounceRate).toFixed(2)" :percent="true" title="Bounce Rate" icon-class="fas fa-percent" bgColor="bg-info"></card-stats>
+                    <card-stats :data="parseFloat(bounceRate.bounce).toFixed(2)" :percent="true" title="Bounce Rate"
+                                icon-class="fas fa-percent" bgColor="bg-info"
+                                :data-percent="parseFloat(bounceRate.Percent).toFixed(2)"
+                                :period="period"></card-stats>
                 </div>
                 <div class="col-xl-3 col-lg-6">
-                    <card-stats :data="parseFloat(sessionDuration).toFixed(2)" title="Average session time (seconds)" icon-class="fas fa-clock" bgColor="bg-warning"></card-stats>
+                    <card-stats :data="parseFloat(sessionDuration.duration).toFixed(2)" title="Average session time (seconds)"
+                                icon-class="fas fa-clock" bgColor="bg-warning"
+                                :data-percent="parseFloat(sessionDuration.Percent).toFixed(2)"
+                                :period="period"></card-stats>
                 </div>
             </div>
             <div class="row">
-                <div class="col-xl-8 mb-5 mb-xl-0">
+                <div class="col-xl-6 mb-5 mb-xl-0">
                     <div class="card bg-gradient-default shadow">
                         <div class="card-header bg-transparent">
                             <div class="row align-items-center">
@@ -62,7 +72,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-4">
+                <div class="col-xl-6">
                     <div class="card shadow">
                         <div class="card-header bg-transparent">
                             <div class="row align-items-center">
@@ -70,24 +80,6 @@
                                     <h6 class="text-uppercase text-muted ls-1 mb-1">Performance</h6>
                                     <h2 class="mb-0">Visites - {{ period.label }}</h2>
                                     <small class="text-muted"></small>
-                                </div>
-                                <div class="col">
-                                    <ul class="nav nav-pills justify-content-end">
-                                        <li class="nav-item mr-2 mr-md-0" data-toggle="chart"
-                                            data-target="#chart-visit">
-                                            <a href="#" class="nav-link py-2 px-3 active" data-toggle="tab">
-                                                <span class="d-none d-md-block">Month</span>
-                                                <span class="d-md-none">M</span>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item" data-toggle="chart"
-                                            data-target="#chart-visit">
-                                            <a href="#" class="nav-link py-2 px-3" data-toggle="tab">
-                                                <span class="d-none d-md-block">Week</span>
-                                                <span class="d-md-none">W</span>
-                                            </a>
-                                        </li>
-                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -227,7 +219,7 @@ import CardStats from './Components/CardStatsComponent'
 moment.locale('fr');
 export default {
     name: 'LineChartContainer',
-    components: {LineChart, BarChart, ProgressState,CardStats},
+    components: {LineChart, BarChart, ProgressState, CardStats},
     data() {
         return {
             loaded: false,
@@ -249,8 +241,7 @@ export default {
             ca: 0,
             socials: {},
             total: 0,
-            newUser: 0,
-            returningUser: 0,
+            UserAndReturning: 0,
             bounceRate: 0,
             sessionDuration: 0,
         }
@@ -284,7 +275,7 @@ export default {
             this.$set(this.chartDataVisit, "labels", [])
             this.$set(this.chartDataVisit, "datasets", [])
             for (var i = 0; i < response.data.visitors.length; i++) {
-                this.chartDataVisit.labels.push(moment(response.data.visitors[i].date.date).format('DD'))
+                this.chartDataVisit.labels.push(response.data.visitors[i].date)
                 visit.push(response.data.visitors[i].visitors)
             }
             this.chartDataVisit.datasets.push({
@@ -299,31 +290,39 @@ export default {
             this.$set(this.chartDataCA, "datasets", [])
 
             var data = []
+            var lastdata = []
             var ca = 0
 
-            if (this.period.value === 365) {
-                this.chartDataCA.labels.push(moment(response.data.CA.date).format('M'))
-                for (var i = 0; i < response.data.CA.length; i++) {
-                    data.push(response.data.CA[i].ca)
-                    ca = ca + parseFloat(response.data.CA[i].ca)
-                }
-            }else{
-                for (var i = 0; i < response.data.CA.length; i++) {
-                    this.chartDataCA.labels.push(moment(response.data.CA[i].date).format('DD'))
-                    data.push(response.data.CA[i].ca)
-                    ca = ca + parseFloat(response.data.CA[i].ca)
-                }
+            for (var i = 0; i < response.data.CA.length; i++) {
+                this.chartDataCA.labels.push(response.data.CA[i].date)
+                data.push(response.data.CA[i].ca)
+                lastdata.push(response.data.CA[i].lastCA)
+                ca = ca + parseFloat(response.data.CA[i].ca)
             }
 
             this.ca = ca
             this.chartDataCA.datasets.push({
                 data: data,
-                label: "# de tickets",
+                label: "# de $",
                 borderColor: "#6772E5",
                 pointBorderColor: "transparent",
                 pointBackgroundColor: "transparent",
                 pointHoverBackgroundColor: "#6772E5",
                 pointHoverBorderColor: "#6772E5",
+                pointBorderWidth: 2,
+                pointHoverRadius: 5,
+                pointHoverBorderWidth: 1,
+                pointRadius: 10,
+                fill: false,
+                borderWidth: 4,
+            },{
+                data: lastdata,
+                label: "# de $",
+                borderColor: "#a6a9ff",
+                pointBorderColor: "transparent",
+                pointBackgroundColor: "transparent",
+                pointHoverBackgroundColor: "#A6A9FF",
+                pointHoverBorderColor: "#A6A9FF",
                 pointBorderWidth: 2,
                 pointHoverRadius: 5,
                 pointHoverBorderWidth: 1,
@@ -359,8 +358,7 @@ export default {
                     }
 
                     // Datas about New User, Returning User bounceRate and sessionDuration
-                    this.newUser = response.data.userVsReturning.NewUser
-                    this.returningUser = response.data.userVsReturning.ReturningUser
+                    this.UserAndReturning = response.data.userVsReturning
                     this.bounceRate = response.data.bounceRate
                     this.sessionDuration = response.data.sessionDuration
 

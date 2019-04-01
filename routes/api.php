@@ -47,6 +47,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::put('/message/{message}', 'API\MessageController@update');
 
     Route::apiResource('/knowledges', 'API\KnowledgesController');
+    Route::apiResource('/licences', 'API\LicencesController');
 
     Route::post('/attachements', 'API\UserController@profile')->name('attachments.store');
 
