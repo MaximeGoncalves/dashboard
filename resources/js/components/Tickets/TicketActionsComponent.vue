@@ -1,12 +1,10 @@
 <template>
     <div>
-
-
         <div class="card" v-if="actions">
             <div class="card-body">
                 <div class="d-flex align-items-center justify-content-between">
                     <h4 class="header-title mb-2">Activités récentes</h4>
-                    <button class="btn btn-icon btn-primary" type="button" @click="addAction" v-if="$gate.isAdmin()">
+                    <button class="btn btn-icon btn-default" type="button" @click="addAction" v-if="$gate.isAdmin()">
                         <i class="fas fa-plus-square"></i>
                     </button>
                 </div>
@@ -16,7 +14,7 @@
                              class="timeline-avatar timeline-icon">
                         <div class="timeline-item-info">
                             <a href="#"
-                               class="text-primary font-weight-bold mb-1 d-block">{{action.from.fullname}}</a>
+                               class="text-default font-weight-bold mb-1 d-block">{{action.from.fullname}}</a>
                             <small v-html="action.content">
                             </small>
                             <p class="mb-0 pb-2">
@@ -38,7 +36,7 @@
                                       class="form-control form-control-alternative"
                                       v-model="action"
                                       placeholder="Votre action"></textarea>
-                            <button type="submit" class="btn-primary btn float-right mt-2 btn-sm">Ajouter</button>
+                            <button type="submit" class="btn-success btn float-right mt-2 btn-sm">Ajouter</button>
                         </form>
                     </div>
                 </div>

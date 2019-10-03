@@ -44,12 +44,20 @@ class User extends Authenticatable
     public function society(){
          return $this->belongsTo(Society::class);
     }
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function technician()
     {
         return $this->belongsTo(Technician::class);
+    }
+
+    public function tasks()
+    {
+        return $this->belongsToMany(Task::class);
+    }
+
+    public function tickets(){
+        return $this->hasMany(Ticket::class);
     }
 }

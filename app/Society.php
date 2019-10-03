@@ -13,4 +13,8 @@ class Society extends Model
     public function tickets (){
         return $this->hasMany(Ticket::class);
     }
+
+    public function tasks(){
+        return $this->hasMany(Task::class);
+    }
 }

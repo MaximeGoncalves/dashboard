@@ -34,6 +34,11 @@ class Filter
                     }
                 })
                 ->where(function ($q) use ($request) {
+                    if ($request->type != null) {
+                        $q->where('type_id', $request->type);
+                    }
+                })
+                ->where(function ($q) use ($request) {
                     if ($request->user != null) {
                         $q->where('user_id', $request->user);
                     }
@@ -43,7 +48,7 @@ class Filter
                         $q->where('society_id', $request->society);
                     }
                 })
-                ->with(['user', 'source', 'society', 'technician.user', 'state', 'actions', 'messages'])
+                ->with(['user', 'source', 'society', 'technician.user', 'state', 'actions', 'messages', 'attachments', 'type'])
                 ->orderBy('created_at', 'desc')
                 ->latest()
                 ->paginate(10);

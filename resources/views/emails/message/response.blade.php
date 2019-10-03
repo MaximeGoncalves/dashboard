@@ -5,7 +5,8 @@
 
 Pour le consuter cliquer sur le bouton ci-dessous.
 
-@component('mail::button', ['url' =>  env('APP_URL'). '/tickets/' . $ticket->id])
+@component('mail::button', ['url' => env('APP_URL'). '/tickets/' . $ticket->id, 'color' => 'default'])
+
 Consulter
 @endcomponent
 

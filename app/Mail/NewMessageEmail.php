@@ -16,7 +16,7 @@ class NewMessageEmail extends Mailable
      * @var Ticket
      */
     public $ticket;
-    private $response;
+    public $response;
     public $user ;
 
     /**

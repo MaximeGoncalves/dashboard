@@ -210,11 +210,11 @@ class AnalyticsController extends Controller
 
     protected function getPercent($yesterday, $today)
     {
-        if($yesterday === 0){
+        if($yesterday == 0){
             $yesterday = 1;
         }
 
-        if($today === 0){
+        if($today == 0){
             $today = 1;
         }
         // (b-a) / a * 100

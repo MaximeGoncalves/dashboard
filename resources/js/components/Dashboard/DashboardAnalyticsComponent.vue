@@ -210,7 +210,7 @@
 </template>
 
 <script>
-import LineChart from './LineComponent'
+import LineChart from './LineChartComponent'
 import BarChart from './BarComponent'
 import moment from "moment/moment"
 import ProgressState from './Components/ProgressStateComponent'

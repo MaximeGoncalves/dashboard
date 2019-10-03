@@ -163,7 +163,6 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         Spatie\Analytics\AnalyticsServiceProvider::class,
-        Edbizarro\LaravelFacebookAds\Providers\LaravelFacebookServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -229,7 +228,6 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'Analytics' => Spatie\Analytics\AnalyticsFacade::class,
         'AnalyticsHelper' => App\Helpers\AnalyticsHelper::class,
-        'FacebookAds' => Edbizarro\LaravelFacebookAds\Facades\FacebookAds::class
 
     ],
 

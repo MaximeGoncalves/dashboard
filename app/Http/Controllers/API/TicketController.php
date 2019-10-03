@@ -5,14 +5,17 @@ namespace App\Http\Controllers\API;
 use App\Action;
 use App\Attachment;
 use App\Filter;
+use App\Http\Controllers\Stats;
 use App\Jobs\CloseTicketJob;
 use App\Jobs\NewTicketJob;
 use App\Mail\NewTicketEmail;
 use App\Message;
+use App\Note;
 use App\Source;
 use App\State;
 use App\Technician;
 use App\Ticket;
+use App\Type;
 use App\User;
 use App\Society;
 use Carbon\Carbon;
@@ -43,7 +46,7 @@ class TicketController extends Controller
         $user = User::all();
         $sources = Source::all();
         $society = Society::with('users')->get();
-
+        $types = Type::all();
 
         $filter = new Filter();
         $tickets = $filter->query($request);
@@ -57,26 +60,17 @@ class TicketController extends Controller
             'sources' => $sources,
             'count' => $tickets->count(),
             'society' => $society,
-            'request' => $request->all()
-        ]);
-
-
-//        if (Auth::user()->role == 'leader') {
-//            $ticket = Ticket::where('society_id', Auth::user()->society->id)->with(['user', 'source', 'society', 'technician.user', 'state', 'actions', 'messages'])->orderBy('created_at', 'DESC')->latest()->paginate(10);
-//        } else if (Auth::user()->role == 'user') {
-//            $ticket = Ticket::where('user_id', Auth::user()->id)->with(['user', 'source', 'society', 'technician.user', 'state', 'actions', 'messages'])->orderBy('created_at', 'DESC')->latest()->paginate(10);
-//        } else {
-//            $ticket = Ticket::with(['user', 'source', 'society', 'technician.user', 'state', 'actions', 'messages'])->orderBy('created_at', 'DESC')->latest()->paginate(10);
-//        }
-
-
-//        return response(json_encode(['user' => $user, 'states' => $states, 'ticket' => $ticket, 'technician' => $technicians, 'sources' => $sources, 'society' => $society]));
+            'request' => $request->all(),
+            'types' => $types,
+        ])->header('Access-Control-Allow-Origin', '*')
+            ->header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+            ->header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, X-Token-Auth, Authorization");
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -104,7 +98,8 @@ class TicketController extends Controller
             $ticket->technician()->associate($technicien);
             $ticket->society()->associate($user->society->id);
             $ticket->save();
-            $this->dispatch(new NewTicketJob($ticket, $user));
+            $leader = User::where('society_id', $user->society_id)->where('role', 'leader')->get();
+//            $this->dispatch(new NewTicketJob($ticket, $user, $leader));
 
         } else {
             $this->validate($request, [
@@ -121,32 +116,15 @@ class TicketController extends Controller
             $ticket->user()->associate($user->id);
             $ticket->society()->associate(Auth::user()->society->id);
             $ticket->save();
-            $this->dispatch(new NewTicketJob($ticket, $user));
+            $leader = User::where('society_id', $user->society_id)->where('role', 'leader')->get();
+//            $this->dispatch(new NewTicketJob($ticket, $user, $leader));
 
         }
 
-        if ($request->hasFile('files')):
-            $pathSociety = $ticket->user->society->name;
-            $appPath = public_path() . '/app/SfTicket' . '/' . $pathSociety;
-            if (!file_exists($appPath)):
-                mkdir($appPath, 0777, true);
-            endif;
-
-            mkdir($appPath . '/' . $ticket->id, 0777, true);
-            $destinationPath = $appPath . '/' . $ticket->id;
-
-            $files = $request->file('files');
-            foreach ($files as $file):
-                $file->move($destinationPath, '/' . $file->getClientOriginalName());
-                $pj = new Attachment();
-                $pj->name = $file->getClientOriginalName();
-                $pj->url = '/app/SfTicket/' . $pathSociety . '/' . $ticket->id . '/' . $file->getClientOriginalName();
-                $pj->attachable_type = Ticket::class;
-                $pj->attachable_id = $ticket->id;
-                $pj->name = $file->getClientOriginalName();
-                $pj->save();
-            endforeach;
-        endif;
+        if ($request->hasFile('files')) {
+            $attach = new AttachmentController();
+            $attach->store($request, $ticket->id);
+        }
 
         $action = new Action();
         $action->from()->associate(Auth::user());
@@ -154,23 +132,25 @@ class TicketController extends Controller
         $action->content = 'à créé un ticket';
         $action->save();
 
-        return response(['message' => "success"]);
-
-
+        return response(['ticket' => $ticket, 'user' => $user, 'leader' => $leader]);
     }
 
 
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $ticket = Ticket::with('user', 'society', 'state', 'technician.user', 'source', 'attachments', 'actions.from', 'messages.from')->findOrfail($id);
-        $messages = Message::where('ticket_id', $id)->whereNull('to_id')->get();
+        $ticket = Ticket::with('user', 'society', 'state', 'technician.user', 'source', 'attachments', 'actions.from', 'type')->findOrfail($id);
+        $messages = Message::where('commentable_id', $id)->get();
         $actions = Action::where('ticket_id', $id)->get();
+        $notes = Note::where('ticket_id', $id)->get();
+        foreach ($actions as $action) {
+            $action->type = 'action';
+        }
         if (Gate::allows('isYourTicket', $ticket)) {
             $techs = Technician::get()->load('user');
             $technicians = [];
@@ -180,13 +160,19 @@ class TicketController extends Controller
             }
             $user = User::all();
             $sources = Source::all();
+            $types = Type::all();
 
+            $activity = $messages->merge($notes);
+            $all = array_values(array_sort($activity, function ($value) {
+                return $value['created_at'];
+            }));
             return response()->json(['states' => $states,
                 'ticket' => $ticket,
                 'technicians' => $technicians,
                 'sources' => $sources,
-                'messages' => $messages,
+                'messages' => array_reverse($all),
                 'actions' => $actions,
+                'types' => $types
             ]);
         } else {
             return response()->json(['unauthorized' => '404']);
@@ -197,13 +183,14 @@ class TicketController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         $ticket = Ticket::findOrFail($id);
+        $state = $ticket->state_id;
 
         if ($request->technician) {
             $technicien = Technician::where('user_id', $request->technician)->first();
@@ -214,19 +201,23 @@ class TicketController extends Controller
         $ticket->state()->associate($request->state);
         $ticket->importance = $request->importance;
         $ticket->source()->associate($request->source);
+        $ticket->type()->associate($request->type);
         $ticket->save();
 
-        if ($request->state == '4') {
+        if ($request->state == '4' && $state != 4) {
             $user = User::where('id', $ticket->user_id)->first();
-            $this->dispatch(new CloseTicketJob($ticket, $user));
+            $leader = User::where('society_id', $user->society_id)->where('role', 'leader')->get();
+            $this->dispatch(new CloseTicketJob($ticket, $user, $leader));
+            $ticket->close_at = now();
         }
+
         return response()->json(['response' => 'success']);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -281,29 +272,22 @@ class TicketController extends Controller
     public function stats()
     {
 
-        // Graphique des tickets à l'année
         $date = Carbon::now();
         setlocale(LC_TIME, 'fr');
-        $data = Ticket::whereYear('created_at', $date->year)->get()->groupBy(function ($val) {
-            return Carbon::parse($val->created_at)->format('m');
-        });
-        $tickets = [];
-        foreach ($data as $ticket) {
-            $tickets[] = $ticket->count();
-        }
+
+        // Graphique des tickets à l'année
+        $ticketThisYear = new Stats();
+        $ticketThisYear = $ticketThisYear->countTicket($date->year);
+
 
         // Graphique des tickets à l'année N-1
         $lastYear = Carbon::now()->subYears(1)->year;
-        $data = Ticket::whereYear('created_at', $lastYear)->get()->groupBy(function ($val) {
-            return Carbon::parse($val->created_at)->format('m');
-        });
-        $ticketsLastYear = [];
-        foreach ($data as $ticket) {
-            $ticketsLastYear[] = $ticket->count();
-        }
+        $ticketsLastYear = new Stats();
+        $ticketsLastYear = $ticketsLastYear->countTicket($lastYear);
 
         //Tickets en attente
-        $ticketsPending = Ticket::with('user')->where('state_id', 1)->get();
+        $ticketsPendingOpen = new Stats();
+        $ticketsPendingOpen = $ticketsPendingOpen->pendingOpenTicket();
 
         //Tickets créer ces 5 derniers jours
         $lastFiveCreated = Ticket::whereDate('created_at', '>=', $date->subDays(7))->get()->groupBy(function ($val) {
@@ -322,17 +306,59 @@ class TicketController extends Controller
             $closed[] = $last->count();
         }
 
-        //Tickets par sociétés.
-        $society = Society::withCount('tickets as count')->groupBy('name')->orderBy('count', 'DSC')->take(5)->get();
+        //Tickets par sociétés (softease) ou utilisateurs (leader).
+        if (Auth::user()->society_id == 1) {
+            $count = Society::withCount('tickets as count')->groupBy('name')->orderBy('count', 'DSC')->take(6)->get()->except(1);
+            $total = Ticket::where('society_id', '<>', 1)->count();
+        } elseif (Auth::user()->role !== "admin") {
+            $total = Ticket::where('society_id', Auth::user()->society_id)->count();
+            $count = User::where('society_id', Auth::user()->society_id)->withCount('tickets as count')->groupBy('name')->orderBy('count', 'DSC')->get();
+        }
+
+        $TicketsByCategory = Type::withCount('tickets as count')->groupBy('name')->get();
 
         return response()->json([
-            'ticket' => $tickets,
+            'ticketCategory' => $TicketsByCategory,
+            'totalTicket' => $total,
+            'ticket' => $ticketThisYear,
             'lastFive' => $lastFiveCreated,
             'createdCount' => $created,
             'closedCount' => $closed,
-            'pending' => $ticketsPending,
+            'pending' => $ticketsPendingOpen,
             'lastYear' => $ticketsLastYear,
-            'ticketSociety' => $society]);
+            'ticketSociety' => $count]);
     }
 
+    private function transliterateString($txt)
+    {
+        $transliterationTable = array('á' => 'a', 'Á' => 'A', 'à' => 'a', 'À' => 'A', 'ă' => 'a', 'Ă' => 'A', 'â' => 'a', 'Â' => 'A', 'å' => 'a', 'Å' => 'A', 'ã' => 'a', 'Ã' => 'A', 'ą' => 'a', 'Ą' => 'A', 'ā' => 'a', 'Ā' => 'A', 'ä' => 'ae', 'Ä' => 'AE', 'æ' => 'ae', 'Æ' => 'AE', 'ḃ' => 'b', 'Ḃ' => 'B', 'ć' => 'c', 'Ć' => 'C', 'ĉ' => 'c', 'Ĉ' => 'C', 'č' => 'c', 'Č' => 'C', 'ċ' => 'c', 'Ċ' => 'C', 'ç' => 'c', 'Ç' => 'C', 'ď' => 'd', 'Ď' => 'D', 'ḋ' => 'd', 'Ḋ' => 'D', 'đ' => 'd', 'Đ' => 'D', 'ð' => 'dh', 'Ð' => 'Dh', 'é' => 'e', 'É' => 'E', 'è' => 'e', 'È' => 'E', 'ĕ' => 'e', 'Ĕ' => 'E', 'ê' => 'e', 'Ê' => 'E', 'ě' => 'e', 'Ě' => 'E', 'ë' => 'e', 'Ë' => 'E', 'ė' => 'e', 'Ė' => 'E', 'ę' => 'e', 'Ę' => 'E', 'ē' => 'e', 'Ē' => 'E', 'ḟ' => 'f', 'Ḟ' => 'F', 'ƒ' => 'f', 'Ƒ' => 'F', 'ğ' => 'g', 'Ğ' => 'G', 'ĝ' => 'g', 'Ĝ' => 'G', 'ġ' => 'g', 'Ġ' => 'G', 'ģ' => 'g', 'Ģ' => 'G', 'ĥ' => 'h', 'Ĥ' => 'H', 'ħ' => 'h', 'Ħ' => 'H', 'í' => 'i', 'Í' => 'I', 'ì' => 'i', 'Ì' => 'I', 'î' => 'i', 'Î' => 'I', 'ï' => 'i', 'Ï' => 'I', 'ĩ' => 'i', 'Ĩ' => 'I', 'į' => 'i', 'Į' => 'I', 'ī' => 'i', 'Ī' => 'I', 'ĵ' => 'j', 'Ĵ' => 'J', 'ķ' => 'k', 'Ķ' => 'K', 'ĺ' => 'l', 'Ĺ' => 'L', 'ľ' => 'l', 'Ľ' => 'L', 'ļ' => 'l', 'Ļ' => 'L', 'ł' => 'l', 'Ł' => 'L', 'ṁ' => 'm', 'Ṁ' => 'M', 'ń' => 'n', 'Ń' => 'N', 'ň' => 'n', 'Ň' => 'N', 'ñ' => 'n', 'Ñ' => 'N', 'ņ' => 'n', 'Ņ' => 'N', 'ó' => 'o', 'Ó' => 'O', 'ò' => 'o', 'Ò' => 'O', 'ô' => 'o', 'Ô' => 'O', 'ő' => 'o', 'Ő' => 'O', 'õ' => 'o', 'Õ' => 'O', 'ø' => 'oe', 'Ø' => 'OE', 'ō' => 'o', 'Ō' => 'O', 'ơ' => 'o', 'Ơ' => 'O', 'ö' => 'oe', 'Ö' => 'OE', 'ṗ' => 'p', 'Ṗ' => 'P', 'ŕ' => 'r', 'Ŕ' => 'R', 'ř' => 'r', 'Ř' => 'R', 'ŗ' => 'r', 'Ŗ' => 'R', 'ś' => 's', 'Ś' => 'S', 'ŝ' => 's', 'Ŝ' => 'S', 'š' => 's', 'Š' => 'S', 'ṡ' => 's', 'Ṡ' => 'S', 'ş' => 's', 'Ş' => 'S', 'ș' => 's', 'Ș' => 'S', 'ß' => 'SS', 'ť' => 't', 'Ť' => 'T', 'ṫ' => 't', 'Ṫ' => 'T', 'ţ' => 't', 'Ţ' => 'T', 'ț' => 't', 'Ț' => 'T', 'ŧ' => 't', 'Ŧ' => 'T', 'ú' => 'u', 'Ú' => 'U', 'ù' => 'u', 'Ù' => 'U', 'ŭ' => 'u', 'Ŭ' => 'U', 'û' => 'u', 'Û' => 'U', 'ů' => 'u', 'Ů' => 'U', 'ű' => 'u', 'Ű' => 'U', 'ũ' => 'u', 'Ũ' => 'U', 'ų' => 'u', 'Ų' => 'U', 'ū' => 'u', 'Ū' => 'U', 'ư' => 'u', 'Ư' => 'U', 'ü' => 'ue', 'Ü' => 'UE', 'ẃ' => 'w', 'Ẃ' => 'W', 'ẁ' => 'w', 'Ẁ' => 'W', 'ŵ' => 'w', 'Ŵ' => 'W', 'ẅ' => 'w', 'Ẅ' => 'W', 'ý' => 'y', 'Ý' => 'Y', 'ỳ' => 'y', 'Ỳ' => 'Y', 'ŷ' => 'y', 'Ŷ' => 'Y', 'ÿ' => 'y', 'Ÿ' => 'Y', 'ź' => 'z', 'Ź' => 'Z', 'ž' => 'z', 'Ž' => 'Z', 'ż' => 'z', 'Ż' => 'Z', 'þ' => 'th', 'Þ' => 'Th', 'µ' => 'u', 'а' => 'a', 'А' => 'a', 'б' => 'b', 'Б' => 'b', 'в' => 'v', 'В' => 'v', 'г' => 'g', 'Г' => 'g', 'д' => 'd', 'Д' => 'd', 'е' => 'e', 'Е' => 'E', 'ё' => 'e', 'Ё' => 'E', 'ж' => 'zh', 'Ж' => 'zh', 'з' => 'z', 'З' => 'z', 'и' => 'i', 'И' => 'i', 'й' => 'j', 'Й' => 'j', 'к' => 'k', 'К' => 'k', 'л' => 'l', 'Л' => 'l', 'м' => 'm', 'М' => 'm', 'н' => 'n', 'Н' => 'n', 'о' => 'o', 'О' => 'o', 'п' => 'p', 'П' => 'p', 'р' => 'r', 'Р' => 'r', 'с' => 's', 'С' => 's', 'т' => 't', 'Т' => 't', 'у' => 'u', 'У' => 'u', 'ф' => 'f', 'Ф' => 'f', 'х' => 'h', 'Х' => 'h', 'ц' => 'c', 'Ц' => 'c', 'ч' => 'ch', 'Ч' => 'ch', 'ш' => 'sh', 'Ш' => 'sh', 'щ' => 'sch', 'Щ' => 'sch', 'ъ' => '', 'Ъ' => '', 'ы' => 'y', 'Ы' => 'y', 'ь' => '', 'Ь' => '', 'э' => 'e', 'Э' => 'e', 'ю' => 'ju', 'Ю' => 'ju', 'я' => 'ja', 'Я' => 'ja');
+        return str_replace(array_keys($transliterationTable), array_values($transliterationTable), $txt);
+    }
+
+    public function deleteFile(Request $request, $id)
+    {
+        $attachement = Attachment::find($id);
+
+        $pathSociety = Auth()->user()->society->name;
+        $appPath = public_path() . '/app/SfTicket' . '/' . $pathSociety;
+        $destinationPath = $appPath . '/' . $request->get('elementID') . '/' . $attachement->name;
+        unlink($destinationPath);
+        $attachement->delete();
+    }
+
+    public function editDescription(Request $request, $id)
+    {
+        $ticket = Ticket::findOrFail($id);
+        $ticket->description = $request->get('description');
+        $ticket->save();
+//        return $ticket;
+    }
+
+    public function sendEmail(Request $request){
+        $ticket = Ticket::findOrFail($request->ticket);
+        $user = User::findOrFail($request->user);
+        $leader = User::where('society_id', $user->society_id)->where('role', 'leader')->get();
+        $this->dispatch(new NewTicketJob($ticket, $user, $leader));
+//        return response('Email Envoyé ! ');
+    }
 }

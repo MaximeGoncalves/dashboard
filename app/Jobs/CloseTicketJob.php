@@ -26,15 +26,21 @@ class CloseTicketJob implements ShouldQueue
     private $user;
 
     /**
+     * @property  leader
+     */
+    private $leaders;
+
+    /**
      * Create a new job instance.
      *
      * @param Ticket $ticket
      * @param User $user
      */
-    public function __construct(Ticket $ticket, User $user)
+    public function __construct(Ticket $ticket, User $user, $leaders)
     {
         $this->ticket = $ticket;
         $this->user = $user;
+        $this->leaders = $leaders;
     }
 
     /**
@@ -45,7 +51,11 @@ class CloseTicketJob implements ShouldQueue
     public function handle()
     {
         $softease = 'technique@softease.fr';
-//        $leaders = User::where('role', 'leader')->where('society_id', $this->user->society_id)->get();
-        Mail::to($this->user->email)->cc($softease)->send(new CloseTicketEmail($this->ticket));
+        $cc = [];
+        foreach ($this->leaders as $leader){
+            $cc[] = $leader->email;
+        }
+        $cc[] = $softease;
+        Mail::to($this->user->email)->cc($cc)->send(new CloseTicketEmail($this->ticket));
     }
 }

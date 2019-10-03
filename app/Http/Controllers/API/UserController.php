@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Society;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -27,10 +28,11 @@ class UserController extends Controller
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('isAdmin');
-        return User::with('society')->latest()->paginate(50);
+        $users = User::with('society')->where('society_id', $request->society)->latest()->paginate(10);
+        return response($users);
     }
 
     /**
@@ -63,7 +65,8 @@ class UserController extends Controller
         $user->profession = $request->profession;
         $user->phone = $request->phone;
         $user->save();
-        return response()->json(['success' => 'Done!']);
+        $user->load('society');
+        return response($user);
     }
 
     /**
@@ -106,7 +109,8 @@ class UserController extends Controller
         $user->profession = $request->profession;
         $user->phone = $request->phone;
         $user->save();
-        return response(['message' => 'success']);
+        $user->load('society');
+        return response($user);
     }
 
     /**
@@ -175,7 +179,17 @@ class UserController extends Controller
         $search = $request->search;
         return $users = User::with('society')
             ->where('name', 'like', "%$search%")
-            ->orWhere('fullname', 'like', "%$search%")->get();
+            ->orWhere('fullname', 'like', "%$search%")
+            ->orWhere('email', 'like', "%$search%")->paginate(10);
 
+    }
+
+    public function getAllUsers(){
+        return $allusers = User::all();
+//        $members = [];
+//        foreach($allusers as $member){
+//            $members[] = $member->name;
+//        }
+//        return $members;
     }
 }

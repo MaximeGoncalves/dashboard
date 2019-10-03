@@ -15,7 +15,7 @@
                             @csrf
                             @if (isset($errors) && count($errors))
 
-                                There were {{count($errors->all())}} Error(s)
+                                Nous rencontrons {{count($errors->all())}} erreur(s)
                                 <ul>
                                     @foreach($errors->all() as $error)
                                         <li>{{ $error }} </li>
@@ -28,7 +28,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="ni ni-email-83"></i></span>
                                     </div>
-                                    <input class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" placeholder="{{ __('Username') }}" type="text" name="name" value="{{ old('email') }}" required autofocus>
+                                    <input class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" placeholder="{{ __('Identifiant') }}" type="text" name="name" value="{{ old('email') }}" required autofocus>
                                 </div>
                                 @if ($errors->has('email'))
                                     <span class="invalid-feedback" style="display: block;" role="alert">
@@ -41,7 +41,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
                                     </div>
-                                    <input class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="{{ __('Password') }}" type="password" required>
+                                    <input class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="{{ __('Mot de passe') }}" type="password" required>
                                 </div>
                                 @if ($errors->has('password'))
                                     <span class="invalid-feedback" style="display: block;" role="alert">
@@ -52,11 +52,11 @@
                             <div class="custom-control custom-control-alternative custom-checkbox">
                                 <input class="custom-control-input" name="remember" id="customCheckLogin" type="checkbox" {{ old('remember') ? 'checked' : '' }}>
                                 <label class="custom-control-label" for="customCheckLogin">
-                                    <span class="text-muted">{{ __('Remember me') }}</span>
+                                    <span class="text-muted">{{ __('Se souvenir de moi') }}</span>
                                 </label>
                             </div>
                             <div class="text-center">
-                                <button type="submit" class="btn btn-primary my-4">{{ __('Sign in') }}</button>
+                                <button type="submit" class="btn btn-primary my-4">{{ __('Se connecter') }}</button>
                             </div>
                         </form>
                     </div>
@@ -65,7 +65,7 @@
                     <div class="col-12">
                         @if (Route::has('password.request'))
                             <a href="{{ route('password.request') }}" class="text-light">
-                                <small>{{ __('Forgot password?') }}</small>
+                                <small>{{ __('Mot de passe oublié ?') }}</small>
                             </a>
                         @endif
                     </div>

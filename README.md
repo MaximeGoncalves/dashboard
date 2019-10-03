@@ -17,16 +17,16 @@
 - [x] Empecher l'acces au ticket X via url
 - [x] Mettre en place la pagination
 - [x] Envoyer mail de confirmation
-- [ ] Envoyer mail de lors d'un commentaire
+- [x] Envoyer mail de lors d'un commentaire
 
 
 ## Login
 - [x] Créer, afficher, modifier supprimé un login
 
 ## Base de connaissance
-- [ ] Possibilité de créer une catégorie
+- [x] Possibilité de créer une catégorie
 - [ ] Possibilité de créer une Folder
-- [ ] Créer une connaissance, editer, supprimer
+- [x] Créer une connaissance, editer, supprimer
 
 ## Profile
 - [ ] Ajouter téléphone et profession

@@ -8,71 +8,71 @@ use App\Jobs\NewMessageJob;
 use App\Mail\NewMessageEmail;
 use App\Message;
 use App\Notifications\NewMessage;
+use App\Task;
 use App\Ticket;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 class MessageController extends Controller
 {
 
-    public function index (Request $request){
-
-        $messages = Message::where('ticket_id', $request->get('ticket'))->whereNull('to_id')->get();
+    public function index(Request $request)
+    {
+        $messages = Message::where('commentable_id', $request->get('element'))->whereNull('to_id')->get();
         return response()->json(['messages' => $messages]);
     }
+
     /**
      * @param Request $request
      * @param $ticket
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request, $ticket)
+    public function store(Request $request, $id)
     {
 
         $this->validate($request, [
             'content' => 'required',
+            'type' => 'required'
         ]);
 
-        $ticket = Ticket::findOrFail($ticket);
+        $type = $request->get('type');
+        $element = $type == 'Ticket' ? Ticket::findOrFail($id) : Task::findOrFail($id);
         $message = new Message();
         $message->content = $request->get('content');
         $message->from_id = Auth::user()->id;
-        $message->ticket()->associate($ticket);
+        $message->commentable_type = $type == 'Ticket' ? Ticket::class : Task::Class;
+        $message->commentable_id = $element->id;
 
         // Si c'est une response à un message :
-        if ($request->to_id):
+        if ($request->to_id) {
             $message->to_id = $request->to_id;
-            $toId = Message::with('from')->findOrFail($request->to_id);
-            $action = new Action();
-            $action->content = 'à répondu à ' . $toId->from->fullname;
-            $action->from_id = Auth::user()->id;
-            $action->ticket()->associate($ticket);
-            $action->save();
-            $this->dispatch(new NewMessageJob($ticket, $toId->from, $response = true));
-        else:
+            if ($type == 'Ticket') {
+                $toId = Message::with('from')->findOrFail($request->to_id);
+                $user = User::findOrFail($element->user_id);
+                $leader = User::where('society_id', $user->society_id)->where('role', 'leader')->get();
+                $action = new Action();
+                $action->content = 'à répondu à ' . $toId->from->fullname;
+                $action->from_id = Auth::user()->id;
+                $action->ticket()->associate($element);
+                $action->save();
+                $this->dispatch(new NewMessageJob($element, $toId->from,$leader, $response = true));
+            }
+        } elseif (!$request->to_id && $type == 'Ticket') {
             $action = new Action();
             $action->content = 'à poster un message';
             $action->from_id = Auth::user()->id;
-            $action->ticket()->associate($ticket);
+            $action->ticket()->associate($element);
             $action->save();
-            $user = User::findOrFail($ticket->user_id);
-            $this->dispatch(new NewMessageJob($ticket, $user, $response = false));
-
-        endif;
+            $user = User::findOrFail($element->user_id);
+            $leader = User::where('society_id', $user->society_id)->where('role', 'leader')->get();
+            $this->dispatch(new NewMessageJob($element, $user, $leader, $response = false));
+        }
         $message->save();
 
-        $message->load('from');
-
-
-//        $user = User::find($message->to_id);
-        //send message
-//        if($user->id !== 1){
-//        $softease = User::find(1);
-//        $softease->notify(new NewMessage($message, $ticket));
-//        }
-//        $user->notify(new NewMessage($message, $ticket));
-
+        $message->load(['from', 'parent']);
         return response()->json(['messages' => $message]);
     }
 
@@ -97,10 +97,42 @@ class MessageController extends Controller
         return response()->json(['message' => 'success']);
     }
 
-    public function destroy(int $message, int $ticket)
+    public function destroy(int $message)
     {
-        $ticket = Ticket::findOrFail($ticket);
+//        $ticket = Ticket::findOrFail($ticket);
         Message::destroy($message);
-        return redirect(route('ticket.show', ['id' => $ticket->id]));
+    }
+
+    private function getMentionUsers($request)
+    {
+        $content = str_word_count($request, 1, '@');
+
+        $users = [];
+        foreach ($content as $word) {
+
+            if (($pos = strpos($word, "@")) !== FALSE) {
+                $whatIWant = substr($word, $pos + 1);
+                $users[] = $whatIWant;
+            }
+        }
+        return $users;
+    }
+
+//    non fonctionnell , en cours ...
+    public function sendEmailMessage(Request $request)
+    {
+
+        $message = Message::findOrFail($request->message);
+        $ticket = Ticket::findOrfail($request->commentable_id);
+        $user = User::findOrFail($ticket->user_id);
+        $leader = User::where('society_id', $user->society_id)->where('role', 'leader')->get();
+
+        if ($message->to_id) {
+            $toId = Message::with('from')->findOrFail($request->to_id);
+            $this->dispatch(new NewMessageJob($ticket, $user, $leader, $response = true));
+
+        } else {
+            $this->dispatch(new NewMessageJob($ticket, $user, $leader, $response = false));
+        }
     }
 }

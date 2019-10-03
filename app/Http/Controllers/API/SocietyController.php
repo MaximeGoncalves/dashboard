@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Society;
+use App\Ticket;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -16,8 +18,11 @@ class SocietyController extends Controller
      */
     public function index()
     {
-        return $society = Society::all();
-
+        $society = Society::all();
+        $society->load('users');
+        return response($society)->header('Access-Control-Allow-Origin', '*')
+            ->header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+            ->header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, X-Token-Auth, Authorization");
     }
 
     /**
@@ -57,7 +62,12 @@ class SocietyController extends Controller
      */
     public function show($id)
     {
-        return $society = Society::findOrFail($id);
+        $society = Society::findOrFail($id);
+        $users = User::with('society')->where('society_id', $society->id)->paginate(5);
+        $society->users = $users;
+        $tickets = $this->TicketsThisYear($society->id);
+
+        return response(['society' => $society,'tickets' => $tickets]);
     }
 
     /**
@@ -108,7 +118,32 @@ class SocietyController extends Controller
     public function search(Request $request)
     {
         $search = $request->search;
-        return $society = Society::where('name', 'like', "%$search%")->get();
+        return $society = Society::with('users')->where('name', 'like', "%$search%")->get();
 
     }
+
+    private function TicketsThisYear($id)
+    {
+        $date = Carbon::now();
+        $data = Ticket::where('society_id', $id)->whereYear('created_at', $date)->get()->groupBy(function ($val) {
+            return Carbon::parse($val->created_at)->format('m');
+        });
+        $tickets = [];
+        for ($i = 0; $i < 12; $i++) {
+            foreach ($data as $key => $ticket) {
+                if (array_key_exists($i, $tickets)) {
+                    continue;
+                } elseif ($key == $i + 1) {
+                    $tickets[] = $ticket->count();
+                    unset($data[$key]);
+                } else {
+                    $tickets[] = 0;
+                }
+            }
+        }
+
+        return $tickets;
+    }
+
+
 }

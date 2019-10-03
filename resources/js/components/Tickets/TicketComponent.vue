@@ -1,177 +1,210 @@
 <template>
     <div>
         <div v-if="ticket && unauthorized === false ">
-            <div class="row">
-                <div class="col-12 col-md-8">
-                    <div class="card shadow mb-2">
-                        <div class="card-header p-0" style="border-bottom: none;">
-                            <div class="nav-wrapper p-0">
-                                <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="tabs-icons-text"
-                                    role="tablist">
-                                    <li class="nav-item">
-                                        <a class="nav-link mb-sm-3 mb-md-0 active rounded-left-one"
-                                           id="tabs-icons-text-1-tab" data-toggle="tab"
-                                           href="#ticket" role="tab" aria-controls="tabs-icons-text-1"
-                                           aria-selected="true"
-                                           style="box-shadow: none; border-top-left-radius: 0.375rem;">
-                                            <i class="fas fa-file-alt mr-2"></i>Ticket</a>
-                                    </li>
-                                    <li class="nav-item" v-if="$gate.isAdmin()">
-                                        <a class="nav-link mb-sm-3 mb-md-0 rounded-right-one" id="tabs-icons-text-3-tab"
-                                           data-toggle="tab"
-                                           href="#tabs-icons-text-3" role="tab" aria-controls="tabs-icons-text-3"
-                                           aria-selected="false"
-                                           style="box-shadow: none;border-top-right-radius: 0.375rem;"><i
-                                            class="fas fa-cogs mr-2"></i>Détails</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="card-body" v-if="ticket.state">
-                            <div class="tab-content" id="myTabContent">
-                                <div class="tab-pane fade show active" id="ticket" role="tabpanel"
-                                     aria-labelledby="tabs-icons-text-1-tab">
-                                    <div class="card-body">
-                                        <h2 class="d-inline mb-3">{{ this.ticket.topic }}</h2>
-                                        <i class="fas fa-bookmark text-info"
-                                           v-if="ticket.state.id == '1'" data-toggle="tooltip" data-placement="top"
-                                           title="Pending"></i>
-                                        <i class="fas fa-bookmark text-success"
-                                           v-if="ticket.state.id == '2'" data-toggle="tooltip" data-placement="top"
-                                           title="Open"></i>
-                                        <i class="fas fa-bookmark text-warning"
-                                           v-if="ticket.state.id == '3'" data-toggle="tooltip" data-placement="top"
-                                           title="Wainting customer"></i>
-                                        <i class="fas fa-bookmark text-dark"
-                                           v-if="ticket.state.id == '4'" data-toggle="tooltip" data-placement="top"
-                                           title="Closed"></i>
-                                        <br>
-                                        <small class="">{{ ticket.user.fullname}}</small>
-                                        -
-                                        <small class="">{{ ticket.society.name}}</small>
-                                        <div class="mb-4"></div>
-                                        <h4>Description :</h4>
-                                        <p v-html="ticket.description"></p>
-                                    </div>
-                                    <div class="card-footer mt-3">
-                                        <div class="row">
-                                            <div class="col-12 col-md-4">
-                                                <h4>Date de création</h4>
-                                                <small>{{ticket.created_at | formatDate}}</small>
-                                            </div>
-                                            <div class="col-12 col-md-4" v-if="ticket.source">
-                                                <h4>Source</h4>
-                                                <small>{{ ticket.source.name }}</small>
-                                            </div>
-                                            <div class="col-12 col-md-4">
-                                                <h4>Priorité</h4>
-                                                <small>{{ this.ticket.importance }}</small>
-                                            </div>
-                                        </div>
-                                        <h4 class="mt-5">Technicien :</h4>
-                                        <img v-if="ticket.technician.user" :src="getProfilePhoto(ticket.technician)"
-                                             class="avatar avatar-sm "
-                                             data-toggle="tooltip"
-                                             data-placement="bottom"
-                                             :title="ticket.technician.user.name">
-                                        <div v-else>N/A</div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="tabs-icons-text-3" role="tabpanel"
-                                     aria-labelledby="tabs-icons-text-3-tab">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-12 col-md-6">
-                                                <h4>Détails utilisateur</h4>
-                                                <br>
-                                                <p><span class="font-weight-bold">Identifiant : </span><span
-                                                    class="ml-2">{{ ticket.user.id }}</span>
-                                                </p>
+            <header-ticket-component
+                :element="ticket"
+                type="Ticket"
+                v-on:addNote="addcomment = false, addNote = true"
+                v-on:addComment="addNote = false, addcomment = true"
+                v-on:deleteTicket="deleteTicket()"
+            ></header-ticket-component>
+            <div class="row m-0" style="height: calc(100vh - 82px - 85.375px);">
+                <div class="pl-4 pt-2 border-left border-right ticket-detail"
+                     :class="$gate.isAdmin() ? 'col-12 col-md-8' : 'col-10'  "
+                     style="max-height:calc(100vh - 82px - 85.375px); overflow-y:scroll; overflow-x:hidden">
+                    <ticket-description-component :ticket="ticket"
+                                                  v-on:addComment="addcomment = true"></ticket-description-component>
 
-                                                <p><span class="font-weight-bold">Nom complet :</span> <span
-                                                    class="ml-2"> {{ ticket.user.fullname }}</span>
-                                                </p>
-                                                <p><span class="font-weight-bold">E-mail :</span> <span class="ml-2">{{ ticket.user.email }}</span>
-                                                </p>
-                                                <p><span class="font-weight-bold">Rôle : </span><span class="ml-2">{{ ticket.user.role }}</span>
-                                                </p>
-
-                                            </div>
-                                            <div class="col-12 col-md-6 ">
-                                                <h3>Paramètres</h3>
-
-                                                <h4 class="mt-3 mb--3">Technicien</h4>
-                                                <form @submit.prevent="updateTicket">
-                                                    <v-select label="fullname"
-                                                              :options="technicians"
-                                                              :clearable="false"
-                                                              v-model="ticket.technician.user"
-                                                              class="mt-3 form-control-alternative"
-                                                              placeholder="Technician"></v-select>
-
-                                                    <h4 class="mt-2 mb--3">Sources</h4>
-                                                    <v-select label="name"
-                                                              :options="sources"
-                                                              v-model="ticket.source"
-                                                              class=" mt-3 form-control-alternative"
-                                                              :clearable="false"
-                                                              placeholder="Sources"></v-select>
-                                                    <h4 class="mt-2 mb--3">Priorité</h4>
-                                                    <v-select class=" mt-3 form-control-alternative"
-                                                              placeholder="Priorité"
-                                                              :clearable="false"
-                                                              v-model="ticket.importance"
-                                                              :options="['Normal','Urgent']"></v-select>
-
-                                                    <h4 class="mt-2 mb--3 ">État</h4>
-                                                    <v-select class="mt-3 form-control-alternative"
-                                                              label="name"
-                                                              placeholder="État"
-                                                              :clearable="false"
-                                                              v-model="ticket.state"
-                                                              :options="states"></v-select>
-                                                    <button type="submit" class="btn btn-primary float-right mt-3">Save
-                                                    </button>
-                                                </form>
-                                                <a class="btn btn-danger mt-3 text-white"
-                                                   @click="deleteTicket">Supprimer</a>
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
+                    <!-- Activités -->
+                    <div class="row mt-3" v-if="messages != 0">
+                        <div class="col-05"></div>
+                        <div class="col-11">
+                            <h2>Activitées</h2>
                         </div>
                     </div>
-                    <div class="card shadow mb-2">
+                    <div class="mb-2" v-for="message in messages">
+                        <message-component :msg="message" v-on:commentAdded="addComment($event)"></message-component>
+                    </div>
+                    <div class="card shadow mb-2" id="note" name="note" v-show="addNote">
                         <div class="card-body">
-                            <h4 class="card-title">Nouveau message</h4>
-                            <form @submit.prevent="addMessage">
+                            <h4 class="card-title">Nouvelle note</h4>
+                            <form @submit.prevent="addNotes">
                                 <div class="form-group" :class="errors.content ? 'has-danger' : ''">
-                            <textarea name="content" id="comment" cols="30" rows="3" class="form-control"
-                                      v-model="message"></textarea>
+                                    <editor ref="tuiEditor"
+                                            v-model="note"
+                                            :options="editorOptions"
+                                            :html="editorHtml"
+                                            :mode="editorMode"
+                                            :previewStyle="editorPreviewStyle"
+                                            height="200px"></editor>
                                     <small v-if="errors.content" :class="errors.content ? 'text-danger' : ''"
                                            v-for="error in errors.content">{{ error }}
                                     </small>
                                     <div class="row">
-                                        <div class="col-12 d-flex justify-content-end">
-                                            <button class="btn btn-primary mt-2 mb-2">Envoyer</button>
+                                        <div class="col-12 d-flex justify-content-end align-items-center">
+                                            <div v-if="$gate.isAdmin() && addNote == true"
+                                                 class="d-flex justify-content-end align-items-center">
+                                                <span class="mb-1 mr-2">Privé</span>
+                                                <label class="custom-toggle">
+                                                    <input type="checkbox" v-model="privateNote">
+                                                    <span class="custom-toggle-slider rounded-circle"></span>
+                                                </label>
+                                            </div>
+                                            <button class="btn btn-success my-2 ml-3">Envoyer</button>
                                         </div>
                                     </div>
-
                                 </div>
                             </form>
-                            <div class="row" v-for="message in messages">
-                                <message-component :msg="message" :key="message.id"></message-component>
-                            </div>
+                        </div>
+                    </div>
+                    <div class="card shadow mb-2" id="textarea-comment" v-if="addcomment">
+                        <div class="card-body">
+                            <h4 class="card-title">Nouveau message</h4>
+                            <form @submit.prevent="addMessage">
+                                <div class="form-group" :class="errors.content ? 'has-danger' : ''">
+                                    <editor ref="tuiEditor"
+                                            v-model="message"
+                                            :options="editorOptions"
+                                            :html="editorHtml"
+                                            :mode="editorMode"
+                                            :previewStyle="editorPreviewStyle"
+                                            height="200px"></editor>
+                                    <small v-if="errors.content" :class="errors.content ? 'text-danger' : ''"
+                                           v-for="error in errors.content">{{ error }}
+                                    </small>
+                                    <div class="row">
+                                        <div class="col-12 d-flex justify-content-end align-items-center">
+
+                                            <button class="btn btn-success my-2 ml-3">Envoyer</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-4">
-                    <attachments-component :ticket="ticket"></attachments-component>
-                    <action-component :actions="actions" :ticket="ticket"></action-component>
+                <div class=" bg-white p-0 " :class="$gate.isAdmin()? 'col-12 col-md-4' : 'col-12 col-md-2'">
+                    <div class="row m-0 h-100">
+                        <div class="col-6 border-right py-3" v-if="$gate.isAdmin()">
+                            <h3>Propriétés</h3>
+
+                            <form @submit.prevent="updateTicket">
+                                <h4 class="mt-3 mb--2">Technicien</h4>
+                                <v-select label="fullname"
+                                          :options="technicians"
+                                          :clearable="false"
+                                          v-model="ticket.technician.user"
+                                          class="mt-3 form-control-alternative"
+                                          placeholder="Technician"></v-select>
+                                <div class="mb-3"></div>
+
+                                <h4 class="mt-2 mb--2">Sources</h4>
+                                <v-select label="name"
+                                          :options="sources"
+                                          v-model="ticket.source"
+                                          class=" mt-3 form-control-alternative"
+                                          :clearable="false"
+                                          placeholder="Sources"></v-select>
+                                <div class="mb-3"></div>
+                                <h4 class="mt-2 mb--2">Type</h4>
+                                <v-select label="name"
+                                          :options="types"
+                                          v-model="ticket.type"
+                                          class=" mt-3 form-control-alternative"
+                                          :clearable="false"
+                                          placeholder="Types"></v-select>
+                                <div class="mb-3"></div>
+
+                                <h4 class="mt-2 mb--2">Priorité</h4>
+                                <v-select class=" mt-3 form-control-alternative"
+                                          placeholder="Priorité"
+                                          :clearable="false"
+                                          v-model="ticket.importance"
+                                          :options="['Normal','Urgent']"></v-select>
+                                <div class="mb-3"></div>
+
+                                <h4 class="mt-2 mb--2 ">État</h4>
+                                <v-select class="mt-3 form-control-alternative"
+                                          label="name"
+                                          placeholder="État"
+                                          :clearable="false"
+                                          v-model="ticket.state"
+                                          :options="states"></v-select>
+
+                                <button type="submit" class="btn btn-success float-right mt-3">
+                                    Enregistrer
+                                </button>
+                            </form>
+
+                        </div>
+                        <div class="col-6 p-0 bg-white" :class="$gate.isAdmin() ? 'col-6' : 'col-12' ">
+                            <div class="accordion" id="accordionExample">
+                                <div class="card border-none border-bottom">
+                                    <div class="card-header p-2" id="headingOne" data-toggle="collapse"
+                                         data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        <h3>Details du ticket</h3>
+                                    </div>
+                                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                                         data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <p class="font-weight-bold">Date de création : <span
+                                                class="font-weight-normal">{{ticket.created_at | formatDate}}</span>
+                                            </p>
+                                            <p class="font-weight-bold">Source : <span
+                                                class="font-weight-normal">{{ ticket.source.name }}</span></p>
+                                            <p class="font-weight-bold">Priorité : <span
+                                                class="font-weight-normal">{{ this.ticket.importance }}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header p-2" id="headingTwo" data-toggle="collapse"
+                                         data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                        <h3>Détails de l'utilisateur</h3>
+                                    </div>
+                                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+                                         data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <p><span class="font-weight-bold">Identifiant : </span><span
+                                                class="ml-2">{{ ticket.user.id }}</span>
+                                            </p>
+                                            <p>
+                                                <span class="font-weight-bold">Nom complet :</span> <span
+                                                class="ml-2"> {{ ticket.user.fullname }}</span>
+                                            </p>
+                                            <p>
+                                                <span class="font-weight-bold">E-mail :</span>
+                                                <span class="ml-2">{{ ticket.user.email }}</span>
+                                            </p>
+                                            <p>
+                                                <span class="font-weight-bold">Rôle : </span>
+                                                <span class="ml-2">{{ ticket.user.role }}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header p-2" id="headingThree" data-toggle="collapse"
+                                         data-target="#collapseThree" aria-expanded="false" aria-controls="collapseTwo">
+                                        <h3>Historique</h3>
+                                    </div>
+                                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                                         data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div v-for="action in ticket.actions">
+                                                <p><span class="font-weight-bold">{{action.from.fullname}}</span><br>
+                                                    {{action.content}}<br>
+                                                    <small>{{action.created_at | fullDate}}</small>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -184,48 +217,78 @@
 
 <script>
 import actionComponent from './TicketActionsComponent'
-
-import AttachmentsComponent from './TicketAttachmentsComponent'
+import {Editor, Viewer} from '@toast-ui/vue-editor';
+import vClickOutside from 'v-click-outside'
+import HeaderTicketComponent from './HeaderTicketComponent'
+import TicketDescriptionComponent from './TicketDescriptionComponent'
 
 export default {
+
+    directives: {
+        clickOutside: vClickOutside.directive
+    },
     components: {
+        HeaderTicketComponent,
+        TicketDescriptionComponent,
         actionComponent,
-        AttachmentsComponent
+        Editor,
+        Viewer,
     },
     data() {
         return {
+            editorOptions: {
+                minHeight: '0',
+                hideModeSwitch: false,
+                toolbarItems: [
+                    'bold',
+                    'italic',
+                    'strike',
+                    'ul',
+                    'ol',
+                    'indent',
+                    'outdent',
+                    'divider',
+                    'table',
+                ]
+            },
+            editorHtml: '',
+            editorMode: 'wysiwyg',
+            editorVisible: true,
+            editorPreviewStyle: 'vertical',
+            edit: false,
             unauthorized: false,
             ticket: {},
             errors: [],
             message: '',
+            note: '',
+            privateNote: true,
             messages: {},
-            actions: {}
+            actions: {},
+            editDescription: false,
+            technicians: {},
+            types: {},
+            addcomment: false,
+            addNote: false,
+
         }
     }
     ,
     methods: {
-
-        getProfilePhoto(tech) {
-            if (tech['user']) {
-                if (tech['user'].photo !== 'profile.png') {
-                    return '/img/profile/' + tech['user'].name + '/' + tech['user'].photo
-                } else {
-                    return '/img/profile/profile.png'
-                }
-            }
+        addComment($event) {
+            this.messages.push($event);
         },
         updateTicket() {
             this.$Progress.start()
-            let tech
+            let tech, type
             if (this.ticket.technician.user) {
                 tech = this.ticket.technician.user.id
-                console.log(tech)
             }
             axios.put('/api/tickets/' + this.ticket.id, {
                 technician: tech,
                 source: this.ticket.source.id,
                 importance: this.ticket.importance,
-                state: this.ticket.state.id
+                state: this.ticket.state.id,
+                type: this.ticket.type ? this.ticket.type.id : null
             }).then(result => {
                 this.$toasted.global.flash({message: "Le ticket à été mis à jour"});
                 this.$Progress.finish()
@@ -268,7 +331,8 @@ export default {
                 this.technicians = result.data.technicians
                 this.states = result.data.states
                 this.messages = result.data.messages
-                this.actions = result.data.actions.reverse()
+                this.types = result.data.types
+                this.actions = result.data.actions
                 if (!this.ticket.technician) {
                     this.ticket.technician = {}
                 }
@@ -277,15 +341,31 @@ export default {
         addMessage() {
             this.$Progress.start();
             axios.post('/api/message/' + this.ticket.id, {
-                content: this.message
-            }).then(result => {
+                content: this.message,
+                type: 'Ticket'
+            }).then(response => {
                 this.$Progress.finish();
                 this.message = ""
+                this.addcomment = false;
                 this.$toasted.global.flash({message: "Votre commentaire à bien été ajouté"});
-                Fire.$emit('addMessage', this.ticket.id)
-                console.log(result)
+                this.messages.push(response.data.messages)
             }).catch(error => {
-                console.log(error)
+                this.errors = error.response.data.errors;
+                this.$Progress.fail();
+            })
+        },
+        addNotes() {
+            this.$Progress.start();
+            axios.post('/api/note/' + this.ticket.id, {
+                content: this.note,
+                private: this.privateNote
+            }).then(response => {
+                this.$Progress.finish();
+                this.note = ""
+                this.addNote = false;
+                this.$toasted.global.flash({message: "Votre note à bien été ajoutée"});
+                this.messages.push(response.data)
+            }).catch(error => {
                 this.errors = error.response.data.errors;
                 this.$Progress.fail();
             })
@@ -296,26 +376,14 @@ export default {
                     ticket: id,
                 }
             }).then(response => {
-                console.log(response)
                 this.actions = response.data.actions.reverse()
             })
         },
-    }
-    ,
+    },
     mounted() {
 
         this.loadTicket()
         Fire.$on('addAction', (id) => {
-            this.loadAction(id)
-        })
-        Fire.$on('addMessage', (id) => {
-            axios.get('/api/message', {
-                params: {
-                    ticket: id,
-                }
-            }).then(response => {
-                this.messages = response.data.messages
-            })
             this.loadAction(id)
         })
         Fire.$on('updateTicket', (id) => {
@@ -328,6 +396,22 @@ export default {
 
 <style>
 
+    .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+        color: #fff;
+        background-color: #172b4d;
+    }
+
+    .nav-pills .nav-link:hover {
+        color: #172b4d;
+    }
+
+    .nav-pills .nav-link.active:hover {
+        color: #fff;
+    }
+
+    .nav-pills .nav-link {
+        color: #172b4d;
+    }
 
     .nav-pills .nav-item:not(:last-child) {
         padding-right: 0;
@@ -380,5 +464,28 @@ export default {
 
     small p {
         margin-bottom: 0 !important;
+    }
+
+    .accordion .card-header {
+        position: relative;
+    }
+
+    .accordion .card-header:after {
+        font: normal normal normal 14px/1 NucleoIcons;
+        line-height: 0;
+        position: absolute;
+        top: 50%;
+        right: 1.5rem;
+        content: '\ea0f';
+        transition: all .15s cubic-bezier(.68, -.55, .265, 1.55);
+        transform: translateY(-50%);
+    }
+
+    .accordion .card-header[aria-expanded=false]:after {
+        content: '\ea0f';
+    }
+
+    .accordion .card-header[aria-expanded=true]:after {
+        transform: rotate(180deg);
     }
 </style>

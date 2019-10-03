@@ -25,9 +25,6 @@
     <!-- Argon CSS -->
     <link type="text/css" href="/argon/css/argon.min.css" rel="stylesheet">
     <link type="text/css" href="/css/app.css" rel="stylesheet">
-    {{--<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />--}}
-    {{--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css">--}}
-
 </head>
 <body>
 
@@ -92,7 +89,7 @@
                     <div class="row">
                         <div class="col-6 collapse-brand">
                             <router-link to="/">
-                                <img src="/argon/img/brand/blue.png">
+                                <img src="/images/logo-sf.svg">
                             </router-link>
                         </div>
                         <div class="col-6 collapse-close">
@@ -141,12 +138,7 @@
 
                         <li class="nav-item">
                             <router-link class="nav-link" to="/societies">
-                                <i class="fa fa-building text-red"></i> Sociétés
-                            </router-link>
-                        </li>
-                        <li class="nav-item">
-                            <router-link class="nav-link" to="/users">
-                                <i class="fas fa-users text-blue"></i> Utilisateurs
+                                <i class="fa fa-building text-red"></i> Clients
                             </router-link>
                         </li>
                         <li class="nav-item">
@@ -174,12 +166,18 @@
                         </router-link>
                     </li>
                     @can('isAdmin')
+                    <li class="nav-item">
+                        <router-link class="nav-link" to="/boards">
+                            <i class="fas fa-tasks text-yellow"></i> Tasks Manager
+                        </router-link>
+                    </li>
+
                         <li class="nav-item">
                             <router-link class="nav-link" to="/logins">
                                 <i class="fas fa-lock text-dark"></i> Logins
                             </router-link>
                         </li>
-                    @endcan()
+
                     <li class="nav-item">
                         <router-link class="nav-link" to="/nkeep">
                             <i class="fas fa-sort text-blue "></i> nkeep
@@ -190,7 +188,7 @@
                             <i class="fas fa-project-diagram text-success"></i> Projects
                         </router-link>
                     </li>
-
+                    @endcan()
                 </ul>
                 <!-- Divider -->
                 <!-- Heading -->
@@ -211,7 +209,7 @@
     <!-- Main content -->
     <div class="main-content">
         <!-- Top navbar -->
-        <nav class="navbar navbar-top navbar-expand-md navbar-dark mb-5" id="navbar-main">
+        <nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
             <div class="container-fluid">
                 <!-- Brand -->
                 <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="./index.html">Dashboard</a>
@@ -228,16 +226,18 @@
                 </form>
                 <!-- User -->
                 <ul class="navbar-nav align-items-center d-none d-md-flex">
+{{--                    <notifications-component></notifications-component>--}}
+
                     <li class="nav-item dropdown">
                         <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
                            aria-expanded="false">
                             <div class="media align-items-center">
-                <span class="avatar avatar-sm rounded-circle">
-                  <img alt="Image placeholder" :src="user.photo">
-                </span>
+                                <span class="avatar avatar-sm rounded-circle">
+                                  <img alt="Image placeholder" :src="user.photo">
+                                </span>
                                 <div class="media-body ml-2 d-none d-lg-block">
                                     <span
-                                        class="mb-0 text-sm  font-weight-bold">@{{user.name}}</span>
+                                        class="mb-0 text-sm  font-weight-bold">@{{user.fullname}}</span>
                                 </div>
                             </div>
                         </a>
@@ -264,35 +264,19 @@
                 </ul>
             </div>
         </nav>
-
-        <div class="container-fluid">
-            <router-view></router-view>
-        </div>
-        <vue-progress-bar></vue-progress-bar>
-        <!-- Footer -->
-        <footer class="footer">
-            <div class="container-fluid">
-                <div class="row align-items-center justify-content-xl-between">
-                    <div class="col-xl-6">
-                        <div class="copyright text-center text-xl-left text-muted">
-                            &copy; 2019 <a href="https://softease.fr" class="font-weight-bold ml-1"
-                                           target="_blank">Softease</a>
-                        </div>
-                    </div>
-                    <div class="col-xl-6">
-                        <ul class="nav nav-footer justify-content-center justify-content-xl-end">
-                            <li class="nav-item">
-                                <a href="https://www.softease.fr" class="nav-link" target="_blank">Softease</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="https://www.softease.fr" class="nav-link" target="_blank">About
-                                    Us</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+            <div v-if="$route.matched[0].path === '/boards/:id'" class="" style="position:relative;flex-grow: 1;">
+                <router-view></router-view>
             </div>
-        </footer>
+            <div v-if="$route.matched[0].path === '/tickets/:id'" class="" style="position:relative;flex-grow: 1;">
+                <router-view></router-view>
+            </div>
+            <div v-else class="container-fluid" :class="$route.matched[0].path === '/tickets' ? '' : 'mt-2'" style="position:relative;flex-grow: 1; overflow-x: hidden">
+                <router-view></router-view>
+            </div>
+        </div>
+
+        <vue-progress-bar></vue-progress-bar>
+
     </div>
 </div>
 
@@ -307,12 +291,12 @@
 <!-- Optional JS -->
 <script src="/argon/vendor/chart.js/dist/Chart.min.js"></script>
 <script src="/argon/vendor/chart.js/dist/Chart.extension.js"></script>
-<script>
-</script>
-<!-- Argon JS -->
-{{--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js"></script>--}}
-{{--<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>--}}
+<script src="/argon/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <script src="/argon/js/argon.min.js"></script>
+{{--<script src="/node_modules/autosize/dist/autosize.js"></script>--}}
+<script>
+
+</script>
 </body>
 
 </html>

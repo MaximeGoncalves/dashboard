@@ -1,7 +1,77 @@
 <template>
     <div>
-        <div class="row">
-            <div class="col-12 col-md-8">
+        <div class="row mb-3 mt-2">
+            <div class="col-lg-12 d-flex justify-content-between">
+                <button class="btn btn-default " @click="NewModal">
+                    Nouveau ticket
+                </button>
+                <div class="dropdown d-inline-block" v-if="$gate.isAdmin()">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Paramètres <i class="fas fa-cog"></i>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a href="" class="dropdown-item"
+                           @click.prevent="ViewPreferences = true">Préférences</a>
+                        <a href="" class="dropdown-item"
+                           @click.prevent="ViewTypes = true">Gestion des types</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row flex-xl-row-reverse">
+            <div class="col-12  col-xl-4">
+                <div class="card shadow mb-2 px-5 py-5">
+                    <div class="row">
+                        <div class="col-8">
+                            <h3 class="mb-0">FILTERS</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <form class="w-100" @submit.prevent="search">
+                            <br>
+                            <h4>Techniciens</h4>
+                            <v-select class="form-control-alternative " multiple label="fullname"
+                                      placeholder="Techniciens"
+                                      v-model="filter.technician"
+                                      :options="technicians"
+                            ></v-select>
+
+                            <h4 class="mt-4">Etat</h4>
+                            <v-select class="form-control-alternative mt-2" multiple placeholder="Etat"
+                                      label="name"
+                                      v-model="filter.state"
+                                      :options="states"></v-select>
+
+                            <h4 class="mt-4">Priorité</h4>
+                            <v-select class="form-control-alternative mt-2" placeholder="Priorité"
+                                      v-model="filter.importance" :options="['Normal','Urgent']" clearable></v-select>
+
+                            <h4 class="mt-4">Sources</h4>
+                            <v-select class="form-control-alternative mt-2" label="name" placeholder="Sources"
+                                      v-model="filter.source" :options="sources" clearable></v-select>
+
+                            <div v-if="$gate.isAdmin()">
+                                <h4 class="mt-4">Type</h4>
+                                <v-select class="form-control-alternative mt-2" label="name" placeholder="Types"
+                                          v-model="filter.type" :options="types" clearable></v-select>
+                                <h4 class="mt-4">Société</h4>
+                                <v-select class="form-control-alternative mt-2" label="name" placeholder="Société"
+                                          v-model="filter.society" :options="society" clearable></v-select>
+
+                                <h4 class="mt-4">Demandeur</h4>
+                                <v-select class="form-control-alternative mt-2" label="fullname" placeholder="Demandeur"
+                                          v-model="filter.user" :options="availableUser" clearable></v-select>
+                            </div>
+
+                            <button type="submit" class="btn btn-default mt-3 float-right">
+                                Search
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-xl-8">
                 <div class="card shadow" v-if="!card">
                     <div class="card-header border-0">
                         <div class="row align-items-center">
@@ -10,7 +80,7 @@
                             </div>
                             <div class="col-4 text-right">
                                 <a href="#"
-                                   class="btn btn-sm btn-primary">Add
+                                   class="btn btn-sm btn-default">Add
                                     user</a>
                             </div>
                         </div>
@@ -99,169 +169,38 @@
                         </nav>
                     </div>
                 </div>
-                <div class="card shadow mb-2 px-5 py-5" v-if="card" v-for="ticket in tickets.data">
-                    <div class="row">
-                        <div class="col-md-9 col-12">
-                            <router-link :to="{name: 'ticket', params: {id: ticket.id }}">
-
-                                <h2 class="d-inline">{{ ticket.topic }}</h2>
-                            </router-link>
-
-                            <p class="d-inline"> - #{{ ticket.id }} </p>
-                            <div v-if='ticket.state' class="d-inline">
-                                <i class="fas fa-bookmark text-info"
-                                   v-if="ticket.state.id == '1'" data-toggle="tooltip" data-placement="top"
-                                   title="Pending"></i>
-                                <i class="fas fa-bookmark text-success"
-                                   v-if="ticket.state.id == '2'" data-toggle="tooltip" data-placement="top"
-                                   title="Open"></i>
-                                <i class="fas fa-bookmark text-warning"
-                                   v-if="ticket.state.id == '3'" data-toggle="tooltip" data-placement="top"
-                                   title="Wainting customer"></i>
-                                <i class="fas fa-bookmark text-dark"
-                                   v-if="ticket.state.id == '4'" data-toggle="tooltip" data-placement="top"
-                                   title="Closed"></i>
-                            </div>
-                            <p v-if="ticket['user']">{{ ticket['user'].fullname }} - {{ ticket.created_at | formatDate
-                                }} </p>
-                            <h4>Description :</h4>
-                            <p v-html="ticket.description"></p>
-                            <div class="mt-3" v-if="ticket.technician">
-                                <img :src="getProfilePhoto(ticket.technician)"
-                                     class="avatar avatar-sm mr-3"
-                                     data-toggle="tooltip"
-                                     data-placement="bottom"
-                                     :title="ticket.technician.user.name">
-                                <small class="pr-2 text-nowrap d-inline-block" v-if="ticket.actions.length == 1">
-                                    <i class="fas fa-list-ul text-muted mr-1"></i>
-                                    <b>0</b> Actions
-                                </small>
-                                <small class="pr-2 text-nowrap d-inline-block" v-else-if="ticket.actions.length == 0">
-                                    <i class="fas fa-list-ul text-muted mr-1"></i>
-                                    <b>0</b> Actions
-                                </small>
-                                <small class="pr-2 text-nowrap d-inline-block" v-else-if="ticket.actions.length > 1">
-                                    <i class="fas fa-list-ul text-muted mr-1"></i>
-                                    <b>{{ ticket.actions.length }}</b> Actions
-                                </small>
-                                <small class="pr-2 text-nowrap d-inline-block">
-                                    <i class="fas fa-comments text-muted mr-1"></i>
-                                    <b>{{ ticket.messages.length}}</b> Commentaires
-                                </small>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-12 d-flex flex-column justify-content-center" v-if="$gate.isAdmin()">
-                            <div class="d-flex align-items-center">
-                                <div v-if='ticket.state'>
-                                    <i class="fas fa-bookmark text-info"
-                                       v-if="ticket.state.id == '1'"></i>
-                                    <i class="fas fa-bookmark text-success"
-                                       v-if="ticket['state'].id == '2'"></i>
-                                    <i class="fas fa-bookmark text-warning"
-                                       v-if="ticket['state'].id == '3'"></i>
-                                    <i class="fas fa-bookmark text-dark"
-                                       v-if="ticket['state'].id == '4'"></i>
-                                </div>
-                                <v-select
-                                    label="name"
-                                    class="d-inline"
-                                    placeholder="Etat"
-                                    :clearable=false
-                                    v-model="ticket.state"
-                                    :options="states"
-                                    @input="updateTicket(ticket)"
-                                ></v-select>
-                            </div>
-
-                            <div class="d-flex align-items-center">
-                                <div v-if="ticket.source">
-                                    <i class="fas fa-tablet-alt text-primary" v-if="ticket['source'].id == '1'"></i>
-                                    <i class="fas fa-envelope text-primary" v-if="ticket['source'].id == '2'"></i>
-                                    <i class="fas fa-phone text-primary" v-if="ticket['source'].id == '3'"></i>
-                                    <i class="fas fa-comments text-primary" v-if="ticket['source'].id == '4'"></i>
-                                </div>
-                                <v-select
-                                    label="name"
-                                    placeholder="Source"
-                                    v-model="ticket.source"
-                                    :clearable=false
-                                    :options="sources"
-                                    @input="updateTicket(ticket)"
-                                ></v-select>
-                            </div>
-
-                            <div class="d-flex align-items-center">
-                                <i class="fas fa-exclamation-triangle text-success"
-                                   v-if="ticket.importance == 'Normal'"></i>
-                                <i class="fas fa-exclamation-triangle text-red"
-                                   v-if="ticket.importance == 'Urgent'"></i>
-                                <v-select
-                                    placeholder="Importance"
-                                    :clearable=false
-                                    v-model="ticket.importance"
-                                    :options="['Normal', 'Urgent']"
-                                    @input="updateTicket(ticket)"
-                                ></v-select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <pagination :data="tickets" @pagination-change-page="getResults" :limit="9"></pagination>
+                <card-ticket v-if="card" v-for="(ticket, key) in tickets.data"
+                             :key="key"
+                             :ticket="ticket"
+                             :sources="sources"
+                             :states="states"
+                             :types="types"
+                ></card-ticket>
+                <pagination :data="tickets" @pagination-change-page="getResults" :limit="3"></pagination>
             </div>
-            <div class="col-12 flex-column-reverse col-md-4">
-                <div class="card shadow mb-2 px-5 py-5">
-                    <div class="row">
-                        <div class="col-8">
-                            <h3 class="mb-0">FILTERS</h3>
-                        </div>
-                        <div class="col-4 text-right">
-                            <a href="#"
-                               class="btn btn-sm btn-primary" @click="NewModal">Add ticket</a>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <form class="w-100" @submit.prevent="search">
-                            <br>
-                            <h4>Techniciens</h4>
-                            <v-select class="form-control-alternative " multiple label="fullname"
-                                      placeholder="Techniciens"
-                                      v-model="filter.technician"
-                                      :options="technicians"
-                            ></v-select>
-
-                            <h4 class="mt-4">Etat</h4>
-                            <v-select class="form-control-alternative mt-2" multiple placeholder="Etat"
-                                      label="name"
-                                      v-model="filter.state"
-                                      :options="states"></v-select>
-
-                            <h4 class="mt-4">Priorité</h4>
-                            <v-select class="form-control-alternative mt-2" placeholder="Priorité"
-                                      v-model="filter.importance" :options="['Normal','Urgent']" clearable></v-select>
-
-                            <h4 class="mt-4">Sources</h4>
-                            <v-select class="form-control-alternative mt-2" label="name" placeholder="Sources"
-                                      v-model="filter.source" :options="sources" clearable></v-select>
-                            <div v-if="$gate.isAdmin()">
-                                <h4 class="mt-4">Société</h4>
-                                <v-select class="form-control-alternative mt-2" label="name" placeholder="Société"
-                                          v-model="filter.society" :options="society" clearable></v-select>
-                                <h4 class="mt-4">Demandeur</h4>
-                                <v-select class="form-control-alternative mt-2" label="fullname" placeholder="Demandeur"
-                                          v-model="filter.user" :options="availableUser" clearable></v-select>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary mt-3 float-right">
-                                Search
-                            </button>
-                        </form>
-                    </div>
-                    <div class="row">
-
-                    </div>
-                    <div class="row">
-
-                    </div>
+        </div>
+        <div class="tickets-settings shadow p-2 border" :class="ViewTypes ? 'show' : ''">
+            <div class="row">
+                <div class="col">
+                    <h2 class="h2">
+                        Types
+                    </h2>
+                </div>
+                <div class="col">
+                    <span class="float-right cursor-pointer">
+                            <span @click="ViewTypes = false"><i class="fas fa-times"></i></span>
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label for="types">Ajouter un type</label>
+                    <input type="text" id="types" name="types" class="form-control" v-on:keyup.enter="saveType()"
+                           v-model="type">
+                    <ul class="list-group mt-2">
+                        <types v-for="(type, index) in types" :key="index" :type="type" :index="index"
+                               v-on:deleteType="types.splice(index, 1)"></types>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -294,11 +233,15 @@
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group " :class="errors.description ? 'has-danger' : ''">
-                                    <textarea name="description" id="description" cols="30" rows="10"
-                                              placeholder="Quel est votre problème ?"
-                                              class="form-control form-control-alternative"
-                                              :class="errors.description ? 'is-invalid' : ''"
-                                              v-model="ticket.description"></textarea>
+                                        <editor ref="tuiEditor"
+                                                placeholder="Quel est votre problème ?"
+                                                v-model="ticket.description"
+                                                :options="editorOptions"
+                                                :html="editorHtml"
+                                                :mode="editorMode"
+                                                :previewStyle="editorPreviewStyle"
+                                                :class="errors.description ? 'is-invalid' : ''"
+                                                height="150px"></editor>
                                         <small v-if="errors.description"
                                                :class="errors.description ? 'text-danger' : ''"
                                                v-for="error in errors.description">{{ error }}
@@ -373,8 +316,8 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Créer
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                <button type="submit" class="btn btn-default">Créer
                                 </button>
                             </div>
                         </form>
@@ -388,12 +331,36 @@
 </template>
 
 <script>
+import {Editor} from '@toast-ui/vue-editor';
+import Types from './TypesComponent.vue';
+import CardTicket from './CardTicketComponent';
+
 export default {
+    components: {Editor, Types, CardTicket},
     props: {
         placeholder: 'placeholder',
     },
     data() {
         return {
+            editorOptions: {
+                minHeight: '0',
+                hideModeSwitch: false,
+                toolbarItems: [
+                    'bold',
+                    'italic',
+                    'strike',
+                    'ul',
+                    'ol',
+                    'indent',
+                    'outdent',
+                    'divider',
+                    'table',
+                ]
+            },
+            editorHtml: '',
+            editorMode: 'wysiwyg',
+            editorVisible: true,
+            editorPreviewStyle: 'vertical',
             tickets: {},
             ticket: {},
             files: [],
@@ -407,29 +374,25 @@ export default {
                 importance: null,
                 technician: [],
                 state: [
-                    {"id": 1, "name": "Pending"},
-                    {"id": 2, "name": "Open"}
+                    {"id": 1, "name": "En attente"},
+                    {"id": 2, "name": "Ouvert"},
+                    {"id": 3, "name": "En attente client"},
                 ],
                 user: {},
                 source: {},
+                type: {},
                 society: null,
             },
             card: true,
             photo: '',
+            uploadText: 'Attendez la fin du téléchargement',
+            types: [],
+            type: '',
+            ViewTypes: false,
+            ViewPreferences: false,
         }
     },
     methods: {
-        Filter() {
-            axios.get('/api/tickets', {
-                importance: this.filter.importance,
-                technician: this.filter.technician,
-                state: this.filter.state,
-                type: this.filter.type,
-                society: this.filter.society,
-            }).then(result => {
-                console.log(result)
-            })
-        },
         uploadFiles() {
             let formData = new FormData();
             for (var i = 0; i < this.files.length; i++) {
@@ -443,17 +406,15 @@ export default {
                     }
                 }
             ).then(result => {
-                console.log(result)
-                console.log('SUCCESS!!');
+
             }).catch(function () {
-                console.log('FAILURE!!');
+
             });
         },
         createTicket() {
             this.$Progress.start();
-
+            let formData = new FormData();
             if (window.user.role === 'admin') {
-                let formData = new FormData();
                 if (this.ticket.topic) {
                     formData.append('topic', this.ticket.topic)
                 }
@@ -472,86 +433,65 @@ export default {
                 if (this.ticket.source) {
                     formData.append('source', this.ticket.source.id)
                 }
-                for (var i = 0; i < this.files.length; i++) {
-                    let file = this.files[i];
-                    formData.append('files[' + i + ']', file);
-                }
-                axios.post('/api/tickets', formData, {
-                        headers: {
-                            'Content-Type': 'multipart/form-data'
-                        }
-                    }
-                ).then(result => {
-                    $('.modal').modal('hide')
-                    this.ticket = {}
-                    Fire.$emit('createTicket')
-                    this.$toasted.global.flash({message: "Le ticket à été créé."});
-                    this.$Progress.finish();
-                    console.log(result)
-                }).catch(error => {
-                    console.log(error)
-                    this.errors = error.response.data.errors;
-                    this.$Progress.fail()
-                });
             } else {
-                let formData = new FormData();
                 formData.append('topic', this.ticket.topic)
                 formData.append('description', this.ticket.description)
                 formData.append('importance', this.ticket.importance)
-                for (var i = 0; i < this.files.length; i++) {
-                    let file = this.files[i];
-                    formData.append('files[' + i + ']', file);
+            }
+            for (var i = 0; i < this.files.length; i++) {
+                let file = this.files[i];
+                formData.append('files[' + i + ']', file);
+            }
+            formData.append('type', 'Ticket')
+
+            let self = this
+
+
+            const config = {
+                onUploadProgress: function (progressEvent) {
+                    if (self.files.length > 0) {
+                        let percent = (Math.round((progressEvent.loaded * 100) / progressEvent.total)).toString()
+                        if (percent === '100') {
+                            self.$emit('uploadFinish')
+                        }
+                        swal({
+                            title: percent + '%',
+                            text: self.uploadText,
+                            icon: "info",
+                            dangerMode: false,
+                        })
+                    }
                 }
-                axios.post('/api/tickets', formData, {
+            }
+            axios.post('/api/tickets', formData, config, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
-                }).then(result => {
-                    $('.modal').modal('hide')
-                    this.ticket = {}
-                    Fire.$emit('createTicket')
-                    this.$toasted.global.flash({message: "Le ticket à été créé."});
-                    this.$Progress.finish();
-                }).catch(error => {
-                    this.errors = error.response.data.errors;
-                    this.$Progress.fail()
-                })
-            }
-        },
-        updateTicket(ticket) {
-            console.log(ticket)
-            let tech
-            if (ticket.technician) {
-                tech = ticket.technician.user.id
-            }
+                }
+            ).then(response => {
+                $('.modal').modal('hide')
+                this.ticket = {}
+                this.uploadText = 'Attendez la fin du téléchargement'
 
-            axios.put('/api/tickets/' + ticket.id, {
-                source: ticket.source.id,
-                importance: ticket.importance,
-                state: ticket.state.id,
-                technician: tech
-            }).then(result => {
-                this.$toasted.global.flash({message: "Le ticket à été mis à jour"});
-                this.$Progress.finish()
+                this.$toasted.global.flash({message: "Le ticket à été créé."});
+                this.$Progress.finish();
+                axios.post('/api/tickets/sendmail', {
+                    ticket: response.data.ticket.id,
+                    user: response.data.user.id,
+                }).then((response) => {
+                })
                 Fire.$emit('createTicket')
-            })
+                Fire.$emit('uploadFinish')
+            }).catch(error => {
+                this.errors = error.response.data.errors;
+                this.$Progress.fail()
+            });
         },
         handleFileUploads(e) {
-            // for (var i = 0; i < event.target.files.length; i++) {
-            //     this.ticket.files[i] = event.target.files[i]
-            //     console.log('file Object:==>', this.ticket.files);
-            // }
-            // this.ticket.files = event.target.files
-            // this.files = this.$refs.files.files
             let files = e.target.files || e.dataTransfer.files;
             for (let i = files.length - 1; i >= 0; i--) {
                 this.files.push(files[i]);
             }
-            // let uploadedFiles = this.$refs.files.files;
-            //
-            // for(var i = 0; i < uploadedFiles.length; i++) {
-            //     this.files.push(uploadedFiles[i]);
-            // }
         },
         NewModal() {
             this.errors = []
@@ -565,40 +505,13 @@ export default {
             this.ticket.source = ''
             $('#addNewTicket').modal('show')
         },
-        getProfilePhoto(tech) {
-            if (tech['user']) {
-                if (tech['user'].photo !== 'profile.png') {
-                    return '/img/profile/' + tech['user'].name + '/' + tech['user'].photo
-                } else {
-                    return '/img/profile/profile.png'
-                }
-            }
-        },
         loadTickets() {
-
-            // let filter = this.filter
-            // let filterYrN
-            // if (filter.importance || !filter.source || !filter.user || !filter.society || !filter.technician || !filter.state) {
-            //     filterYrN = false
-            // }else {
-            //     filterYrN = true
-            // }
-            // axios.get('/api/tickets?filter=true&state[]=1&state[]=2').then(response => {
-            //     console.log(response)
-            //     this.tickets = response.data.ticket.data;
-            //     this.technicians = response.data.technician;
-            //     this.users = response.data.user;
-            //     this.states = response.data.states;
-            //     this.sources = response.data.sources;
-            //     this.society = response.data.society;
-            // })
             this.search()
-
         },
         getResults(page = 1) {
             let techTab = []
             let stateTab = []
-            let source, user, society, filterYrN
+            let source, user, society, filterYrN, type
 
             for (var i = 0; i < this.filter.technician.length; i++) {
                 let tech = this.filter.technician[i];
@@ -618,7 +531,7 @@ export default {
             if (this.filter.society != null) {
                 society = this.filter.society.id
             }
-            if (!this.filter.importance || !source || !user || !society || !techTab || !stateTab) {
+            if (!this.filter.importance || !source || !user || !society  || !type || !techTab || !stateTab) {
                 filterYrN = false
             } else {
                 filterYrN = true
@@ -632,17 +545,24 @@ export default {
                     importance: this.filter.importance,
                     source: source,
                     user: user,
-                    society: society
+                    society: society,
+                    type: type
                 }
             })
                 .then(response => {
                     this.tickets = response.data.ticket;
+                    this.technicians = response.data.technician;
+                    this.users = response.data.user;
+                    this.states = response.data.states;
+                    this.sources = response.data.sources;
+                    this.society = response.data.society;
+                    this.types = response.data.types
                 });
         },
         search() {
             let techTab = []
             let stateTab = []
-            let source, user, society, filterYrN
+            let source, user, society, filterYrN, type
 
             for (var i = 0; i < this.filter.technician.length; i++) {
                 let tech = this.filter.technician[i];
@@ -656,13 +576,16 @@ export default {
             if (this.filter.source != null) {
                 source = this.filter.source.id
             }
+            if (this.filter.type != null) {
+                type = this.filter.type.id
+            }
             if (this.filter.user != null) {
                 user = this.filter.user.id
             }
             if (this.filter.society != null) {
                 society = this.filter.society.id
             }
-            if (!this.filter.importance || !source || !user || !society || !techTab || !stateTab) {
+            if (!this.filter.importance || !source || !user || !society || !type || !techTab || !stateTab) {
                 filterYrN = false
             } else {
                 filterYrN = true
@@ -675,7 +598,8 @@ export default {
                     importance: this.filter.importance,
                     source: source,
                     user: user,
-                    society: society
+                    society: society,
+                    type: type
                 }
             }).then(response => {
                 this.tickets = response.data.ticket;
@@ -684,9 +608,18 @@ export default {
                 this.states = response.data.states;
                 this.sources = response.data.sources;
                 this.society = response.data.society;
-                console.log(response)
+                this.types = response.data.types
+
             })
-        }
+        },
+        saveType() {
+            axios.post('/api/type', {
+                name: this.type,
+            }).then(response => {
+                this.type = ""
+                this.types.push(response.data)
+            })
+        },
     },
     computed: {
         availableUser() {
@@ -694,13 +627,14 @@ export default {
         }
     },
     created() {
-
-        this.search();
+        this.$on('uploadFinish', function () {
+            this.uploadText = 'Upload terminé !'
+        })
+        this.getResults();
 
         Fire.$on('createTicket', () => {
-            this.loadTickets()
+            this.getResults(this.tickets.current_page)
         })
-
     }
 }
 </script>
@@ -743,7 +677,7 @@ export default {
         background-color: transparent;
         font-size: 14px;
         color: white;
-        background: linear-gradient(87deg, #5e72e4 0, #825ee4 100%) !important;
+        background: linear-gradient(87deg, #32325d 0, #172b4d 100%) !important;
     }
 
     .v-select .vs__selected-options {
@@ -761,8 +695,8 @@ export default {
     }
 
     .v-select .dropdown-menu > .highlight > a {
-        background: linear-gradient(87deg, #5e72e4 0, #825ee4 100%) !important;
         font-size: 14px;
+        background: linear-gradient(87deg, #32325d 0, #172b4d 100%) !important;
     }
 
     .v-select .dropdown-menu {
@@ -778,5 +712,19 @@ export default {
         color: black;
     }
 
+    .tickets-settings {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 400px;
+        height: 100%;
+        background: white;
+        transform: translateX(100%);
+        transition: transform 0.3s linear
+    }
+
+    .tickets-settings.show {
+        transform: translateX(0%) !important;
+    }
 
 </style>

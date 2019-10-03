@@ -5,37 +5,34 @@
                 <div class="card shadow" v-if="$gate.isAdmin()">
                     <div class="card-header border-0">
                         <div class="row align-items-center mb-2">
-                            <div class="col-8">
-                                <h3 class="mb-0 col-12 col-md-7 mb-2 mb-md-0">Users</h3>
+                            <div class="col-6">
+                                <h3 class="mb-0 col-12 col-md-7 mb-2 mb-md-0">Utilisateurs</h3>
                             </div>
-                            <div class="col-4 text-right">
+                            <div class="col-6 text-right">
                                 <div class="row align-items-center">
-                                    <div class="col-12 col-md-9 mb-2 mb-md-0">
+                                    <div class="col-12 col-xl-8 mb-2 mb-md-0">
                                         <div class="form-group mb-0">
                                             <div class="input-group input-group-alternative">
                                                 <div class="input-group-prepend"><span class="input-group-text"><i
                                                     class="fas fa-search"></i></span></div>
-                                                <input placeholder="Search" type="text" class="form-control"
-                                                       @input="search" v-model="searchData"></div>
+                                                <input placeholder="Rechercher" type="text" class="form-control"
+                                                       @input="search(searchData)" v-model="searchData"></div>
                                         </div>
                                     </div>
 
-                                    <div class="col-auto">
+                                    <div class="col-12 col-xl-4 mt-2 mt-xl-0">
                                         <a href="#"
-                                           class="btn btn-sm btn-primary" @click="NewModal">Add
-                                            user</a>
+                                           class="btn btn-default" @click="NewModal">Ajouter un utilisateur</a>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="col-12">
                         </div>
 
                         <div class="table-responsive">
                             <table class="table align-items-center table-flush">
                                 <thead class="thead-light">
                                 <tr>
+                                    <th scope="col">Username</th>
                                     <th scope="col">Fullname</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">Role</th>
@@ -45,7 +42,8 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="user in users">
+                                <tr v-for="(user, key) in users.data">
+                                    <td>{{ user.name }}</td>
                                     <td>{{ user.fullname }}</td>
                                     <td>{{ user.email }}</td>
                                     <td>{{ user.role }}</td>
@@ -58,17 +56,11 @@
                                                 <i class="fas fa-ellipsis-v"></i>
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                                <form
-                                                    action="https://argon-dashboard-laravel.creative-tim.com/user/8642"
-                                                    method="post">
-                                                    <input type="hidden" name="_token"
-                                                           value="F3fqjyIFWnoHEzAeYoetOWiaHkr9ZdnoaXaxFsx7">
-                                                    <input
-                                                        type="hidden" name="_method" value="delete">
+                                                <form>
                                                     <a class="dropdown-item"
                                                        href="#" @click.prevent="EditUser(user.id)">Edit</a>
                                                     <a class="dropdown-item" href="#"
-                                                       @click.prevent="deleteUser(user.id)">
+                                                       @click.prevent="deleteUser(user.id, key)">
                                                         Delete
                                                     </a>
                                                 </form>
@@ -81,6 +73,7 @@
                         </div>
                     </div>
                 </div>
+                <pagination :data="Object.assign({}, users)" @pagination-change-page="paginateUser" :limit="5"></pagination>
             </div>
 
 
@@ -105,7 +98,7 @@
                                             <input type="text" v-model="user.name"
                                                    class="form-control form-control-alternative"
                                                    :class="errors.name ? 'is-invalid' : ''" name="name"
-                                                   placeholder="Username">
+                                                   placeholder="Identifiant de connexion">
                                             <small v-if="errors.name" :class="errors.name ? 'text-danger' : ''"
                                                    v-for="error in errors.name">{{ error }}
                                             </small>
@@ -116,7 +109,7 @@
                                             <input type="text" v-model="user.fullname"
                                                    class="form-control form-control-alternative" name="fullname"
                                                    :class="errors.fullname ? 'is-invalid' : ''"
-                                                   placeholder="Fullname">
+                                                   placeholder="Nom Complet">
                                             <small v-if="errors.fullname" :class="errors.fullname ? 'text-danger' : ''"
                                                    v-for="error in errors.fullname">{{ error }}
                                             </small>
@@ -142,11 +135,11 @@
                                             <input type="password" v-model="user.password"
                                                    class="form-control form-control-alternative" name="password"
                                                    :class="errors.password ? 'is-invalid' : ''"
-                                                   placeholder="Password" v-if="!editMode">
+                                                   placeholder="Mot de passe" v-if="!editMode">
                                             <input type="password" v-model="user.password"
                                                    class="form-control form-control-alternative" name="password"
                                                    :class="errors.password ? 'is-invalid' : ''"
-                                                   placeholder="Password" v-if="editMode" disabled>
+                                                   placeholder="Mot de passe" v-if="editMode" disabled>
                                             <small v-if="errors.password" :class="errors.password ? 'text-danger' : ''"
                                                    v-for="error in errors.password">{{ error }}
                                             </small>
@@ -186,7 +179,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group" :class="errors.society ? 'has-danger' : ''">
                                             <v-select label="name"
-                                                      :options="society"
+                                                      :options="societies"
                                                       v-model="user.society"
                                                       class="form-control-alternative"
                                                       placeholder="Société"></v-select>
@@ -198,12 +191,11 @@
                                     <div class="col-md-6">
                                         <div class="form-group" :class="errors.role ? 'has-danger' : ''">
                                             <v-select
-                                                :options="[{label: 'User', value: 'user'},
-                                                  {label: 'Leader', value: 'leader'},
-                                                  {label: 'Admin', value: 'admin'}]"
+                                                :options="['user',
+                                                  'leader','admin']"
                                                 v-model="user.role"
                                                 class="form-control-alternative"
-                                                placeholder="Role"></v-select>
+                                                placeholder="Rôle"></v-select>
                                             <small v-if="errors.role" :class="errors.role ? 'text-danger' : ''"
                                                    v-for="error in errors.role">{{
                                                 error }}
@@ -212,9 +204,9 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">{{ editMode ? 'Save changes' :
-                                        'CreateUser'}}
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                    <button type="submit" class="btn btn-primary">{{ editMode ? 'Sauvegarder' :
+                                        'Créer'}}
                                     </button>
                                 </div>
                             </form>
@@ -230,45 +222,36 @@
 
 
 <script>
+import Store from '../Store/Store.js'
+import {mapActions, mapState} from 'vuex'
+
 export default {
+    store: Store,
     data() {
         return {
             user: {
                 society: {}
             },
-            society: [],
-            errors: [],
-            users: {},
             editMode: true,
             selected: "",
-            searchData:''
+            searchData: ''
         }
     },
-    methods: {
-        UpdateUser(user) {
-            this.$Progress.start();
-            axios.put('/api/user/' + user, {
-                name: this.user.name,
-                fullname: this.user.fullname,
-                email: this.user.email,
-                password: this.user.password,
-                role: this.user.role.value,
-                society: this.user.society_id,
-                profession: this.user.profession,
-                phone: this.user.phone,
-            }).then((response) => {
-                $('#addNewUser').modal('hide')
-                Fire.$emit('UpdateUser')
-                this.$toasted.global.flash({message: "L'utilisateur à été mis à jour"});
 
-                this.$Progress.finish();
-            }).catch(error => {
-                this.errors = error.response.data.errors;
-                this.$Progress.fail()
-            })
+    methods: {
+        ...mapActions({
+            addUserStore: 'user/ADD_USER',
+            deleteUser: 'user/DELETE_USER',
+            paginateUser: 'user/PAGINATE_USERS',
+            search: 'user/SEARCH'
+        }),
+        createUser() {
+            this.addUserStore(this.user)
+        },
+        UpdateUser(user) {
+            this.$store.dispatch('user/UPDATE_USER', this.user)
         },
         async EditUser(user) {
-            this.errors = []
             this.editMode = true
             let getUser = await axios.get('/api/user/' + user).then((user) => {
                 this.user = user.data
@@ -287,91 +270,20 @@ export default {
             this.user.society = ''
             $('#addNewUser').modal('show')
         },
-        createUser() {
-            this.$Progress.start();
-            axios.post('/api/user', {
-                name: this.user.name,
-                fullname: this.user.fullname,
-                email: this.user.email,
-                password: this.user.password,
-                role: this.user.role.value,
-                society: this.user.society.id,
-                profession: this.user.profession,
-                phone: this.user.phone,
-            }).then(response => {
-                Fire.$emit('CreateUser')
-                this.$Progress.finish();
-                $('#addNewUser').modal('hide')
-                this.$toasted.global.flash({message: "L'utilisateur à été créé."});
-                this.errors = []
-            }).catch(error => {
-
-                this.errors = error.response.data.errors;
-                this.$Progress.fail()
-
-            })
-        },
-        loadUsers() {
-
-            axios.get('/api/user').then((data) => {
-                this.users = data.data.data
-            });
-
-        },
-        deleteUser(id) {
-            swal({
-                title: "Etes vous sur ? ",
-                text: "Cette manipulation est irréversible !",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            })
-                .then((willDelete) => {
-                    if (willDelete) {
-                        axios.delete('/api/user/' + id).then(() => {
-                            swal("L'utilisateur à été supprimé.", {
-                                icon: "success",
-                            });
-                            Fire.$emit('UpdateUser')
-                        }).catch(error => {
-                            this.errors = error.response.data.message;
-                            swal(this.errors);
-                        })
-                    } else {
-                        swal("Ok on annule !");
-                    }
-                });
-        },
-        getSociety() {
-            axios.get('/api/society').then((society) => {
-                this.society = society.data
-            })
-
-        },
-        search() {
-            axios.get('/api/user/search', {
-                params: {
-                    search: this.searchData
-                }
-            }).then(response => {
-                console.log(response.data)
-                this.users = response.data
-            })
-        },
-
+    },
+    computed: {
+        ...mapState({
+            users: state => state.user.users,
+            societies: state => state.society.societies,
+            errors: state => state.errors,
+        }),
     },
     created() {
         if (window.user.role === "user") {
             this.$router.push({path: '/'})
         }
-        this.loadUsers()
-        this.getSociety()
-        Fire.$on('CreateUser', () => {
-            this.loadUsers()
-        })
-        Fire.$on('UpdateUser', () => {
-            this.loadUsers()
-        })
+        this.$store.dispatch('user/GET_USERS');
+        this.$store.dispatch('society/GET_SOCIETIES');
     },
 }
 </script>

@@ -20,14 +20,17 @@
                 </thead>
                 <tbody>
                 <tr v-for="item in items">
-                    <th scope="row">
+                    <th scope="row" v-if="title !== 'Tickets par utilisateur'">
                         {{ item.name }}
+                    </th>
+                    <th v-if="title == 'Tickets par utilisateur'">
+                        {{ item.fullname }}
                     </th>
                     <td>
                         {{ item.count }}
                     </td>
                     <td>
-                        <div class="d-flex align-items-center">
+                        <div class="d-flex align-items-center justify-content-center">
                             <span class="mr-2">{{ (100 * item.count / total).toFixed(2) }} %</span>
                             <div>
                                 <div class="progress">

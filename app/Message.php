@@ -7,11 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Message extends Model
 {
 
-    protected $with = ['children', 'from'];
+    protected $with = ['parent', 'from'];
 
-    public function ticket()
-    {
-        return $this->belongsTo(Ticket::class);
+    public function commentable(){
+        return $this->morphTo();
     }
 
     public function from()
@@ -19,8 +18,11 @@ class Message extends Model
         return $this->belongsTo(User::class, 'from_id');
     }
 
-    public function children()
-    {
-        return $this->hasMany(Message::class, 'to_id');
-    }
+//    public function children()
+//    {
+//        return $this->hasMany(Message::class, 'to_id');
+//    }
+public function parent(){
+        return $this->belongsTo(Message::class, 'to_id');
+}
 }
