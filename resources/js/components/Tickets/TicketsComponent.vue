@@ -28,7 +28,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <form class="w-100" @submit.prevent="search">
+                        <form class="w-100" @submit.prevent="getResults">
                             <br>
                             <h4>Techniciens</h4>
                             <v-select class="form-control-alternative " multiple label="fullname"
@@ -65,7 +65,7 @@
                             </div>
 
                             <button type="submit" class="btn btn-default mt-3 float-right">
-                                Search
+                                Rechercher
                             </button>
                         </form>
                     </div>
@@ -484,9 +484,6 @@ export default {
             this.ticket.source = ''
             $('#addNewTicket').modal('show')
         },
-        loadTickets() {
-            this.search()
-        },
         getResults(page = 1) {
             let techTab = []
             let stateTab = []
@@ -535,56 +532,6 @@ export default {
                     this.types = response.data.types
                 });
         },
-        // search() {
-        //     let techTab = []
-        //     let stateTab = []
-        //     let source, user, society, filterYrN, type
-        //     for (var i = 0; i < this.filter.technician.length; i++) {
-        //         let tech = this.filter.technician[i];
-        //         techTab.push(tech.id)
-        //     }
-        //     for (var i = 0; i < this.filter.state.length; i++) {
-        //         let state = this.filter.state[i];
-        //         stateTab.push(state.id)
-        //     }
-        //     if (this.filter.source != null) {
-        //         source = this.filter.source.id
-        //     }
-        //     if (this.filter.type != null) {
-        //         type = this.filter.type.id
-        //     }
-        //     if (this.filter.user != null) {
-        //         user = this.filter.user.id
-        //     }
-        //     if (this.filter.society != null) {
-        //         society = this.filter.society.id
-        //     }
-        //     if (!this.filter.importance || !source || !user || !society || !type || !techTab || !stateTab) {
-        //         filterYrN = false
-        //     } else {
-        //         filterYrN = true
-        //     }
-        //     axios.get('/api/tickets', {
-        //         params: {
-        //             filter: filterYrN,
-        //             technician: techTab,
-        //             state: stateTab,
-        //             importance: this.filter.importance,
-        //             source: source,
-        //             user: user,
-        //             society: society,
-        //             type: type
-        //         }
-        //     }).then(response => {
-        //         this.tickets = response.data.ticket;
-        //         this.technicians = response.data.technician;
-        //         this.users = response.data.user;
-        //         this.states = response.data.states;
-        //         this.sources = response.data.sources;
-        //         this.society = response.data.society;
-        //         this.types = response.data.types
-        //     })
-        // },
         saveType() {
             axios.post('/api/type', {
                 name: this.type,

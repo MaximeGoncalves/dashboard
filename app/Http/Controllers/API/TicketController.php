@@ -307,9 +307,17 @@ class TicketController extends Controller
             $closed[] = $last->count();
         }
 
+//        Ticket par Sources
+        $TicketsSources = Ticket::withCount("source as count")->get();
+        $sources = Source::withCount(['tickets as count' => function ($q) use($date) {
+            return $q->whereYear('created_at', $date->year);
+        }])->get();
+
         //Tickets par sociétés (softease) ou utilisateurs (leader).
         if (Auth::user()->society_id == 1) {
-            $count = Society::withCount('tickets as count')->groupBy('name')->orderBy('count', 'DSC')->take(6)->get()->except(1);
+            $count = Society::withCount(['tickets as count'=> function ($q) use($date) {
+                return $q->whereYear('created_at', $date->year);
+            }])->groupBy('name')->orderBy('count', 'DSC')->take(6)->get()->except(1);
             $total = Ticket::where('society_id', '<>', 1)->count();
         } elseif (Auth::user()->role !== "admin") {
             $total = Ticket::where('society_id', Auth::user()->society_id)->count();
@@ -319,6 +327,7 @@ class TicketController extends Controller
         $TicketsByCategory = Type::withCount('tickets as count')->groupBy('name')->get();
 
         return response()->json([
+            'sources' => $sources,
             'ticketCategory' => $TicketsByCategory,
             'totalTicket' => $total,
             'ticket' => $ticketThisYear,

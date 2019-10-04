@@ -84,7 +84,7 @@ p {
      object-position: center right;
 }
 
-.rounded-circle {
+.card-profile-image > .rounded-circle {
   width: 150px;
   height: 150px;
   -o-object-fit: cover;

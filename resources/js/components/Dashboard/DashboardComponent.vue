@@ -11,22 +11,6 @@
                                     <h6 class="text-uppercase text-light ls-1 mb-1">Tickets</h6>
                                     <h2 class="text-white mb-0">Année en cours / Année précédente</h2>
                                 </div>
-<!--                                <div class="col">-->
-<!--                                    <ul class="nav nav-pills justify-content-end">-->
-<!--                                        <li class="nav-item mr-2 mr-md-0" data-toggle="tab">-->
-<!--                                            <a href="#chart" class="nav-link py-2 px-3 active" data-toggle="tab">-->
-<!--                                                <span class="d-none d-md-block">N</span>-->
-<!--                                                <span class="d-md-none">N</span>-->
-<!--                                            </a>-->
-<!--                                        </li>-->
-<!--                                        <li class="nav-item" data-toggle="tab" >-->
-<!--                                            <a href="#chart2" class="nav-link py-2 px-3" data-toggle="tab">-->
-<!--                                                <span class="d-none d-md-block">N-1</span>-->
-<!--                                                <span class="d-md-none">N-1</span>-->
-<!--                                            </a>-->
-<!--                                        </li>-->
-<!--                                    </ul>-->
-<!--                                </div>-->
                             </div>
                         </div>
                         <div class="card-body tab-content">
@@ -38,86 +22,84 @@
                                             :height="300"
                                             v-if="loaded"/>
                             </div>
-<!--                            <div class="tab-pane fade" id="chart2">-->
-<!--&lt;!&ndash;                                <canvas class="chart-canvas"></canvas>&ndash;&gt;-->
-<!--                                <line-chart :chartdata="chartDataTickets"-->
-<!--                                            class="chart-canvas"-->
-<!--                                            :width="300"-->
-<!--                                            :height="300"-->
-<!--                                            v-if="loaded"/>-->
-<!--                            </div>-->
+
                         </div>
                     </div>
                 </div>
-<!--                <div class="col-xl-4">-->
-<!--                    <div class="card shadow">-->
-<!--                        <div class="card-header bg-transparent">-->
-<!--                            <div class="row align-items-center">-->
-<!--                                <div class="col-auto">-->
-<!--                                    <h6 class="text-uppercase text-muted ls-1 mb-1">Performance</h6>-->
-<!--                                    <h2 class="mb-0">Tickets - 5 derniers jours</h2>-->
-<!--                                    <small class="text-muted"></small>-->
-<!--                                </div>-->
-<!--                                <div class="col">-->
-<!--                                    <ul class="nav nav-pills justify-content-end">-->
-<!--                                        <li class="nav-item mr-2 mr-md-0" data-toggle="chart"-->
-<!--                                            data-target="#chart-visit">-->
-<!--                                            <a href="#" class="nav-link py-2 px-3 active" data-toggle="tab">-->
-<!--                                                <span class="d-none d-md-block">Month</span>-->
-<!--                                                <span class="d-md-none">M</span>-->
-<!--                                            </a>-->
-<!--                                        </li>-->
-<!--                                        <li class="nav-item" data-toggle="chart"-->
-<!--                                            data-target="#chart-visit">-->
-<!--                                            <a href="#" class="nav-link py-2 px-3" data-toggle="tab">-->
-<!--                                                <span class="d-none d-md-block">Week</span>-->
-<!--                                                <span class="d-md-none">W</span>-->
-<!--                                            </a>-->
-<!--                                        </li>-->
-<!--                                    </ul>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="card-body">-->
-<!--                            &lt;!&ndash; Chart &ndash;&gt;-->
-<!--                            <div class="chart">-->
-<!--                                &lt;!&ndash;<canvas id="chart-orders" class="chart-canvas"></canvas>&ndash;&gt;-->
-<!--                                <bar-chart :chartdata="chartDataLastFiveDays"-->
-<!--                                           class="chart-canvas"-->
-<!--                                           id="chart-visit"-->
-<!--                                           :width="300"-->
-<!--                                           :height="300"-->
-<!--                                           v-if="loaded"/>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
+
+                <div class="col-xl-4 ">
+                    <div class="card shadow">
+                        <div class="card-header border-0">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <h3 class="mb-0">Ticket en attente</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive" v-if="tickets.data">
+                            <!-- Projects table -->
+                            <table class="table align-items-center table-flush">
+                                <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">Topic</th>
+                                    <th scope="col">Utilisateur</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                <tr v-for="ticket in tickets.data">
+                                    <th scope="row">
+                                        <router-link :to="{name: 'ticket', params: {id: ticket.id }}" class="text-default">
+                                            {{ ticket.topic }}
+                                        </router-link>
+                                    </th>
+                                    <td>
+                                        {{ ticket.user.name }}
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div v-else>
+                            <h2 class="h2">Aucun ticket en attente</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-5">
+                <div class="col-xl-4 mb-5 mb-xl-0">
+                    <div class="card shadow">
+                        <div class="card-header bg-transparent">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <h6 class="text-uppercase text-muted ls-1 mb-1">Tickets</h6>
+                                    <h2 class="mb-0">Par sources - {{year}}</h2>
+                                    <small class="text-muted"></small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <!-- Chart -->
+                            <div class="chart">
+                                <!--<canvas id="chart-orders" class="chart-canvas"></canvas>-->
+                                <bar-chart :chartdata="chartPerSource"
+                                           class="chart-canvas"
+                                           :width="300"
+                                           :height="300"
+                                           v-if="loaded"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-xl-4">
                     <div class="card shadow">
                         <div class="card-header bg-transparent">
                             <div class="row align-items-center">
                                 <div class="col-auto">
                                     <h6 class="text-uppercase text-muted ls-1 mb-1">Tickets</h6>
-                                    <h2 class="mb-0">Par catégories</h2>
+                                    <h2 class="mb-0">Par catégories - {{year}}</h2>
                                     <small class="text-muted"></small>
-                                </div>
-                                <div class="col">
-                                    <ul class="nav nav-pills justify-content-end">
-                                        <li class="nav-item mr-2 mr-md-0" data-toggle="chart"
-                                            data-target="#chart-visit">
-                                            <a href="#" class="nav-link py-2 px-3 active" data-toggle="tab">
-                                                <span class="d-none d-md-block">Month</span>
-                                                <span class="d-md-none">M</span>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item" data-toggle="chart"
-                                            data-target="#chart-visit">
-                                            <a href="#" class="nav-link py-2 px-3" data-toggle="tab">
-                                                <span class="d-none d-md-block">Week</span>
-                                                <span class="d-md-none">W</span>
-                                            </a>
-                                        </li>
-                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -135,54 +117,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="row mt-5">
-                <div class="col-xl-8 mb-5 mb-xl-0">
-                    <div class="card shadow">
-                        <div class="card-header border-0">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <h3 class="mb-0">Ticket Pending</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="table-responsive">
-                            <!-- Projects table -->
-                            <table class="table align-items-center table-flush">
-                                <thead class="thead-light">
-                                <tr>
-                                    <th scope="col">Topic</th>
-                                    <th scope="col">Utilisateur</th>
-                                    <th scope="col">Priorité</th>
-                                    <th scope="col">editer</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr v-for="ticket in tickets.data">
-                                    <th scope="row">
-                                        {{ ticket.topic}}
-                                    </th>
-                                    <td>
-                                        {{ ticket.user.name }}
-                                    </td>
-                                    <td>
-                                        {{ ticket.importance }}
-                                    </td>
-                                    <td>
-                                        <router-link :to="{name: 'ticket', params: {id: ticket.id }}">
-                                            <i class="fas fa-edit"></i>
-                                        </router-link>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
                 <div class="col-xl-4">
                     <progress-state :items="ticketPerSociety"
-                                    title="Tickets par société"
+                                    :title="'Tickets par société -' + year "
                                     :array="['Société', 'Total']"
                                     :total="total"></progress-state>
                 </div>
@@ -263,7 +200,9 @@
                             </table>
                             <div class="d-flex justify-content-center pb-2">
                                 <router-link :to="{name: 'tickets'}">
-                                    <button class="btn btn-secondary " v-if="tickets.next_page_url">Voir tous les tickets</button>
+                                    <button class="btn btn-secondary " v-if="tickets.next_page_url">Voir tous les
+                                        tickets
+                                    </button>
                                 </router-link>
                             </div>
                         </div>
@@ -300,11 +239,17 @@ export default {
             loaded: false,
             chartDataTickets: {},
             chartDataLastFiveDays: {},
-            chartDataTicketsPerPerson : {},
-            chartPerCategory : {},
+            chartDataTicketsPerPerson: {},
+            chartPerCategory: {},
             tickets: {},
             ticketPerSociety: {},
+            chartPerSource: {},
             total: 0
+        }
+    },
+    computed: {
+        year() {
+            return moment().format('YYYY')
         }
     },
     methods: {
@@ -314,12 +259,13 @@ export default {
         statsInit() {
             this.$set(this.chartDataTickets, "labels", [])
             this.$set(this.chartDataTickets, "datasets", [])
-            // this.$set(this.chartDataTicketsPerPerson, "labels", [])
-            // this.$set(this.chartDataTicketsPerPerson, "datasets", [])
             this.$set(this.chartDataLastFiveDays, "labels", [])
             this.$set(this.chartDataLastFiveDays, "datasets", [])
             this.$set(this.chartPerCategory, "labels", [])
             this.$set(this.chartPerCategory, "datasets", [])
+            this.$set(this.chartPerSource, "labels", [])
+            this.$set(this.chartPerSource, "datasets", [])
+
         },
         async loadData() {
             this.$Progress.start()
@@ -381,11 +327,23 @@ export default {
                         hoverBackgroundColor: '#19194D',
                     })
 
+                    //ticket par source
+                    let sourceDataset = []
+                    for (let i = 0; i < response.data.sources.length; i++) {
+                        this.chartPerSource.labels.push(response.data.sources[i].name)
+                        sourceDataset.push(response.data.sources[i].count)
+                    }
+                    this.chartPerSource.datasets.push({
+                        data: sourceDataset,
+                        label: "# Nombre de ticket",
+                        backgroundColor: '#19194D',
+                        hoverBackgroundColor: '#19194D',
+                    })
 
                     // Ticket par category
                     let labelCat = [];
                     let CountCat = [];
-                    for(let i = 0 ; i < response.data.ticketCategory.length; i++){
+                    for (let i = 0; i < response.data.ticketCategory.length; i++) {
                         labelCat.push(response.data.ticketCategory[i].name)
                         CountCat.push(response.data.ticketCategory[i].count)
                     }
