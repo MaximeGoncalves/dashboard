@@ -118,7 +118,6 @@ class TicketController extends Controller
             $ticket->save();
             $leader = User::where('society_id', $user->society_id)->where('role', 'leader')->get();
 //            $this->dispatch(new NewTicketJob($ticket, $user, $leader));
-
         }
 
         if ($request->hasFile('files')) {
@@ -204,14 +203,16 @@ class TicketController extends Controller
         $ticket->type()->associate($request->type);
         $ticket->save();
 
+        //Variable pour déterminé si le ticket est cloturé
+        $close = false;
         if ($request->state == '4' && $state != 4) {
+            $close = true;
             $user = User::where('id', $ticket->user_id)->first();
             $leader = User::where('society_id', $user->society_id)->where('role', 'leader')->get();
-            $this->dispatch(new CloseTicketJob($ticket, $user, $leader));
             $ticket->close_at = now();
         }
 
-        return response()->json(['response' => 'success']);
+        return response(['ticket' => $ticket, 'close' => $close]);
     }
 
     /**
@@ -354,11 +355,15 @@ class TicketController extends Controller
 //        return $ticket;
     }
 
-    public function sendEmail(Request $request){
+    public function sendEmail(Request $request)
+    {
         $ticket = Ticket::findOrFail($request->ticket);
-        $user = User::findOrFail($request->user);
+        $user = User::findOrFail($ticket->user_id);
         $leader = User::where('society_id', $user->society_id)->where('role', 'leader')->get();
-        $this->dispatch(new NewTicketJob($ticket, $user, $leader));
-//        return response('Email Envoyé ! ');
+        if ($request->close) {
+            $this->dispatch(new CloseTicketJob($ticket, $user, $leader));
+        } else {
+            $this->dispatch(new NewTicketJob($ticket, $user, $leader));
+        }
     }
 }

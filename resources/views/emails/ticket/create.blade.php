@@ -1,9 +1,8 @@
 @component('mail::message')
 # {{ $ticket->topic }}
+**{{ $ticket->user->fullname }}**
 
-<small>{{ $ticket->user->fullname }}</small>
-
-_{{ $ticket->description }}_
+>{!! $ticket->description !!}
 
 @component('mail::button', ['url' =>  env('APP_URL'). '/tickets/' . $ticket->id, 'color' => 'default'])
 Consulter

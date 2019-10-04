@@ -18,6 +18,7 @@ class NewMessageEmail extends Mailable
     public $ticket;
     public $response;
     public $user ;
+    public $message;
 
     /**
      * Create a new message instance.
@@ -25,11 +26,12 @@ class NewMessageEmail extends Mailable
      * @param Ticket $ticket
      * @param $response
      */
-    public function __construct(Ticket $ticket, $response)
+    public function __construct(Ticket $ticket, $message, $response)
     {
         //
         $this->ticket = $ticket;
         $this->response = $response;
+        $this->message = $message;
     }
 
     /**

@@ -4,7 +4,7 @@ Madame, Monsieur, sauf erreur de notre part, nous vous confirmons la clôture de
 > # {{ $ticket->topic }}
 > <small class="text-muted">{{ $ticket->user->fullname }}</small>-
 > <small class="text-muted">{{ $ticket->created_at->toFormattedDateString() }}</small>
-<br>
-<br>
-{{ $ticket->description }}
+>
+> {!! $ticket->description !!}
+>
 @endcomponent

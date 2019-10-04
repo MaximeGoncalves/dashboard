@@ -221,9 +221,8 @@ import {Editor, Viewer} from '@toast-ui/vue-editor';
 import vClickOutside from 'v-click-outside'
 import HeaderTicketComponent from './HeaderTicketComponent'
 import TicketDescriptionComponent from './TicketDescriptionComponent'
-
+import TicketRepository from './TicketRepository'
 export default {
-
     directives: {
         clickOutside: vClickOutside.directive
     },
@@ -263,13 +262,11 @@ export default {
             note: '',
             privateNote: true,
             messages: {},
-            actions: {},
             editDescription: false,
             technicians: {},
             types: {},
             addcomment: false,
             addNote: false,
-
         }
     }
     ,
@@ -278,22 +275,29 @@ export default {
             this.messages.push($event);
         },
         updateTicket() {
-            this.$Progress.start()
-            let tech, type
-            if (this.ticket.technician.user) {
-                tech = this.ticket.technician.user.id
-            }
-            axios.put('/api/tickets/' + this.ticket.id, {
-                technician: tech,
-                source: this.ticket.source.id,
-                importance: this.ticket.importance,
-                state: this.ticket.state.id,
-                type: this.ticket.type ? this.ticket.type.id : null
-            }).then(result => {
-                this.$toasted.global.flash({message: "Le ticket à été mis à jour"});
-                this.$Progress.finish()
-                Fire.$emit('updateTicket', this.ticket.id)
-            })
+            TicketRepository.update(this.ticket)
+            // this.$Progress.start()
+            // let tech, type
+            // if (this.ticket.technician.user) {
+            //     tech = this.ticket.technician.user.id
+            // }
+            // axios.put('/api/tickets/' + this.ticket.id, {
+            //     technician: tech,
+            //     source: this.ticket.source.id,
+            //     importance: this.ticket.importance,
+            //     state: this.ticket.state.id,
+            //     type: this.ticket.type ? this.ticket.type.id : null
+            // }).then(response => {
+            //     this.$toasted.global.flash({message: "Le ticket à été mis à jour"});
+            //     this.$Progress.finish()
+            //     Fire.$emit('updateTicket', this.ticket.id)
+            //    if(response.data.close){
+            //        axios.post('/api/tickets/sendmail', {
+            //            ticket: response.data.ticket.id,
+            //            close: response.data.close
+            //        })
+            //    }
+            // })
         },
         deleteTicket() {
             swal({
@@ -321,7 +325,6 @@ export default {
         },
         loadTicket() {
             let ticket = this.$route.params.id;
-
             axios.get('/api/tickets/' + ticket).then(result => {
                 if (result.data.unauthorized) {
                     this.unauthorized = true
@@ -349,6 +352,7 @@ export default {
                 this.addcomment = false;
                 this.$toasted.global.flash({message: "Votre commentaire à bien été ajouté"});
                 this.messages.push(response.data.messages)
+                axios.post('/api/message/'+response.data.messages.id + '/sendEmailMessage')
             }).catch(error => {
                 this.errors = error.response.data.errors;
                 this.$Progress.fail();
@@ -365,80 +369,55 @@ export default {
                 this.addNote = false;
                 this.$toasted.global.flash({message: "Votre note à bien été ajoutée"});
                 this.messages.push(response.data)
+                axios.post('/api/note/' + this.ticket.id + '/sendemail', {
+                    note : response.data.id
+                })
             }).catch(error => {
                 this.errors = error.response.data.errors;
                 this.$Progress.fail();
             })
         },
-        loadAction(id) {
-            axios.get('/api/actions', {
-                params: {
-                    ticket: id,
-                }
-            }).then(response => {
-                this.actions = response.data.actions.reverse()
-            })
-        },
     },
     mounted() {
-
         this.loadTicket()
-        Fire.$on('addAction', (id) => {
-            this.loadAction(id)
-        })
-        Fire.$on('updateTicket', (id) => {
-            this.loadTicket()
-            this.loadAction(id)
-        })
     }
 }
 </script>
 
 <style>
-
     .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
         color: #fff;
         background-color: #172b4d;
     }
-
     .nav-pills .nav-link:hover {
         color: #172b4d;
     }
-
     .nav-pills .nav-link.active:hover {
         color: #fff;
     }
-
     .nav-pills .nav-link {
         color: #172b4d;
     }
-
     .nav-pills .nav-item:not(:last-child) {
         padding-right: 0;
     }
-
     .nav-pills .nav-link {
         border-radius: 0;
     }
-
     .timeline-alt {
         padding: 20px 0;
         position: relative;
     }
-
     .timeline-avatar {
         width: 22px !important;
         height: 22px !important;
     }
-
     .timeline-alt .timeline-item {
         position: relative;
     }
-
     .timeline-alt .timeline-item .timeline-item-info {
         margin-left: 30px;
     }
-
     .timeline-alt .timeline-item .timeline-icon {
         float: left;
         height: 20px;
@@ -450,7 +429,6 @@ export default {
         line-height: 16px;
         background-color: #fff;
     }
-
     .timeline-alt .timeline-item:before {
         background-color: #f1f3fa;
         bottom: 0;
@@ -461,15 +439,12 @@ export default {
         width: 2px;
         z-index: 0;
     }
-
     small p {
         margin-bottom: 0 !important;
     }
-
     .accordion .card-header {
         position: relative;
     }
-
     .accordion .card-header:after {
         font: normal normal normal 14px/1 NucleoIcons;
         line-height: 0;
@@ -480,11 +455,9 @@ export default {
         transition: all .15s cubic-bezier(.68, -.55, .265, 1.55);
         transform: translateY(-50%);
     }
-
     .accordion .card-header[aria-expanded=false]:after {
         content: '\ea0f';
     }
-
     .accordion .card-header[aria-expanded=true]:after {
         transform: rotate(180deg);
     }

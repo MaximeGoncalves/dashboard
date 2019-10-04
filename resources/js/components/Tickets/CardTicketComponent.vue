@@ -129,17 +129,22 @@ export default {
             if (ticket.technician) {
                 tech = ticket.technician.user.id
             }
-
             axios.put('/api/tickets/' + ticket.id, {
                 source: ticket.source.id,
                 importance: ticket.importance,
                 state: ticket.state.id,
                 type: ticket.type ? ticket.type.id : null,
                 technician: tech
-            }).then(result => {
+            }).then(response => {
                 this.$toasted.global.flash({message: "Le ticket à été mis à jour"});
                 this.$Progress.finish()
                 Fire.$emit('createTicket')
+                if(response.data.close){
+                    axios.post('/api/tickets/sendmail', {
+                        ticket: response.data.ticket.id,
+                        close: response.data.close
+                    })
+                }
             })
         },
     }

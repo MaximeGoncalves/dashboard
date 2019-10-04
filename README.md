@@ -11,7 +11,7 @@
 - [x] Mettre en place le répondre à un message.
 - [x] Éditer un message 
 - [x] Mise en place de la suppression de tickets 
-- [ ] Ajouter la possibilité de mettre un type au ticket.
+- [x] Ajouter la possibilité de mettre un type au ticket.
 - [x] Changer les icones des tabs dans un ticket
 - [x] Restrindre l'affichage pour les clients Tickets
 - [x] Empecher l'acces au ticket X via url

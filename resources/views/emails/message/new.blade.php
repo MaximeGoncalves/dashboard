@@ -2,7 +2,7 @@
 # Nouveau message
 
 **{{ $user }}** vous à envoyer un message.
-{{ $response }}
+>{{ $message->content }}
 
 Pour le consuter cliquer sur le bouton ci-dessous.
 

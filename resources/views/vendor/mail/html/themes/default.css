@@ -28,6 +28,13 @@ blockquote {
     line-height: 1.4;
     text-align: left;
 }
+blockquote {
+    border-left: 3px solid #172B4D;
+    padding-left: 10px;
+    margin: 0;
+    background-color: #F5F8FA;
+
+}
 
 a {
     color: #3869D4;

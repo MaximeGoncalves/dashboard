@@ -73,7 +73,6 @@ export default {
                     }
                     this.files = []
                     this.$Progress.finish();
-                    this.uploadText = 'Téléchargement Terminé.'
                 }).catch(error => {
                 this.$Progress.fail()
                 this.errors = error.response.data.message;

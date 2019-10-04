@@ -62,12 +62,13 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::put('/message/{message}', 'API\MessageController@update');
     Route::post('/taskmessage/{message}', 'API\MessageController@taskstore');
     Route::delete('/message/delete/{message}', 'API\MessageController@destroy');
-    Route::post('/message/sendEmailMessage', 'API\MessageController@sendEmailMessage'); // ne fonctionne pas encore ..
+    Route::post('/message/{message}/sendEmailMessage', 'API\MessageController@sendEmailMessage'); // ne fonctionne pas encore ..
     //    NOTE
     Route::get('/note', 'API\NoteController@index');
     Route::post('/note/{ticket}', 'API\NoteController@store');
     Route::put('/note/{note}', 'API\NoteController@update');
     Route::delete('/note/delete/{note}', 'API\NoteController@destroy');
+    Route::post('/note/{ticket}/sendemail', 'API\NoteController@sendEmail');
 
 // TYPES
     Route::post('/type', 'API\TypeController@store');

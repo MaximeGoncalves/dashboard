@@ -112,7 +112,6 @@ export default {
     data() {
         return {
             edit: false,
-            SocietyInput: {}
         }
     },
     methods: {
@@ -130,9 +129,6 @@ export default {
             errors: state => state.errors,
         })
     },
-    created() {
-        this.inputSociety = this.society
-    }
 
 }
 </script>

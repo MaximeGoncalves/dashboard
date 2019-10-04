@@ -334,7 +334,6 @@
 import {Editor} from '@toast-ui/vue-editor';
 import Types from './TypesComponent.vue';
 import CardTicket from './CardTicketComponent';
-
 export default {
     components: {Editor, Types, CardTicket},
     props: {
@@ -393,24 +392,6 @@ export default {
         }
     },
     methods: {
-        uploadFiles() {
-            let formData = new FormData();
-            for (var i = 0; i < this.files.length; i++) {
-                let file = this.files[i];
-
-                formData.append('files[' + i + ']', file);
-            }
-            axios.post('/api/uploadFiles', formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                }
-            ).then(result => {
-
-            }).catch(function () {
-
-            });
-        },
         createTicket() {
             this.$Progress.start();
             let formData = new FormData();
@@ -443,10 +424,7 @@ export default {
                 formData.append('files[' + i + ']', file);
             }
             formData.append('type', 'Ticket')
-
             let self = this
-
-
             const config = {
                 onUploadProgress: function (progressEvent) {
                     if (self.files.length > 0) {
@@ -455,10 +433,13 @@ export default {
                             self.$emit('uploadFinish')
                         }
                         swal({
-                            title: percent + '%',
+                            title: percent === '100' ? 'Creation du ticket' : percent + '%',
                             text: self.uploadText,
                             icon: "info",
                             dangerMode: false,
+                            button: {
+                                visible: false
+                            },
                         })
                     }
                 }
@@ -471,17 +452,15 @@ export default {
             ).then(response => {
                 $('.modal').modal('hide')
                 this.ticket = {}
-                this.uploadText = 'Attendez la fin du téléchargement'
-
                 this.$toasted.global.flash({message: "Le ticket à été créé."});
                 this.$Progress.finish();
-                axios.post('/api/tickets/sendmail', {
-                    ticket: response.data.ticket.id,
-                    user: response.data.user.id,
-                }).then((response) => {
-                })
                 Fire.$emit('createTicket')
                 Fire.$emit('uploadFinish')
+                swal.close()
+                axios.post('/api/tickets/sendmail', {
+                    ticket: response.data.ticket.id,
+                })
+
             }).catch(error => {
                 this.errors = error.response.data.errors;
                 this.$Progress.fail()
@@ -512,7 +491,6 @@ export default {
             let techTab = []
             let stateTab = []
             let source, user, society, filterYrN, type
-
             for (var i = 0; i < this.filter.technician.length; i++) {
                 let tech = this.filter.technician[i];
                 techTab.push(tech.id)
@@ -521,7 +499,6 @@ export default {
                 let state = this.filter.state[i];
                 stateTab.push(state.id)
             }
-
             if (this.filter.source != null) {
                 source = this.filter.source.id
             }
@@ -536,7 +513,6 @@ export default {
             } else {
                 filterYrN = true
             }
-
             axios.get('/api/tickets?page=' + page, {
                 params: {
                     filter: filterYrN,
@@ -559,59 +535,56 @@ export default {
                     this.types = response.data.types
                 });
         },
-        search() {
-            let techTab = []
-            let stateTab = []
-            let source, user, society, filterYrN, type
-
-            for (var i = 0; i < this.filter.technician.length; i++) {
-                let tech = this.filter.technician[i];
-                techTab.push(tech.id)
-            }
-            for (var i = 0; i < this.filter.state.length; i++) {
-                let state = this.filter.state[i];
-                stateTab.push(state.id)
-            }
-
-            if (this.filter.source != null) {
-                source = this.filter.source.id
-            }
-            if (this.filter.type != null) {
-                type = this.filter.type.id
-            }
-            if (this.filter.user != null) {
-                user = this.filter.user.id
-            }
-            if (this.filter.society != null) {
-                society = this.filter.society.id
-            }
-            if (!this.filter.importance || !source || !user || !society || !type || !techTab || !stateTab) {
-                filterYrN = false
-            } else {
-                filterYrN = true
-            }
-            axios.get('/api/tickets', {
-                params: {
-                    filter: filterYrN,
-                    technician: techTab,
-                    state: stateTab,
-                    importance: this.filter.importance,
-                    source: source,
-                    user: user,
-                    society: society,
-                    type: type
-                }
-            }).then(response => {
-                this.tickets = response.data.ticket;
-                this.technicians = response.data.technician;
-                this.users = response.data.user;
-                this.states = response.data.states;
-                this.sources = response.data.sources;
-                this.society = response.data.society;
-                this.types = response.data.types
-
-            })
-        },
+        // search() {
+        //     let techTab = []
+        //     let stateTab = []
+        //     let source, user, society, filterYrN, type
+        //     for (var i = 0; i < this.filter.technician.length; i++) {
+        //         let tech = this.filter.technician[i];
+        //         techTab.push(tech.id)
+        //     }
+        //     for (var i = 0; i < this.filter.state.length; i++) {
+        //         let state = this.filter.state[i];
+        //         stateTab.push(state.id)
+        //     }
+        //     if (this.filter.source != null) {
+        //         source = this.filter.source.id
+        //     }
+        //     if (this.filter.type != null) {
+        //         type = this.filter.type.id
+        //     }
+        //     if (this.filter.user != null) {
+        //         user = this.filter.user.id
+        //     }
+        //     if (this.filter.society != null) {
+        //         society = this.filter.society.id
+        //     }
+        //     if (!this.filter.importance || !source || !user || !society || !type || !techTab || !stateTab) {
+        //         filterYrN = false
+        //     } else {
+        //         filterYrN = true
+        //     }
+        //     axios.get('/api/tickets', {
+        //         params: {
+        //             filter: filterYrN,
+        //             technician: techTab,
+        //             state: stateTab,
+        //             importance: this.filter.importance,
+        //             source: source,
+        //             user: user,
+        //             society: society,
+        //             type: type
+        //         }
+        //     }).then(response => {
+        //         this.tickets = response.data.ticket;
+        //         this.technicians = response.data.technician;
+        //         this.users = response.data.user;
+        //         this.states = response.data.states;
+        //         this.sources = response.data.sources;
+        //         this.society = response.data.society;
+        //         this.types = response.data.types
+        //     })
+        // },
         saveType() {
             axios.post('/api/type', {
                 name: this.type,
@@ -628,10 +601,14 @@ export default {
     },
     created() {
         this.$on('uploadFinish', function () {
-            this.uploadText = 'Upload terminé !'
+            this.uploadText = 'Création du ticket, veuillez patienter.'
+            swal({
+                title: 'creation du ticket',
+                text: this.uploadText,
+                showConfirmButton: false
+            })
         })
         this.getResults();
-
         Fire.$on('createTicket', () => {
             this.getResults(this.tickets.current_page)
         })
@@ -644,23 +621,18 @@ export default {
             max-width: 800px !important;
         }
     }
-
     .dropdown {
         display: block;
     }
-
     .v-select .dropdown-toggle {
         border: none;
     }
-
     .dropdown-toggle::after {
         display: none;
     }
-
     .dropdown-toggle {
         height: 46px;
     }
-
     .v-select input[type="search"],
     .v-select input[type="search"]:focus {
         margin: 0;
@@ -669,7 +641,6 @@ export default {
         flex-grow: 1;
         width: 100% !important;
     }
-
     .v-select .selected-tag {
         height: 30px;
         margin: 0;
@@ -679,39 +650,32 @@ export default {
         color: white;
         background: linear-gradient(87deg, #32325d 0, #172b4d 100%) !important;
     }
-
     .v-select .vs__selected-options {
         align-items: center;
         margin-left: 5px;
     }
-
     .v-select .selected-tag .close {
         color: white !important;
     }
-
     .close > span:not(.sr-only) {
         opacity: 1;
         margin-top: 2px;
     }
-
     .v-select .dropdown-menu > .highlight > a {
         font-size: 14px;
         background: linear-gradient(87deg, #32325d 0, #172b4d 100%) !important;
     }
-
     .v-select .dropdown-menu {
         font-size: 14px !important;
         width: 100%;
         border: none;
     }
-
     .v-select.single .selected-tag {
         background-color: transparent;
         border-color: transparent;
         background: none !important;
         color: black;
     }
-
     .tickets-settings {
         position: absolute;
         top: 0;
@@ -722,9 +686,7 @@ export default {
         transform: translateX(100%);
         transition: transform 0.3s linear
     }
-
     .tickets-settings.show {
         transform: translateX(0%) !important;
     }
-
 </style>

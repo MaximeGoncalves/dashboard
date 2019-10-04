@@ -232,9 +232,7 @@
                         <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
                            aria-expanded="false">
                             <div class="media align-items-center">
-                                <span class="avatar avatar-sm rounded-circle">
-                                  <img alt="Image placeholder" :src="user.photo">
-                                </span>
+                                  <img alt="Image placeholder" :src="user.photo" class=" avatar avatar-sm">
                                 <div class="media-body ml-2 d-none d-lg-block">
                                     <span
                                         class="mb-0 text-sm  font-weight-bold">@{{user.fullname}}</span>

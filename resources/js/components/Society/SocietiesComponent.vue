@@ -150,7 +150,6 @@ export default {
         return {
             society: {},
             errors: [],
-            // societies: {},
             editMode: true,
             selected: "",
             searchData: ''
@@ -182,11 +181,6 @@ export default {
         create() {
             this.addSociety(this.society)
         },
-        // loadSocieties() {
-        //     axios.get('/api/society').then((data) => {
-        //         this.societies = data.data
-        //     });
-        // },
         search() {
             axios.get('/api/society/search', {
                 params: {
@@ -202,12 +196,6 @@ export default {
             this.$router.push({path: '/'})
         }
         this.getSocieties()
-        // Fire.$on('createSociety', () => {
-        //     this.loadSocieties()
-        // })
-        // Fire.$on('UpdateSociety', () => {
-        //     this.loadSocieties()
-        // })
     },
 }
 </script>

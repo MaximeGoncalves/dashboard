@@ -77,6 +77,22 @@ p {
   height: 24px;
 }
 
+.avatar-sm {
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center right;
+     object-position: center right;
+}
+
+.rounded-circle {
+  width: 150px;
+  height: 150px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center right;
+     object-position: center right;
+}
+
 .dropdown-item.active,
 .dropdown-item:active {
   background-color: var(--default);

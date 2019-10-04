@@ -126,7 +126,7 @@ const routes = [
 Vue.use(VueRouter)
 
 
-const router = new VueRouter({
+export const router = new VueRouter({
     mode: 'history',
     routes // short for `routes: routes`
 })
