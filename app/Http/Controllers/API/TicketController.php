@@ -24,6 +24,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
@@ -131,7 +132,7 @@ class TicketController extends Controller
         $action->content = 'à créé un ticket';
         $action->save();
 
-        return response(['ticket' => $ticket, 'user' => $user, 'leader' => $leader]);
+        return response(['ticket' => $ticket]);
     }
 
 
@@ -165,6 +166,7 @@ class TicketController extends Controller
             $all = array_values(array_sort($activity, function ($value) {
                 return $value['created_at'];
             }));
+            $messages->load(['from', 'parent']);
             return response()->json(['states' => $states,
                 'ticket' => $ticket,
                 'technicians' => $technicians,
@@ -208,6 +210,7 @@ class TicketController extends Controller
         if ($request->state == '4' && $state != 4) {
             $close = true;
             $user = User::where('id', $ticket->user_id)->first();
+            $ticket->technician()->associate($technicien);
             $leader = User::where('society_id', $user->society_id)->where('role', 'leader')->get();
             $ticket->close_at = now();
         }
@@ -275,6 +278,51 @@ class TicketController extends Controller
 
         $date = Carbon::now();
         setlocale(LC_TIME, 'fr');
+//ticket par technicien
+        $ticketTechnician = Technician::with(['Tickets' => function ($q) use ($date) {
+            $q->whereYear('created_at', '=', $date->year)->where('state_id',4)->where('society_id', '<>', 1);
+        }, 'user'])->get();
+
+
+
+//        Graphique ticket par technicien et par mois
+//        $techs = Technician::with(['Tickets' => function ($q) use ($date) {
+//            $q->whereYear('created_at', '=', $date->year);
+//        }])->get();
+//
+//        $technicians = [];
+//        $techs->load('user');
+//        foreach ($techs as $tech) {
+//            $technicians[$tech->user->fullname] = $tech->tickets->groupBy(function ($val) {
+//                return Carbon::parse($val->created_at)->format('m');
+//            });
+//        }
+//        $temp = $technicians;
+//        $ticketpertech = [];
+//        foreach ($technicians as $k => $technician){
+//            if(!isset($ticketpertech[$k])) {
+//                $ticketpertech[$k] = array(); //Declare it
+//            }
+//            for ($i = 0; $i < 12; $i++) {
+//                foreach ($technician as $key => $ticket) {
+//                    if (array_key_exists($i, $ticketpertech[$k])) {
+//                        continue;
+//                    } elseif ($key == $i + 1 ) {
+//                        $ticketpertech[$k][] = $ticket->count();
+//                        unset($technicians[$k][$key]);
+//                    } else {
+//                        $ticketpertech[$k][] = 0;
+//                    }
+//
+//                }
+//            }
+//        }
+
+
+
+//        $ticketPerTechnician = Ticket::whereYear('created_at', $date)->get()->groupBy(function ($val) {
+//            return Carbon::parse($val->created_at)->format('m');
+//        });
 
         // Graphique des tickets à l'année
         $ticketThisYear = new Stats();
@@ -290,35 +338,22 @@ class TicketController extends Controller
         $ticketsPendingOpen = new Stats();
         $ticketsPendingOpen = $ticketsPendingOpen->pendingOpenTicket();
 
-        //Tickets créer ces 5 derniers jours
-        $lastFiveCreated = Ticket::whereDate('created_at', '>=', $date->subDays(7))->get()->groupBy(function ($val) {
-            return Carbon::parse($val->created_at)->format('d l');
-        });
-        $created = [];
-        foreach ($lastFiveCreated as $last) {
-            $created[] = $last->count();
-        }
-        //Tickets clos ces 5 derniers jours
-        $lastFiveClosed = Ticket::where('state_id', 4)->whereDate('created_at', '>=', $date->subDays(7))->get()->groupBy(function ($val) {
-            return Carbon::parse($val->created_at)->format('D');
-        });
-        $closed = [];
-        foreach ($lastFiveClosed as $last) {
-            $closed[] = $last->count();
-        }
-
 //        Ticket par Sources
-        $TicketsSources = Ticket::withCount("source as count")->get();
-        $sources = Source::withCount(['tickets as count' => function ($q) use($date) {
-            return $q->whereYear('created_at', $date->year);
+        $sources = Source::withCount(['tickets as count' => function ($q) use ($date) {
+            $q->whereYear('created_at', $date->year)->where('society_id', '!=', 1);
         }])->get();
 
         //Tickets par sociétés (softease) ou utilisateurs (leader).
         if (Auth::user()->society_id == 1) {
-            $count = Society::withCount(['tickets as count'=> function ($q) use($date) {
-                return $q->whereYear('created_at', $date->year);
-            }])->groupBy('name')->orderBy('count', 'DSC')->take(6)->get()->except(1);
-            $total = Ticket::where('society_id', '<>', 1)->count();
+            $count = Society::withCount(['tickets as count' => function ($q) use ($date) {
+                $q->whereYear('created_at', $date->year)->where('state_id', 4);
+            }])->groupBy('name')->orderBy('count', 'DSC')->get()->except(1);
+            foreach ($count as $key => $c) {
+                if ($c->count === 0) {
+                    unset($count[$key]);
+                }
+            }
+            $total = Ticket::where('society_id', '<>', 1)->where("state_id", 4)->count();
         } elseif (Auth::user()->role !== "admin") {
             $total = Ticket::where('society_id', Auth::user()->society_id)->count();
             $count = User::where('society_id', Auth::user()->society_id)->withCount('tickets as count')->groupBy('name')->orderBy('count', 'DSC')->get();
@@ -327,13 +362,11 @@ class TicketController extends Controller
         $TicketsByCategory = Type::withCount('tickets as count')->groupBy('name')->get();
 
         return response()->json([
+            'technician' => $ticketTechnician,
             'sources' => $sources,
             'ticketCategory' => $TicketsByCategory,
             'totalTicket' => $total,
             'ticket' => $ticketThisYear,
-            'lastFive' => $lastFiveCreated,
-            'createdCount' => $created,
-            'closedCount' => $closed,
             'pending' => $ticketsPendingOpen,
             'lastYear' => $ticketsLastYear,
             'ticketSociety' => $count]);

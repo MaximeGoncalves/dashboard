@@ -352,7 +352,9 @@ export default {
                 this.addcomment = false;
                 this.$toasted.global.flash({message: "Votre commentaire à bien été ajouté"});
                 this.messages.push(response.data.messages)
-                axios.post('/api/message/'+response.data.messages.id + '/sendEmailMessage')
+                axios.post('/api/message/'+response.data.messages.id + '/sendEmailMessage', {
+                    message: response.data.messages.id
+                })
             }).catch(error => {
                 this.errors = error.response.data.errors;
                 this.$Progress.fail();

@@ -45,20 +45,18 @@ class MessageController extends Controller
         $message->from_id = Auth::user()->id;
         $message->commentable_type = $type == 'Ticket' ? Ticket::class : Task::Class;
         $message->commentable_id = $element->id;
-        $message->save();
+
         // Si c'est une response à un message :
         if ($request->to_id) {
             $message->to_id = $request->to_id;
             if ($type == 'Ticket') {
                 $toId = Message::with('from')->findOrFail($request->to_id);
-                $user = User::findOrFail($element->user_id);
-                $leader = User::where('society_id', $user->society_id)->where('role', 'leader')->get();
+
                 $action = new Action();
                 $action->content = 'à répondu à ' . $toId->from->fullname;
                 $action->from_id = Auth::user()->id;
                 $action->ticket()->associate($element);
                 $action->save();
-//                $this->dispatch(new NewMessageJob($element, $message ,$toId->from, $leader, $response = true));
             }
         } elseif (!$request->to_id && $type == 'Ticket') {
             $action = new Action();
@@ -67,11 +65,8 @@ class MessageController extends Controller
             $action->ticket()->associate($element);
             $action->save();
             $user = User::findOrFail($element->user_id);
-            $leader = User::where('society_id', $user->society_id)->where('role', 'leader')->get();
-//            $this->dispatch(new NewMessageJob($element,$message, $user, $leader, $response = false));
         }
-
-
+        $message->save();
         $message->load(['from', 'parent']);
         return response()->json(['messages' => $message]);
     }
@@ -118,16 +113,15 @@ class MessageController extends Controller
         return $users;
     }
 
-//    non fonctionnell , en cours ...
     public function sendEmailMessage(Request $request)
     {
-        $message = Message::findOrFail($request->message);
+        $message = Message::findOrFail($request->get('message'));
         $ticket = Ticket::findOrfail($message->commentable_id);
         $user = User::findOrFail($ticket->user_id);
         $leader = User::where('society_id', $user->society_id)->where('role', 'leader')->get();
 
         if ($message->to_id) {
-            $toId = Message::with('from')->findOrFail($request->to_id);
+            $toId = Message::with('from')->findOrFail($message->to_id);
             $this->dispatch(new NewMessageJob($ticket, $message,$user, $leader, $response = true));
 
         } else {

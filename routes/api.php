@@ -38,10 +38,11 @@ Route::group(['middleware' => 'auth:api'], function () {
 //    TICKET SOFT
     Route::post('/tickets/addAttachment/{ticket}', 'API\TicketController@addAttachmentTicket');
     Route::delete('/tickets/deleteAttachment/{attachment}', 'API\TicketController@deleteFile');
-    Route::get('/tickets/stats', 'API\TicketController@stats');
+    Route::get('/stats', 'API\TicketController@stats');
     Route::put('/tickets/{ticket}/editDescription', 'API\TicketController@editDescription');
     Route::apiResource('tickets', 'API\TicketController');
     Route::post('/tickets/sendmail', 'API\TicketController@sendEmail');
+
 
 //    LOGINS
     Route::get('/logins/search', 'API\LoginsController@search');
@@ -77,6 +78,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 //   ATTACHMENT
     Route::post('/attachment/{id}', 'API\AttachmentController@store');
     Route::delete('/attachment/{id}', 'API\AttachmentController@destroy');
+    Route::post('/attachements/sendmail', 'API\AttachmentController@sendEmail');
 
 //    KNOWLEDGES
     Route::apiResource('/knowledges', 'API\KnowledgesController');

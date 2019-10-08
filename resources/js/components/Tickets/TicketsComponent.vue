@@ -454,12 +454,12 @@ export default {
                 this.ticket = {}
                 this.$toasted.global.flash({message: "Le ticket à été créé."});
                 this.$Progress.finish();
-                Fire.$emit('createTicket')
-                Fire.$emit('uploadFinish')
-                swal.close()
                 axios.post('/api/tickets/sendmail', {
                     ticket: response.data.ticket.id,
                 })
+                Fire.$emit('createTicket')
+                Fire.$emit('uploadFinish')
+                swal.close()
 
             }).catch(error => {
                 this.errors = error.response.data.errors;

@@ -53,8 +53,6 @@ export default {
     props: ['element', 'type'],
     methods: {
         deleteFile(id, key) {
-
-
             swal({
                 title: "Etes vous sur ? ",
                 text: "Cette manipulation est irréversible !",

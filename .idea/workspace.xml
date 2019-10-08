@@ -2,13 +2,28 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bc6d64ee-d703-4bb1-903f-fc25c6c5f737" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/resources/js/components/Dashboard/PieChartComponent.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/emails/ticket/files.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/API/AttachmentController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/API/AttachmentController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/API/MessageController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/API/MessageController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/API/TicketController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/API/TicketController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Source.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Source.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/app.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DashboardController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DashboardController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Message.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Message.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Technician.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Technician.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/AttachmentComponent.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/AttachmentComponent.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/Dashboard/Components/ProgressStateComponent.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/Dashboard/Components/ProgressStateComponent.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/js/components/Dashboard/DashboardComponent.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/Dashboard/DashboardComponent.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/Tickets/HeaderTicketComponent.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/Tickets/HeaderTicketComponent.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/Tickets/TicketComponent.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/Tickets/TicketComponent.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/Tickets/TicketMessagesComponent.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/Tickets/TicketMessagesComponent.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/js/components/Tickets/TicketsComponent.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/Tickets/TicketsComponent.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/sass/app.scss" beforeDir="false" afterPath="$PROJECT_DIR$/resources/sass/app.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layouts/master.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/master.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/vendor/beyondcode/laravel-dump-server/" />
     <ignored path="$PROJECT_DIR$/vendor/composer/" />
@@ -136,104 +151,149 @@
     <option name="isMigrated" value="true" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/resources/js/components/Dashboard/DashboardComponent.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="299">
-              <caret line="60" column="36" selection-start-line="60" selection-start-column="36" selection-end-line="60" selection-end-column="36" />
-              <folding>
-                <element signature="n#div#1;n#div#1;n#div#0;n#div#0;n#template#0;n#!!top" />
-                <element signature="n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
-                <element signature="n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
-                <element signature="n#ul#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
-                <element signature="n#li#0;n#ul#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
-                <element signature="n#li#1;n#ul#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
-                <element signature="n#div#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
-                <element signature="n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
-                <element signature="n#line-chart#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
-                <element signature="n#div#1;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
-                <element signature="n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
-                <element signature="n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
-                <element signature="n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
-                <element signature="n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
-                <element signature="n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
-                <element signature="n#table#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
-                <element signature="n#thead#0;n#table#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
-                <element signature="n#tr#0;n#thead#0;n#table#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
-                <element signature="n#tbody#0;n#table#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
-                <element signature="n#tr#0;n#tbody#0;n#table#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
-                <element signature="n#td#0;n#tr#0;n#tbody#0;n#table#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
-                <element signature="n#td#1;n#tr#0;n#tbody#0;n#table#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
-                <element signature="n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
-                <element signature="n#router-link#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
-                <element signature="n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" />
-                <element signature="e#16489#16533#0" expanded="true" />
-                <element signature="e#17116#22116#0" />
-                <element signature="e#18310#19028#0" />
-                <element signature="e#19030#19755#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/js/components/Dashboard/Components/ProgressStateComponent.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="208">
-              <caret line="54" column="4" selection-start-line="54" selection-start-column="4" selection-end-line="54" selection-end-column="4" />
-            </state>
-          </provider>
-        </entry>
-      </file>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/API/TicketController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="344">
-              <caret line="318" column="64" selection-start-line="318" selection-start-column="64" selection-end-line="318" selection-end-column="64" />
+            <state relative-caret-position="362">
+              <caret line="167" column="16" selection-start-line="167" selection-start-column="16" selection-end-line="167" selection-end-column="16" />
               <folding>
-                <element signature="e#679#844#0#PHP" />
-                <element signature="e#849#1937#0#PHP" />
-                <element signature="e#1012#1091#0#PHP" />
-                <element signature="e#1330#1682#0#PHP" />
-                <element signature="e#1347#1681#1#PHP" />
-                <element signature="e#1330#1726#0#PHP" />
-                <element signature="e#1330#1814#0#PHP" />
-                <element signature="e#1330#1930#0#PHP" />
-                <element signature="e#1943#2158#0#PHP" />
-                <element signature="e#2267#2559#0#PHP" />
-                <element signature="e#2293#2558#0#PHP" />
-                <element signature="e#3402#3572#0#PHP" />
-                <element signature="e#3428#3571#0#PHP" />
-                <element signature="e#4791#6220#0#PHP" />
+                <element signature="e#44#59#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/resources/js/components/Tickets/TicketComponent.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="249">
+              <caret line="346" column="38" lean-forward="true" selection-start-line="346" selection-start-column="38" selection-end-line="346" selection-end-column="38" />
+              <folding>
+                <element signature="n#ticket-description-component#0;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#div#0;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#editor#0;n#div#0;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#small#0;n#div#0;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#div#0;n#div#0;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#div#0;n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#label#0;n#div#0;n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#div#3;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#div#0;n#div#3;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#editor#0;n#div#0;n#form#0;n#div#0;n#div#3;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#small#0;n#div#0;n#form#0;n#div#0;n#div#3;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#div#0;n#div#0;n#form#0;n#div#0;n#div#3;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#3;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#form#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#v-select#0;n#form#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#v-select#1;n#form#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#v-select#2;n#form#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#v-select#3;n#form#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#v-select#4;n#form#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#button#0;n#form#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#p#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#span#0;n#p#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#p#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#span#0;n#p#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#p#2;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#span#0;n#p#2;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#p#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#span#1;n#p#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#p#1;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#span#1;n#p#1;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#p#2;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#p#3;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#div#2;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#div#0;n#div#2;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#div#1;n#div#2;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#div#0;n#div#1;n#div#2;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#div#0;n#div#0;n#div#1;n#div#2;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#p#0;n#div#0;n#div#0;n#div#1;n#div#2;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#div#1;n#div#0;n#template#0;n#!!top" />
+                <element signature="e#13504#13558#0" expanded="true" />
+                <element signature="e#14084#15041#0" />
+                <element signature="e#15166#16248#0" />
+                <element signature="e#16273#17200#0" />
+                <element signature="e#17223#17945#0" />
+                <element signature="e#18704#19449#0" />
+                <element signature="n#style#0;n#!!top" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/QueriesRelationships.php">
+        <entry file="file://$PROJECT_DIR$/routes/api.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-35">
-              <caret line="187" column="32" selection-start-line="187" selection-start-column="32" selection-end-line="187" selection-end-column="32" />
+            <state relative-caret-position="189">
+              <caret line="65" column="94" selection-start-line="65" selection-start-column="78" selection-end-line="65" selection-end-column="94" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Source.php">
+        <entry file="file://$PROJECT_DIR$/resources/js/components/Tickets/TicketMessagesComponent.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="12" selection-start-line="12" selection-end-line="12" />
+            <state relative-caret-position="270">
+              <caret line="126" column="33" selection-start-line="126" selection-start-column="33" selection-end-line="126" selection-end-column="33" />
+              <folding>
+                <element signature="e#3849#4246#0" />
+                <element signature="e#4662#4936#0" />
+                <element signature="e#4962#5018#0" />
+                <element signature="e#5717#6305#0" />
+                <element signature="e#6324#6410#0" />
+                <element signature="e#6437#6521#0" />
+                <element signature="e#6557#6830#0" />
+                <element signature="e#7014#7226#0" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Stats.php">
+        <entry file="file://$PROJECT_DIR$/app/Message.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="38">
-              <caret line="12" column="20" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
+            <state relative-caret-position="222">
+              <caret line="22" column="7" selection-start-line="22" selection-start-column="7" selection-end-line="22" selection-end-column="7" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/views/emails/ticket/close.blade.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="216">
+              <caret line="8" column="1" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/API/MessageController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="249">
+              <caret line="119" column="51" selection-start-line="119" selection-start-column="51" selection-end-line="119" selection-end-column="51" />
+              <folding>
+                <element signature="e#405#623#0#PHP" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -242,13 +302,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>id</find>
-      <find>onClickOutsideItem</find>
-      <find>socie</find>
-      <find>soci</find>
-      <find>pending</find>
-      <find>Filter</find>
-      <find>type</find>
       <find>console.</find>
       <find>store</find>
       <find>crée</find>
@@ -257,7 +310,6 @@
       <find>pagin</find>
       <find>pagina</find>
       <find>filter</find>
-      <find>ticket</find>
       <find>technician</find>
       <find>delete</find>
       <find>techni</find>
@@ -272,6 +324,14 @@
       <find>console.lo</find>
       <find>cat</find>
       <find>societ</find>
+      <find>year</find>
+      <find>object</find>
+      <find>key</find>
+      <find>container</find>
+      <find>atta</find>
+      <find>ticket</find>
+      <find>sende</find>
+      <find>private</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -280,17 +340,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/resources/js/components/Store/SocietyModule.js" />
-        <option value="$PROJECT_DIR$/resources/js/components/Store/UserModule.js" />
-        <option value="$PROJECT_DIR$/resources/js/components/SocietiesComponent.vue" />
-        <option value="$PROJECT_DIR$/resources/js/components/Society/CardSocietyComponent.vue" />
-        <option value="$PROJECT_DIR$/resources/js/components/Society/CardUserComponent.vue" />
-        <option value="$PROJECT_DIR$/resources/js/components/Dashboard/LineComponent.vue" />
-        <option value="$PROJECT_DIR$/resources/js/components/Dashboard/LineChartComponent.vue" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/API/UserController.php" />
-        <option value="$PROJECT_DIR$/resources/js/components/Users/UsersComponent.vue" />
-        <option value="$PROJECT_DIR$/resources/js/components/Store/modules/User.js" />
-        <option value="$PROJECT_DIR$/resources/js/components/Users/UserModalComponent.vue" />
         <option value="$PROJECT_DIR$/resources/js/components/Users/UserSocietyComponent.vue" />
         <option value="$PROJECT_DIR$/resources/js/components/Tasks/ModalTaskComponent.vue" />
         <option value="$PROJECT_DIR$/resources/js/components/Society/SocietyComponent.vue" />
@@ -317,20 +366,31 @@
         <option value="$PROJECT_DIR$/app/Http/Controllers/API/NoteController.php" />
         <option value="$PROJECT_DIR$/resources/js/components/Tickets/CardTicketComponent.vue" />
         <option value="$PROJECT_DIR$/resources/views/emails/ticket/close.blade.php" />
-        <option value="$PROJECT_DIR$/routes/api.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/API/MessageController.php" />
-        <option value="$PROJECT_DIR$/resources/js/components/Tickets/TicketMessagesComponent.vue" />
         <option value="$PROJECT_DIR$/resources/js/components/Tickets/TicketRepository.js" />
-        <option value="$PROJECT_DIR$/resources/js/components/Tickets/TicketComponent.vue" />
-        <option value="$PROJECT_DIR$/resources/js/components/Tickets/HeaderTicketComponent.vue" />
         <option value="$PROJECT_DIR$/resources/js/components/Profile/ProfileComponent.vue" />
-        <option value="$PROJECT_DIR$/resources/views/layouts/master.blade.php" />
-        <option value="$PROJECT_DIR$/resources/js/components/Tickets/TicketsComponent.vue" />
         <option value="$PROJECT_DIR$/resources/sass/app.scss" />
         <option value="$PROJECT_DIR$/public/css/app.css" />
         <option value="$PROJECT_DIR$/app/Source.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/API/TicketController.php" />
+        <option value="$PROJECT_DIR$/app/Technician.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Stats.php" />
+        <option value="$PROJECT_DIR$/resources/js/components/Dashboard/PieChartComponent.vue" />
+        <option value="$PROJECT_DIR$/resources/js/components/Dashboard/Components/ProgressStateComponent.vue" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/DashboardController.php" />
         <option value="$PROJECT_DIR$/resources/js/components/Dashboard/DashboardComponent.vue" />
+        <option value="$PROJECT_DIR$/resources/views/layouts/master.blade.php" />
+        <option value="$PROJECT_DIR$/resources/js/components/AttachmentComponent.vue" />
+        <option value="$PROJECT_DIR$/resources/js/components/Tickets/TicketsComponent.vue" />
+        <option value="$PROJECT_DIR$/routes/api.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/API/AttachmentController.php" />
+        <option value="$PROJECT_DIR$/app/Jobs/newAttachmentJob.php" />
+        <option value="$PROJECT_DIR$/app/Mail/newAttachmentEmail.php" />
+        <option value="$PROJECT_DIR$/resources/js/components/Tickets/HeaderTicketComponent.vue" />
+        <option value="$PROJECT_DIR$/resources/views/emails/ticket/files.blade.php" />
+        <option value="$PROJECT_DIR$/app/Message.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/API/TicketController.php" />
+        <option value="$PROJECT_DIR$/resources/js/components/Tickets/TicketMessagesComponent.vue" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/API/MessageController.php" />
+        <option value="$PROJECT_DIR$/resources/js/components/Tickets/TicketComponent.vue" />
       </list>
     </option>
   </component>
@@ -443,10 +503,12 @@
       <path value="$PROJECT_DIR$/vendor/asm89/stack-cors" />
       <path value="$PROJECT_DIR$/vendor/barryvdh/laravel-cors" />
       <path value="$PROJECT_DIR$/vendor/spatie/laravel-cors" />
+      <path value="$PROJECT_DIR$/vendor/maximebf/debugbar" />
+      <path value="$PROJECT_DIR$/vendor/barryvdh/laravel-debugbar" />
     </include_path>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1797" />
+    <option name="x" value="1343" />
     <option name="y" value="-8" />
     <option name="width" value="1936" />
     <option name="height" value="1056" />
@@ -478,7 +540,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -486,11 +547,23 @@
               <item name="Dashboard" type="b2602c69:ProjectViewProjectNode" />
               <item name="Dashboard" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="Dashboard" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Dashboard" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Dashboard" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Dashboard" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -509,18 +582,18 @@
     <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\IntelliJ IDEA 2019.1.3\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\wamp64\www\Projects\Dashboard\resources\js\components\Dashboard" />
+      <recent name="C:\wamp64\www\Projects\Dashboard\app" />
+      <recent name="C:\wamp64\www\Projects\Dashboard\app\Http\Controllers\API" />
+      <recent name="C:\wamp64\www\Projects\Dashboard\resources\js\components\Knowledges" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\wamp64\www\Projects\Projet Softease\Dashboard\resources\js\components\Society" />
       <recent name="C:\wamp64\www\Projects\Projet Softease\Dashboard\resources\js\components\Store\modules" />
       <recent name="C:\wamp64\www\Projects\Projet Softease\Dashboard\app\Http\Controllers\API" />
       <recent name="C:\wamp64\www\Projects\Dashboard\resources\lang" />
       <recent name="C:\wamp64\www\Projects\Dashboard\storage\app" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\wamp64\www\Projects\Dashboard\resources\js\components\Dashboard" />
-      <recent name="C:\wamp64\www\Projects\Dashboard\app" />
-      <recent name="C:\wamp64\www\Projects\Dashboard\app\Http\Controllers\API" />
-      <recent name="C:\wamp64\www\Projects\Dashboard\resources\js\components\Knowledges" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -612,18 +685,20 @@
       <workItem from="1569933271250" duration="9442000" />
       <workItem from="1569996422541" duration="31482000" />
       <workItem from="1570083402844" duration="23625000" />
-      <workItem from="1570169495745" duration="19936000" />
+      <workItem from="1570169495745" duration="30242000" />
+      <workItem from="1570427862501" duration="24043000" />
+      <workItem from="1570515536337" duration="10820000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1036675000" />
+    <option name="totallyTimeSpent" value="1081844000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.5892308" visible="true" weight="0.2513369" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.5892308" visible="true" weight="0.25508022" />
       <window_info id="Structure" order="1" weight="0.24973261" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info id="npm" order="3" sideWeight="0.41076922" side_tool="true" weight="0.14552239" />
@@ -639,7 +714,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5037433" side_tool="true" weight="0.2911534" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" sideWeight="0.49625668" visible="true" weight="0.25419933" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" sideWeight="0.49625668" visible="true" weight="0.25531915" />
       <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="10" />
       <window_info anchor="bottom" id="TypeScript" order="11" />
@@ -662,7 +737,7 @@
       <window_info anchor="right" id="Nativescript Palette" order="12" />
     </layout>
     <layout-to-restore>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.5892308" visible="true" weight="0.23529412" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.5892308" visible="true" weight="0.2513369" />
       <window_info id="Structure" order="1" weight="0.24973261" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info id="npm" order="3" sideWeight="0.41076922" side_tool="true" weight="0.14552239" />
@@ -677,8 +752,8 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5021322" side_tool="true" weight="0.2900336" />
-      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.4978678" weight="0.2911534" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5037433" side_tool="true" weight="0.2911534" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" sideWeight="0.49625668" visible="true" weight="0.25531915" />
       <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="10" />
       <window_info anchor="bottom" id="TypeScript" order="11" />
@@ -705,83 +780,6 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/resources/views/dashboard.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="124">
-          <caret line="164" column="60" lean-forward="true" selection-start-line="164" selection-start-column="60" selection-end-line="164" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Message.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-26" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/images/logo-sf.svg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/js/components/Users/UsersComponent.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="256" column="37" lean-forward="true" selection-start-line="256" selection-start-column="37" selection-end-line="256" selection-end-column="37" />
-          <folding>
-            <element signature="n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#1;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#button#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#small#0;n#div#0;n#div#0;n#div#0;n#form#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#small#0;n#div#0;n#div#1;n#div#0;n#form#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#small#0;n#div#0;n#div#0;n#div#1;n#form#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#small#0;n#div#0;n#div#1;n#div#1;n#form#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#small#0;n#div#0;n#div#0;n#div#2;n#form#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#small#0;n#div#0;n#div#0;n#div#3;n#form#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#small#0;n#div#0;n#div#1;n#div#3;n#form#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="e#14503#14540#0" expanded="true" />
-            <element signature="e#15528#15849#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/vendor/mail/html/header.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="8" selection-start-line="8" selection-end-line="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="12" column="25" selection-start-line="12" selection-start-column="25" selection-end-line="12" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="351">
-            <caret line="13" column="4" selection-start-line="13" selection-start-column="4" selection-end-line="13" selection-end-column="4" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/laravel-vue-pagination/dist/laravel-vue-pagination.common.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/laravel-vue-pagination/src/RenderlessLaravelVuePagination.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2025">
-          <caret line="81" column="21" lean-forward="true" selection-start-line="81" selection-start-column="21" selection-end-line="81" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/laravel-vue-pagination/src/LaravelVuePagination.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-630">
-          <caret line="8" column="27" selection-start-line="8" selection-start-column="27" selection-end-line="8" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Filter.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-405">
@@ -853,23 +851,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Jobs/NewTicketJob.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="39" column="32" lean-forward="true" selection-start-line="39" selection-start-column="32" selection-end-line="39" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Mail/NewTicketEmail.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="4" column="4" lean-forward="true" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="4" />
-          <folding>
-            <element signature="e#28#43#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Mail/NewNoteEmail.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-107">
@@ -887,24 +868,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/emails/message/new.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="81">
-          <caret line="3" column="42" selection-start-line="3" selection-start-column="42" selection-end-line="3" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/emails/note/new.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="81">
           <caret line="3" column="33" selection-start-line="3" selection-start-column="33" selection-end-line="3" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/emails/message/response.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="5" selection-start-line="5" selection-end-line="5" />
         </state>
       </provider>
     </entry>
@@ -939,20 +906,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/emails/ticket/create.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/emails/ticket/close.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="8" column="1" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/js/components/Tickets/CardTicketComponent.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="342">
@@ -976,23 +929,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/api.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="232">
-          <caret line="64" column="52" selection-start-line="64" selection-start-column="36" selection-end-line="64" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/API/MessageController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="558">
-          <caret line="133" column="63" selection-start-line="133" selection-start-column="63" selection-end-line="133" selection-end-column="63" />
-          <folding>
-            <element signature="e#405#623#0#PHP" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/js/components/Store/modules/User.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="513">
@@ -1003,126 +939,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/js/components/Tickets/TicketMessagesComponent.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="367">
-          <caret line="158" column="10" selection-start-line="158" selection-start-column="10" selection-end-line="158" selection-end-column="10" />
-          <folding>
-            <element signature="e#3849#4246#0" />
-            <element signature="e#4662#4936#0" />
-            <element signature="e#4962#5018#0" />
-            <element signature="e#5044#5638#0" />
-            <element signature="e#5664#6252#0" />
-            <element signature="e#6271#6357#0" />
-            <element signature="e#6384#6468#0" />
-            <element signature="e#6504#6777#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/js/components/Tickets/TicketRepository.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="486">
           <caret line="18" column="44" selection-start-line="18" selection-start-column="44" selection-end-line="18" selection-end-column="44" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/js/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="670">
-          <caret line="87" selection-start-line="87" selection-end-line="88" />
-          <folding>
-            <element signature="e#276#297#0" expanded="true" />
-            <element signature="e#703#745#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/js/components/Tickets/HeaderTicketComponent.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="382">
-          <caret line="78" column="18" selection-start-line="78" selection-start-column="18" selection-end-line="78" selection-end-column="18" />
-          <folding>
-            <element signature="e#2204#2750#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/js/components/Tickets/TicketComponent.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="261">
-          <caret line="274" column="39" selection-start-line="274" selection-start-column="39" selection-end-line="274" selection-end-column="39" />
-          <folding>
-            <element signature="n#header-ticket-component#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#ticket-description-component#0;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#0;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#editor#0;n#div#0;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#small#0;n#div#0;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#0;n#div#0;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#0;n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#label#0;n#div#0;n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#3;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#0;n#div#3;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#editor#0;n#div#0;n#form#0;n#div#0;n#div#3;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#small#0;n#div#0;n#form#0;n#div#0;n#div#3;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#0;n#div#0;n#form#0;n#div#0;n#div#3;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#3;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#form#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#v-select#0;n#form#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#v-select#1;n#form#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#v-select#2;n#form#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#v-select#3;n#form#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#v-select#4;n#form#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#button#0;n#form#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#p#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#span#0;n#p#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#p#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#span#0;n#p#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#p#2;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#span#0;n#p#2;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#p#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#span#1;n#p#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#p#1;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#span#1;n#p#1;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#p#2;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#p#3;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#2;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#0;n#div#2;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#1;n#div#2;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#0;n#div#1;n#div#2;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#0;n#div#0;n#div#1;n#div#2;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#p#0;n#div#0;n#div#0;n#div#1;n#div#2;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#1;n#div#0;n#template#0;n#!!top" />
-            <element signature="e#13504#13558#0" expanded="true" />
-            <element signature="e#14084#15041#0" />
-            <element signature="e#15166#16248#0" />
-            <element signature="e#16273#17200#0" />
-            <element signature="e#17223#17945#0" />
-            <element signature="e#17968#18683#0" />
-            <element signature="e#18704#19449#0" />
-            <element signature="n#style#0;n#!!top" />
           </folding>
         </state>
       </provider>
@@ -1141,10 +963,86 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/resources/js/components/Profile/ProfileComponent.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="6" column="60" selection-start-line="6" selection-start-column="60" selection-end-line="6" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Ticket.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="8" column="27" lean-forward="true" selection-start-line="8" selection-start-column="27" selection-end-line="8" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/QueriesRelationships.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-35">
+          <caret line="187" column="32" selection-start-line="187" selection-start-column="32" selection-end-line="187" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Source.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/DashboardController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="14" selection-start-line="14" selection-end-line="14" />
+          <folding>
+            <element signature="e#40#59#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Stats.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="34" column="48" selection-start-line="34" selection-start-column="48" selection-end-line="34" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/js/components/Dashboard/PieChartComponent.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="4" column="17" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/js/components/Dashboard/LineChartComponent.vue">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/js/components/Dashboard/Components/ProgressStateComponent.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1404">
+          <caret line="52" column="16" selection-start-line="52" selection-start-column="16" selection-end-line="52" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Technician.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="12" column="45" selection-start-line="12" selection-start-column="45" selection-end-line="12" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/js/components/AttachmentComponent.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="87">
+          <caret line="54" column="29" selection-start-line="54" selection-start-column="29" selection-end-line="54" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/resources/js/components/Tickets/TicketsComponent.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="64" column="34" selection-start-line="64" selection-start-column="34" selection-end-line="64" selection-end-column="34" />
+        <state relative-caret-position="324">
+          <caret line="458" column="18" selection-start-line="458" selection-start-column="18" selection-end-line="458" selection-end-column="18" />
           <folding>
             <element signature="n#div#0;n#div#0;n#template#0;n#!!top" />
             <element signature="n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
@@ -1160,7 +1058,6 @@
             <element signature="n#v-select#1;n#form#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
             <element signature="n#v-select#2;n#form#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
             <element signature="n#v-select#3;n#form#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#0;n#form#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
             <element signature="n#v-select#0;n#div#0;n#form#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
             <element signature="n#v-select#1;n#div#0;n#form#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
             <element signature="n#v-select#2;n#div#0;n#form#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
@@ -1253,30 +1150,33 @@
             <element signature="n#small#0;n#div#0;n#div#6;n#div#0;n#form#0;n#div#1;n#div#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" />
             <element signature="n#div#1;n#form#0;n#div#1;n#div#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" />
             <element signature="n#button#1;n#div#1;n#form#0;n#div#1;n#div#0;n#div#0;n#div#3;n#div#0;n#template#0;n#!!top" />
-            <element signature="e#19751#19795#0" expanded="true" />
-            <element signature="e#20061#20458#0" />
-            <element signature="e#20164#20444#0" />
-            <element signature="e#20842#21240#0" />
-            <element signature="e#20933#21114#0" />
             <element signature="n#style#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Jobs/NewTicketJob.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="51" selection-start-line="51" selection-end-line="57" selection-end-column="87" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Mail/NewTicketEmail.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="303">
+          <caret line="35" selection-start-line="35" selection-end-line="37" selection-end-column="47" />
+          <folding>
+            <element signature="e#28#43#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/layouts/master.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="81">
-          <caret line="301" selection-start-line="301" selection-end-line="301" />
+        <state relative-caret-position="378">
+          <caret line="188" column="45" lean-forward="true" selection-start-line="188" selection-start-column="45" selection-end-line="188" selection-end-column="45" />
           <folding>
-            <element signature="n#html#0;n#!!top" />
-            <element signature="n#head#0;n#html#0;n#!!top" />
-            <element signature="n#link#4;n#head#0;n#html#0;n#!!top" />
-            <element signature="n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#button#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#router-link#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
             <element signature="n#ul#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
             <element signature="e#1945#1983#0#Blade" />
             <element signature="e#2000#2108#0#Blade" />
@@ -1291,165 +1191,69 @@
             <element signature="e#2622#2687#0#Blade" />
             <element signature="e#2704#2718#0#Blade" />
             <element signature="e#2735#2748#0#Blade" />
-            <element signature="n#li#0;n#ul#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#a#0;n#li#0;n#ul#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#0;n#a#0;n#li#0;n#ul#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#span#0;n#div#0;n#a#0;n#li#0;n#ul#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#0;n#li#0;n#ul#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#0;n#div#0;n#li#0;n#ul#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#router-link#0;n#div#0;n#li#0;n#ul#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#a#0;n#div#0;n#li#0;n#ul#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
             <element signature="n#div#0;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#0;n#div#0;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#router-link#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#button#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
             <element signature="n#form#0;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#0;n#form#0;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#input#0;n#div#0;n#form#0;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#ul#0;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#li#0;n#ul#0;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#router-link#0;n#li#0;n#ul#0;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="e#0#14289#0#Blade" />
-            <element signature="n#li#1;n#ul#0;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#router-link#0;n#li#1;n#ul#0;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="e#0#14289#0#Blade" />
-            <element signature="n#ul#1;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#li#0;n#ul#1;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#router-link#0;n#li#0;n#ul#1;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#li#1;n#ul#1;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#router-link#0;n#li#1;n#ul#1;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#li#2;n#ul#1;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#router-link#0;n#li#2;n#ul#1;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#ul#2;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#li#0;n#ul#2;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#router-link#0;n#li#0;n#ul#2;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="e#0#5#0" />
-            <element signature="e#0#14289#0#Blade" />
-            <element signature="n#li#1;n#ul#2;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#router-link#0;n#li#1;n#ul#2;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#li#2;n#ul#2;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#router-link#0;n#li#2;n#ul#2;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#li#3;n#ul#2;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#router-link#0;n#li#3;n#ul#2;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#li#4;n#ul#2;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#router-link#0;n#li#4;n#ul#2;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="e#0#14289#0#Blade" />
-            <element signature="n#ul#3;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#li#0;n#ul#3;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#router-link#0;n#li#0;n#ul#3;n#div#0;n#div#0;n#nav#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
             <element signature="n#nav#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#0;n#nav#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#form#0;n#div#0;n#nav#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#0;n#form#0;n#div#0;n#nav#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#0;n#div#0;n#form#0;n#div#0;n#nav#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#nav#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#ul#0;n#div#0;n#nav#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="e#10843#10922#0#Blade" />
-            <element signature="n#li#0;n#ul#0;n#div#0;n#nav#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#a#0;n#li#0;n#ul#0;n#div#0;n#nav#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#0;n#a#0;n#li#0;n#ul#0;n#div#0;n#nav#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#0;n#div#0;n#a#0;n#li#0;n#ul#0;n#div#0;n#nav#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#span#0;n#div#0;n#div#0;n#a#0;n#li#0;n#ul#0;n#div#0;n#nav#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#0;n#li#0;n#ul#0;n#div#0;n#nav#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#0;n#div#0;n#li#0;n#ul#0;n#div#0;n#nav#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#router-link#0;n#div#0;n#li#0;n#ul#0;n#div#0;n#nav#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#a#0;n#div#0;n#li#0;n#ul#0;n#div#0;n#nav#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#form#0;n#div#0;n#li#0;n#ul#0;n#div#0;n#nav#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#2;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="e#13675#13757#0#Blade" />
-            <element signature="e#0#14289#0#Blade" />
-            <element signature="n#script#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="e#14179#14250#0#Blade" />
-            <element signature="n#script#6;n#body#0;n#html#0;n#!!top" />
-            <marker date="1570193534458" expanded="false" signature="355:369" ph="..." />
-            <marker date="1570193534458" expanded="false" signature="6070:6079" ph="..." />
-            <marker date="1570193534458" expanded="false" signature="6530:6539" ph="..." />
-            <marker date="1570193534458" expanded="false" signature="9170:9179" ph="..." />
-            <marker date="1570193534458" expanded="false" signature="12594:12609" ph="..." />
-            <marker date="1570193534458" expanded="false" signature="13710:13724" ph="..." />
+            <marker date="1570518162608" expanded="false" signature="355:369" ph="..." />
+            <marker date="1570518162608" expanded="true" signature="6070:6079" ph="..." />
+            <marker date="1570518162608" expanded="false" signature="6530:6539" ph="..." />
+            <marker date="1570518162608" expanded="false" signature="8716:8725" ph="..." />
+            <marker date="1570518162608" expanded="false" signature="12158:12173" ph="..." />
+            <marker date="1570518162608" expanded="true" signature="13219:13233" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/js/components/Profile/ProfileComponent.vue">
+    <entry file="file://$PROJECT_DIR$/resources/views/emails/message/response.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="6" column="60" selection-start-line="6" selection-start-column="60" selection-end-line="6" selection-end-column="60" />
+        <state relative-caret-position="135">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Ticket.php">
+    <entry file="file://$PROJECT_DIR$/resources/views/emails/ticket/create.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="8" column="27" lean-forward="true" selection-start-line="8" selection-start-column="27" selection-end-line="8" selection-end-column="27" />
+        <state relative-caret-position="135">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Source.php">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/API/AttachmentController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="12" selection-start-line="12" selection-end-line="12" />
+        <state relative-caret-position="343">
+          <caret line="93" column="34" selection-start-line="93" selection-start-column="34" selection-end-line="93" selection-end-column="34" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Stats.php">
+    <entry file="file://$PROJECT_DIR$/resources/views/emails/message/new.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="12" column="20" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
+        <state relative-caret-position="108">
+          <caret line="4" column="24" lean-forward="true" selection-start-line="4" selection-start-column="24" selection-end-line="4" selection-end-column="24" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/QueriesRelationships.php">
+    <entry file="file://$PROJECT_DIR$/resources/js/components/Tickets/HeaderTicketComponent.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-35">
-          <caret line="187" column="32" selection-start-line="187" selection-start-column="32" selection-end-line="187" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/API/TicketController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="344">
-          <caret line="318" column="64" selection-start-line="318" selection-start-column="64" selection-end-line="318" selection-end-column="64" />
+        <state relative-caret-position="243">
+          <caret line="75" selection-start-line="75" selection-end-line="75" />
           <folding>
-            <element signature="e#679#844#0#PHP" />
-            <element signature="e#849#1937#0#PHP" />
-            <element signature="e#1012#1091#0#PHP" />
-            <element signature="e#1330#1682#0#PHP" />
-            <element signature="e#1347#1681#1#PHP" />
-            <element signature="e#1330#1726#0#PHP" />
-            <element signature="e#1330#1814#0#PHP" />
-            <element signature="e#1330#1930#0#PHP" />
-            <element signature="e#1943#2158#0#PHP" />
-            <element signature="e#2267#2559#0#PHP" />
-            <element signature="e#2293#2558#0#PHP" />
-            <element signature="e#3402#3572#0#PHP" />
-            <element signature="e#3428#3571#0#PHP" />
-            <element signature="e#4791#6220#0#PHP" />
+            <element signature="e#2204#2750#0" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/js/components/Dashboard/Components/ProgressStateComponent.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="54" column="4" selection-start-line="54" selection-start-column="4" selection-end-line="54" selection-end-column="4" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/js/components/Dashboard/DashboardComponent.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="60" column="36" selection-start-line="60" selection-start-column="36" selection-end-line="60" selection-end-column="36" />
+        <state relative-caret-position="243">
+          <caret line="69" column="34" selection-start-line="69" selection-start-column="34" selection-end-line="69" selection-end-column="34" />
           <folding>
+            <element signature="n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#0;n#div#1;n#div#0;n#div#0;n#template#0;n#!!top" />
             <element signature="n#div#1;n#div#1;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#2;n#div#1;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#0;n#div#2;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#1;n#div#0;n#template#0;n#!!top" />
             <element signature="n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
             <element signature="n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
             <element signature="n#ul#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
@@ -1473,11 +1277,173 @@
             <element signature="n#td#1;n#tr#0;n#tbody#0;n#table#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
             <element signature="n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
             <element signature="n#router-link#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" />
-            <element signature="e#16489#16533#0" expanded="true" />
-            <element signature="e#17116#22116#0" />
-            <element signature="e#18310#19028#0" />
-            <element signature="e#19030#19755#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Jobs/newAttachmentJob.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="397">
+          <caret line="48" column="66" selection-start-line="48" selection-start-column="66" selection-end-line="48" selection-end-column="66" />
+          <folding>
+            <element signature="e#28#60#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Mail/newAttachmentEmail.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="15" column="19" selection-start-line="15" selection-start-column="19" selection-end-line="15" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/emails/ticket/files.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="297">
+          <caret line="11" column="13" lean-forward="true" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/js/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="343">
+          <caret line="166" column="47" selection-start-line="166" selection-start-column="47" selection-end-line="166" selection-end-column="47" />
+          <folding>
+            <element signature="e#276#297#0" expanded="true" />
+            <element signature="e#703#745#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/API/TicketController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="362">
+          <caret line="167" column="16" selection-start-line="167" selection-start-column="16" selection-end-line="167" selection-end-column="16" />
+          <folding>
+            <element signature="e#44#59#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/api.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="65" column="94" selection-start-line="65" selection-start-column="78" selection-end-line="65" selection-end-column="94" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/emails/ticket/close.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="8" column="1" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Message.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="222">
+          <caret line="22" column="7" selection-start-line="22" selection-start-column="7" selection-end-line="22" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/js/components/Tickets/TicketMessagesComponent.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="126" column="33" selection-start-line="126" selection-start-column="33" selection-end-line="126" selection-end-column="33" />
+          <folding>
+            <element signature="e#3849#4246#0" />
+            <element signature="e#4662#4936#0" />
+            <element signature="e#4962#5018#0" />
+            <element signature="e#5717#6305#0" />
+            <element signature="e#6324#6410#0" />
+            <element signature="e#6437#6521#0" />
+            <element signature="e#6557#6830#0" />
+            <element signature="e#7014#7226#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/API/MessageController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="249">
+          <caret line="119" column="51" selection-start-line="119" selection-start-column="51" selection-end-line="119" selection-end-column="51" />
+          <folding>
+            <element signature="e#405#623#0#PHP" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/js/components/Tickets/TicketComponent.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="249">
+          <caret line="346" column="38" lean-forward="true" selection-start-line="346" selection-start-column="38" selection-end-line="346" selection-end-column="38" />
+          <folding>
+            <element signature="n#ticket-description-component#0;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#0;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#editor#0;n#div#0;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#small#0;n#div#0;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#0;n#div#0;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#0;n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#label#0;n#div#0;n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#3;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#0;n#div#3;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#editor#0;n#div#0;n#form#0;n#div#0;n#div#3;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#small#0;n#div#0;n#form#0;n#div#0;n#div#3;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#0;n#div#0;n#form#0;n#div#0;n#div#3;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#3;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#form#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#v-select#0;n#form#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#v-select#1;n#form#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#v-select#2;n#form#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#v-select#3;n#form#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#v-select#4;n#form#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#button#0;n#form#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#p#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#span#0;n#p#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#p#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#span#0;n#p#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#p#2;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#span#0;n#p#2;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#p#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#span#1;n#p#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#p#1;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#span#1;n#p#1;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#p#2;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#p#3;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#2;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#0;n#div#2;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#1;n#div#2;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#0;n#div#1;n#div#2;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#0;n#div#0;n#div#1;n#div#2;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#p#0;n#div#0;n#div#0;n#div#1;n#div#2;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#1;n#div#0;n#template#0;n#!!top" />
+            <element signature="e#13504#13558#0" expanded="true" />
+            <element signature="e#14084#15041#0" />
+            <element signature="e#15166#16248#0" />
+            <element signature="e#16273#17200#0" />
+            <element signature="e#17223#17945#0" />
+            <element signature="e#18704#19449#0" />
+            <element signature="n#style#0;n#!!top" />
           </folding>
         </state>
       </provider>

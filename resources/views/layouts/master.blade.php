@@ -162,36 +162,26 @@
 
                     <li class="nav-item">
                         <router-link class="nav-link" to="/tickets">
-                            <i class="fas fa-file-alt text-primary"></i> Ticket Software
+                            <i class="fas fa-file-alt text-primary"></i> Tickets
                         </router-link>
                     </li>
                     @can('isAdmin')
-                    <li class="nav-item">
-                        <router-link class="nav-link" to="/boards">
-                            <i class="fas fa-tasks text-yellow"></i> Tasks Manager
-                        </router-link>
-                    </li>
-
                         <li class="nav-item">
-                            <router-link class="nav-link" to="/logins">
-                                <i class="fas fa-lock text-dark"></i> Logins
+                            <router-link class="nav-link" to="/boards">
+                                <i class="fas fa-tasks text-yellow"></i> Gestionnaire de tâche
                             </router-link>
                         </li>
 
-                    <li class="nav-item">
-                        <router-link class="nav-link" to="/nkeep">
-                            <i class="fas fa-sort text-blue "></i> nkeep
-                        </router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link class="nav-link" to="/projects">
-                            <i class="fas fa-project-diagram text-success"></i> Projects
-                        </router-link>
-                    </li>
+                        <li class="nav-item">
+                            <router-link class="nav-link" to="/logins">
+                                <i class="fas fa-lock text-dark"></i> Identifiants
+                            </router-link>
+                        </li>
                     @endcan()
                 </ul>
                 <!-- Divider -->
                 <!-- Heading -->
+                <hr class="my-3">
                 @can('isAdmin')
                     <h6 class="navbar-heading text-muted">Documentation</h6>
                     <!-- Navigation -->
@@ -226,13 +216,13 @@
                 </form>
                 <!-- User -->
                 <ul class="navbar-nav align-items-center d-none d-md-flex">
-{{--                    <notifications-component></notifications-component>--}}
+                    {{--                    <notifications-component></notifications-component>--}}
 
                     <li class="nav-item dropdown">
                         <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
                            aria-expanded="false">
                             <div class="media align-items-center">
-                                  <img alt="Image placeholder" :src="user.photo" class=" avatar avatar-sm">
+                                <img alt="Image placeholder" :src="user.photo" class=" avatar avatar-sm">
                                 <div class="media-body ml-2 d-none d-lg-block">
                                     <span
                                         class="mb-0 text-sm  font-weight-bold">@{{user.fullname}}</span>
@@ -262,20 +252,20 @@
                 </ul>
             </div>
         </nav>
-            <div v-if="$route.matched[0].path === '/boards/:id'" class="" style="position:relative;flex-grow: 1;">
-                <router-view></router-view>
-            </div>
-            <div v-if="$route.matched[0].path === '/tickets/:id'" class="" style="position:relative;flex-grow: 1;">
-                <router-view></router-view>
-            </div>
-            <div v-else class="container-fluid" :class="$route.matched[0].path === '/tickets' ? '' : 'mt-2'" style="position:relative;flex-grow: 1; overflow-x: hidden">
-                <router-view></router-view>
-            </div>
+        <div v-if="$route.matched[0].path === '/boards/:id'" class="" style="position:relative;flex-grow: 1;">
+            <router-view></router-view>
         </div>
-
-        <vue-progress-bar></vue-progress-bar>
-
+        <div v-if="$route.matched[0].path === '/tickets/:id'" class="" style="position:relative;flex-grow: 1;">
+            <router-view></router-view>
+        </div>
+        <div v-else class="container-fluid mt-2" :style=" $route.matched[0].path === '/tickets' ? 'position:relative;flex-grow: 1; overflow-x: hidden' : ''">
+            <router-view></router-view>
+        </div>
     </div>
+
+    <vue-progress-bar></vue-progress-bar>
+
+</div>
 </div>
 
 {{-- On defini la variable user (Javascript) si l'utilisateur est authentifié --}}
@@ -294,6 +284,10 @@
 {{--<script src="/node_modules/autosize/dist/autosize.js"></script>--}}
 <script>
 
+let collapse = document.querySelector('#sidenav-collapse-main')
+$('.nav-link').on('click', function (){
+    collapse.classList.remove('show')
+})
 </script>
 </body>
 

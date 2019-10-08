@@ -9,7 +9,8 @@ class Message extends Model
 
     protected $with = ['parent', 'from'];
 
-    public function commentable(){
+    public function commentable()
+    {
         return $this->morphTo();
     }
 
@@ -22,7 +23,8 @@ class Message extends Model
 //    {
 //        return $this->hasMany(Message::class, 'to_id');
 //    }
-public function parent(){
+    public function parent()
+    {
         return $this->belongsTo(Message::class, 'to_id');
-}
+    }
 }

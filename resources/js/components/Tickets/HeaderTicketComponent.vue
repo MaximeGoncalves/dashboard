@@ -69,10 +69,15 @@ export default {
             axios.post('/api/attachment/' + this.element.id, formData, config)
                 .then(response => {
                     for (let i = 0; i < response.data.length; i++) {
-                        this.element.attachments.push(response.data[i])
+                        this.element.attachments.push(response.data.files[i])
                     }
                     this.files = []
                     this.$Progress.finish();
+
+                    axios.post('/api/attachements/sendmail', {
+                        attachments: response.data.files.length,
+                        ticket : response.data.ticket.id
+                    })
                 }).catch(error => {
                 this.$Progress.fail()
                 this.errors = error.response.data.message;

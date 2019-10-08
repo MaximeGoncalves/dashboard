@@ -26,7 +26,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="col-xl-4 ">
                     <div class="card shadow">
                         <div class="card-header border-0">
@@ -49,7 +48,8 @@
 
                                 <tr v-for="ticket in tickets.data">
                                     <th scope="row">
-                                        <router-link :to="{name: 'ticket', params: {id: ticket.id }}" class="text-default">
+                                        <router-link :to="{name: 'ticket', params: {id: ticket.id }}"
+                                                     class="text-default">
                                             {{ ticket.topic }}
                                         </router-link>
                                     </th>
@@ -67,7 +67,7 @@
                 </div>
             </div>
 
-            <div class="row mt-5">
+            <div class="row mt-3">
                 <div class="col-xl-4 mb-5 mb-xl-0">
                     <div class="card shadow">
                         <div class="card-header bg-transparent">
@@ -119,9 +119,36 @@
                 </div>
                 <div class="col-xl-4">
                     <progress-state :items="ticketPerSociety"
-                                    :title="'Tickets par société -' + year "
+                                    :title="'Tickets par société - ' + year "
                                     :array="['Société', 'Total']"
                                     :total="total"></progress-state>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-xl-4">
+                    <div class="card shadow">
+                        <div class="card-header bg-transparent">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <h6 class="text-uppercase text-muted ls-1 mb-1">Tickets</h6>
+                                    <h2 class="mb-0">Par technicien - {{year}}</h2>
+                                    <small class="text-muted"></small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <!-- Chart -->
+                            <div class="chart">
+                                <!--<canvas id="chart-orders" class="chart-canvas"></canvas>-->
+                                <pie-chart :data="chartPerTech"
+                                           class="chart-canvas"
+                                           id="chart-tech"
+                                           :width="300"
+                                           :height="300"
+                                           v-if="loaded"/>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -226,6 +253,7 @@
 
 <script>
 import LineChart from './LineChartComponent'
+import PieChart from './PieChartComponent'
 import BarChart from './BarComponent'
 import moment from "moment/moment";
 import ProgressState from './Components/ProgressStateComponent'
@@ -233,7 +261,7 @@ import ProgressState from './Components/ProgressStateComponent'
 moment.locale('fr');
 export default {
     name: 'LineChartContainer',
-    components: {LineChart, BarChart, ProgressState},
+    components: {LineChart, BarChart, ProgressState, PieChart},
     data() {
         return {
             loaded: false,
@@ -241,6 +269,7 @@ export default {
             chartDataLastFiveDays: {},
             chartDataTicketsPerPerson: {},
             chartPerCategory: {},
+            chartPerTech: {},
             tickets: {},
             ticketPerSociety: {},
             chartPerSource: {},
@@ -265,15 +294,16 @@ export default {
             this.$set(this.chartPerCategory, "datasets", [])
             this.$set(this.chartPerSource, "labels", [])
             this.$set(this.chartPerSource, "datasets", [])
-
+            this.$set(this.chartPerTech, "labels", [])
+            this.$set(this.chartPerTech, "datasets", [])
         },
         async loadData() {
             this.$Progress.start()
             this.loaded = false
             try {
-                await axios.get('/api/tickets/stats').then(response => {
-                    console.log(response)
+                await axios.get('/api/stats').then(response => {
                     this.statsInit()
+                    console.log(response)
                     // Ticket sur l'année N & N-1
                     this.chartDataTickets.labels.push('Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre')
                     this.chartDataTickets.datasets.push({
@@ -307,24 +337,16 @@ export default {
                         borderWidth: 1,
                     })
 
-                    // Ticket sur les 5 derniers jours
-                    this.chartDataLastFiveDays.labels = Object.keys(response.data.lastFive)
-                    var created = []
-                    var closed = []
-                    for (var i = 0; i < response.data.createdCount.length; i++) {
-                        created.push(response.data.createdCount[i])
-                        closed.push(response.data.closedCount[i])
+                    //Ticket sur l'année par technician.
+                    let count = []
+                    for (let i = 0; i < response.data.technician.length; i++) {
+                        this.chartPerTech.labels.push(response.data.technician[i].user.fullname)
+                        count.push(response.data.technician[i].tickets.length)
                     }
-                    this.chartDataLastFiveDays.datasets.push({
-                        data: created,
-                        label: "# de tickets",
-                        backgroundColor: '#6772E5',
-                        hoverBackgroundColor: '#6672E5',
-                    }, {
-                        data: closed,
-                        label: "# de tickets clos",
-                        backgroundColor: '#19194D',
-                        hoverBackgroundColor: '#19194D',
+                    this.chartPerTech.datasets.push({
+                        label: "Data One",
+                        backgroundColor: ["#172B4D", "#172B9D", "#172B6D"],
+                        data: count
                     })
 
                     //ticket par source
