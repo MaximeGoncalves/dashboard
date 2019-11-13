@@ -1,7 +1,7 @@
 @component('mail::message')
 # Nouveau message
 
-**{{ $user }}** à répondu à votre message.
+**{{ $user->fullname }}** à répondu à votre message.
 >{{ $message->content }}
 
 Pour le consuter cliquer sur le bouton ci-dessous.
@@ -10,6 +10,4 @@ Pour le consuter cliquer sur le bouton ci-dessous.
 Consulter
 @endcomponent
 
-Merci,<br>
-{{ config('app.name') }}
 @endcomponent

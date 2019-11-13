@@ -56,11 +56,8 @@
                                     <input type="password" v-model="user.password"
                                            class="form-control form-control-alternative" name="password"
                                            :class="errors.password ? 'is-invalid' : ''"
-                                           placeholder="Mot de passe" v-if="!editMode">
-                                    <input type="password" v-model="user.password"
-                                           class="form-control form-control-alternative" name="password"
-                                           :class="errors.password ? 'is-invalid' : ''"
-                                           placeholder="Mot de passe" v-if="editMode" disabled>
+                                           placeholder="Mot de passe">
+
                                     <small v-if="errors.password" :class="errors.password ? 'text-danger' : ''"
                                            v-for="error in errors.password">{{ error }}
                                     </small>

@@ -44,19 +44,20 @@ class NewNoteJob implements ShouldQueue
      */
     public function handle()
     {
-        $softease = 'technique@softease.fr';
-        if($this->note->private){
-        Mail::to($softease)->send(new NewNoteEmail($this->note, $this->user));
-        }else{
-            $ticket = Ticket::findOrFail($this->note->ticket_id);
-            $user = User::findOrFail($ticket->user_id);
-            $leaders = User::where('society_id', $user->society_id)->where('role','leader')->get();
+        $softease = 'support@softease.fr';
+        $ticket = Ticket::findOrFail($this->note->ticket_id);
+        $user = User::findOrFail($ticket->user_id);
+        $leaders = User::where('society_id', $user->society_id)->where('role', 'leader')->get();
 
-            $cc = [];
-            foreach ($leaders as $leader){
-                $cc[] = $leader->email;
-            }
-            $cc[] = $softease;
+        $cc = [];
+        foreach ($leaders as $leader) {
+            $cc[] = $leader->email;
+        }
+        $cc[] = $softease;
+
+        if ($this->note->private) {
+            Mail::to($softease)->send(new NewNoteEmail($this->note, $this->user));
+        } else {
             Mail::to($user)->cc($cc)->send(new NewNoteEmail($this->note, $this->user));
         }
     }

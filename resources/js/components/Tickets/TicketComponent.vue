@@ -222,167 +222,146 @@ import vClickOutside from 'v-click-outside'
 import HeaderTicketComponent from './HeaderTicketComponent'
 import TicketDescriptionComponent from './TicketDescriptionComponent'
 import TicketRepository from './TicketRepository'
+
 export default {
-    directives: {
-        clickOutside: vClickOutside.directive
-    },
-    components: {
-        HeaderTicketComponent,
-        TicketDescriptionComponent,
-        actionComponent,
-        Editor,
-        Viewer,
-    },
-    data() {
-        return {
-            editorOptions: {
-                minHeight: '0',
-                hideModeSwitch: false,
-                toolbarItems: [
-                    'bold',
-                    'italic',
-                    'strike',
-                    'ul',
-                    'ol',
-                    'indent',
-                    'outdent',
-                    'divider',
-                    'table',
-                ]
-            },
-            editorHtml: '',
-            editorMode: 'wysiwyg',
-            editorVisible: true,
-            editorPreviewStyle: 'vertical',
-            edit: false,
-            unauthorized: false,
-            ticket: {},
-            errors: [],
-            message: '',
-            note: '',
-            privateNote: true,
-            messages: {},
-            editDescription: false,
-            technicians: {},
-            types: {},
-            addcomment: false,
-            addNote: false,
-        }
-    }
-    ,
-    methods: {
-        addComment($event) {
-            this.messages.push($event);
-        },
-        updateTicket() {
-            TicketRepository.update(this.ticket)
-            // this.$Progress.start()
-            // let tech, type
-            // if (this.ticket.technician.user) {
-            //     tech = this.ticket.technician.user.id
-            // }
-            // axios.put('/api/tickets/' + this.ticket.id, {
-            //     technician: tech,
-            //     source: this.ticket.source.id,
-            //     importance: this.ticket.importance,
-            //     state: this.ticket.state.id,
-            //     type: this.ticket.type ? this.ticket.type.id : null
-            // }).then(response => {
-            //     this.$toasted.global.flash({message: "Le ticket à été mis à jour"});
-            //     this.$Progress.finish()
-            //     Fire.$emit('updateTicket', this.ticket.id)
-            //    if(response.data.close){
-            //        axios.post('/api/tickets/sendmail', {
-            //            ticket: response.data.ticket.id,
-            //            close: response.data.close
-            //        })
-            //    }
-            // })
-        },
-        deleteTicket() {
-            swal({
-                title: "Etes vous sur ? ",
-                text: "Cette manipulation est irréversible !",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            })
-                .then(willDelete => {
-                    if (willDelete) {
-                        axios.delete('/api/tickets/' + this.ticket.id).then(() => {
-                            swal("Le ticket à été supprimé", {
-                                icon: "success",
-                            });
-                            this.$router.push({path: "/tickets"})
-                        }).catch(error => {
-                            this.errors = error.response.data.message;
-                            swal(this.errors);
-                        })
-                    } else {
-                        swal("Ok on annule !");
-                    }
-                });
-        },
-        loadTicket() {
-            let ticket = this.$route.params.id;
-            axios.get('/api/tickets/' + ticket).then(result => {
-                if (result.data.unauthorized) {
-                    this.unauthorized = true
-                }
-                this.ticket = result.data.ticket
-                this.sources = result.data.sources
-                this.technicians = result.data.technicians
-                this.states = result.data.states
-                this.messages = result.data.messages
-                this.types = result.data.types
-                this.actions = result.data.actions
-                if (!this.ticket.technician) {
-                    this.ticket.technician = {}
-                }
-            })
-        },
-        addMessage() {
-            this.$Progress.start();
-            axios.post('/api/message/' + this.ticket.id, {
-                content: this.message,
-                type: 'Ticket'
-            }).then(response => {
-                this.$Progress.finish();
-                this.message = ""
-                this.addcomment = false;
-                this.$toasted.global.flash({message: "Votre commentaire à bien été ajouté"});
-                this.messages.push(response.data.messages)
-                axios.post('/api/message/'+response.data.messages.id + '/sendEmailMessage', {
-                    message: response.data.messages.id
-                })
-            }).catch(error => {
-                this.errors = error.response.data.errors;
-                this.$Progress.fail();
-            })
-        },
-        addNotes() {
-            this.$Progress.start();
-            axios.post('/api/note/' + this.ticket.id, {
-                content: this.note,
-                private: this.privateNote
-            }).then(response => {
-                this.$Progress.finish();
-                this.note = ""
-                this.addNote = false;
-                this.$toasted.global.flash({message: "Votre note à bien été ajoutée"});
-                this.messages.push(response.data)
-                axios.post('/api/note/' + this.ticket.id + '/sendemail', {
-                    note : response.data.id
-                })
-            }).catch(error => {
-                this.errors = error.response.data.errors;
-                this.$Progress.fail();
-            })
-        },
-    },
-    mounted() {
-        this.loadTicket()
-    }
+	directives: {
+		clickOutside: vClickOutside.directive
+	},
+	components: {
+		HeaderTicketComponent,
+		TicketDescriptionComponent,
+		actionComponent,
+		Editor,
+		Viewer,
+	},
+	data() {
+		return {
+			editorOptions: {
+				minHeight: '0',
+				hideModeSwitch: false,
+				toolbarItems: [
+					'bold',
+					'italic',
+					'strike',
+					'ul',
+					'ol',
+					'indent',
+					'outdent',
+					'divider',
+					'table',
+				]
+			},
+			editorHtml: '',
+			editorMode: 'wysiwyg',
+			editorVisible: true,
+			editorPreviewStyle: 'vertical',
+			edit: false,
+			unauthorized: false,
+			ticket: {},
+			errors: [],
+			message: '',
+			note: '',
+			privateNote: true,
+			messages: {},
+			editDescription: false,
+			technicians: {},
+			types: {},
+			addcomment: false,
+			addNote: false,
+		}
+	}
+	,
+	methods: {
+		addComment($event) {
+			this.messages.push($event);
+		},
+		updateTicket() {
+			TicketRepository.update(this.ticket)
+		},
+		deleteTicket() {
+			swal({
+				title: "Etes vous sur ? ",
+				text: "Cette manipulation est irréversible !",
+				icon: "warning",
+				buttons: true,
+				dangerMode: true,
+			})
+				.then(willDelete => {
+					if (willDelete) {
+						axios.delete('/api/tickets/' + this.ticket.id).then(() => {
+							swal("Le ticket à été supprimé", {
+								icon: "success",
+							});
+							this.$router.push({path: "/tickets"})
+						}).catch(error => {
+							this.errors = error.response.data.message;
+							swal(this.errors);
+						})
+					} else {
+						swal("Ok on annule !");
+					}
+				});
+		},
+		loadTicket() {
+			let ticket = this.$route.params.id;
+			axios.get('/api/tickets/' + ticket).then(result => {
+				if (result.data.unauthorized) {
+					this.unauthorized = true
+				}
+				this.ticket = result.data.ticket
+				this.sources = result.data.sources
+				this.technicians = result.data.technicians
+				this.states = result.data.states
+				this.messages = result.data.messages
+				this.types = result.data.types
+				this.actions = result.data.actions
+				if (!this.ticket.technician) {
+					this.ticket.technician = {}
+				}
+			})
+		},
+		addMessage() {
+			this.$Progress.start();
+			axios.post('/api/message/' + this.ticket.id, {
+				content: this.message,
+				type: 'Ticket'
+			}).then(response => {
+				this.$Progress.finish();
+				this.message = ""
+				this.addcomment = false;
+				this.$toasted.global.flash({message: "Votre commentaire à bien été ajouté"});
+				this.messages.push(response.data)
+				axios.post('/api/sendEmail', {
+					message: response.data.id
+				})
+			}).catch(error => {
+				this.errors = error.response.data.errors;
+				this.$Progress.fail();
+			})
+		},
+		addNotes() {
+			this.$Progress.start();
+			axios.post('/api/note/' + this.ticket.id, {
+				content: this.note,
+				private: this.privateNote
+			}).then(response => {
+				this.$Progress.finish();
+				this.note = ""
+				this.addNote = false;
+				this.$toasted.global.flash({message: "Votre note à bien été ajoutée"});
+				this.messages.push(response.data)
+				axios.post('/api/note/' + this.ticket.id + '/sendemail', {
+					note: response.data.id
+				})
+			}).catch(error => {
+				this.errors = error.response.data.errors;
+				this.$Progress.fail();
+			})
+		},
+	},
+	mounted() {
+		this.loadTicket()
+	}
 }
 </script>
 
@@ -391,35 +370,45 @@ export default {
         color: #fff;
         background-color: #172b4d;
     }
+
     .nav-pills .nav-link:hover {
         color: #172b4d;
     }
+
     .nav-pills .nav-link.active:hover {
         color: #fff;
     }
+
     .nav-pills .nav-link {
         color: #172b4d;
     }
+
     .nav-pills .nav-item:not(:last-child) {
         padding-right: 0;
     }
+
     .nav-pills .nav-link {
         border-radius: 0;
     }
+
     .timeline-alt {
         padding: 20px 0;
         position: relative;
     }
+
     .timeline-avatar {
         width: 22px !important;
         height: 22px !important;
     }
+
     .timeline-alt .timeline-item {
         position: relative;
     }
+
     .timeline-alt .timeline-item .timeline-item-info {
         margin-left: 30px;
     }
+
     .timeline-alt .timeline-item .timeline-icon {
         float: left;
         height: 20px;
@@ -431,6 +420,7 @@ export default {
         line-height: 16px;
         background-color: #fff;
     }
+
     .timeline-alt .timeline-item:before {
         background-color: #f1f3fa;
         bottom: 0;
@@ -441,12 +431,15 @@ export default {
         width: 2px;
         z-index: 0;
     }
+
     small p {
         margin-bottom: 0 !important;
     }
+
     .accordion .card-header {
         position: relative;
     }
+
     .accordion .card-header:after {
         font: normal normal normal 14px/1 NucleoIcons;
         line-height: 0;
@@ -457,9 +450,11 @@ export default {
         transition: all .15s cubic-bezier(.68, -.55, .265, 1.55);
         transform: translateY(-50%);
     }
+
     .accordion .card-header[aria-expanded=false]:after {
         content: '\ea0f';
     }
+
     .accordion .card-header[aria-expanded=true]:after {
         transform: rotate(180deg);
     }

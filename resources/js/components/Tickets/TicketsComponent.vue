@@ -496,30 +496,16 @@ export default {
                 let state = this.filter.state[i];
                 stateTab.push(state.id)
             }
-            if (this.filter.source != null) {
-                source = this.filter.source.id
-            }
-            if (this.filter.user != null) {
-                user = this.filter.user.id
-            }
-            if (this.filter.society != null) {
-                society = this.filter.society.id
-            }
-            if (!this.filter.importance || !source || !user || !society  || !type || !techTab || !stateTab) {
-                filterYrN = false
-            } else {
-                filterYrN = true
-            }
             axios.get('/api/tickets?page=' + page, {
                 params: {
                     filter: filterYrN,
                     technician: techTab,
                     state: stateTab,
                     importance: this.filter.importance,
-                    source: source,
-                    user: user,
-                    society: society,
-                    type: type
+                    source: this.filter.source ? this.filter.source.id : null ,
+                    user: this.filter.user ? this.filter.user.id : null,
+                    society: this.filter.society ? this.filter.society.id : null,
+                    type: this.filter.type ? this.filter.type.id : null
                 }
             })
                 .then(response => {

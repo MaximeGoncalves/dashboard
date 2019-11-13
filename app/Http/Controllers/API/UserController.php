@@ -38,7 +38,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return User
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -72,7 +72,7 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param int $id
      * @return User|User[]|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
      */
     public function show($id)
@@ -83,8 +83,8 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -104,6 +104,7 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->fullname = $request->fullname;
         $user->email = $request->email;
+        $user->password = bcrypt($request->get('password'));
         $user->society()->associate($request->society);
         $user->role = $request->role;
         $user->profession = $request->profession;
@@ -111,20 +112,23 @@ class UserController extends Controller
         $user->save();
         $user->load('society');
         return response($user);
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return array
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     */
-    public function destroy($id)
-    {
-        User::destroy($id);
-        return ['message' => 'Utilisateur supprimé'];
-    }
+
+        /**
+         * Remove the specified resource from storage.
+         *
+         * @param int $id
+         * @return array
+         * @throws \Illuminate\Auth\Access\AuthorizationException
+         */
+        public
+        function destroy($id)
+        {
+            User::destroy($id);
+            return ['message' => 'Utilisateur supprimé'];
+        }
+
+        r
 
     public function profile()
     {
@@ -151,22 +155,22 @@ class UserController extends Controller
         $currentPhoto = $user->photo;
         if ($request->photo != $currentPhoto) {
             $name = time() . '.' . explode('/', explode(':', substr($request->photo, 0, strpos($request->photo, ';')))[1])[1];
-            $path = public_path('img/profile/'. $user->name);
-            if(!file_exists($path)){
+            $path = public_path('img/profile/' . $user->name);
+            if (!file_exists($path)) {
                 mkdir($path, 0777, true);
             }
-            Image::make($request->photo)->save($path.'/'. $name);
+            Image::make($request->photo)->save($path . '/' . $name);
             $request->merge(['photo' => $name]);
 
-            $userPhoto = $path. '/'. $currentPhoto;
-            if(file_exists($userPhoto)){
+            $userPhoto = $path . '/' . $currentPhoto;
+            if (file_exists($userPhoto)) {
                 @unlink($userPhoto);
             }
         }
         $user->fullname = $request->fullname;
         $user->email = $request->email;
         $user->photo = $request->photo;
-        if($request->password != ''){
+        if ($request->password != '') {
             $user->password = bcrypt($request->password);
         }
 
@@ -184,7 +188,8 @@ class UserController extends Controller
 
     }
 
-    public function getAllUsers(){
+    public function getAllUsers()
+    {
         return $allusers = User::all();
 //        $members = [];
 //        foreach($allusers as $member){

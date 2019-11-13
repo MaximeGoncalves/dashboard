@@ -50,7 +50,7 @@ class CloseTicketJob implements ShouldQueue
      */
     public function handle()
     {
-        $softease = 'technique@softease.fr';
+        $softease = 'support@softease.fr';
         $cc = [];
         foreach ($this->leaders as $leader){
             $cc[] = $leader->email;

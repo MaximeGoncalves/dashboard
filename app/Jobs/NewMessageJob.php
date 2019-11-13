@@ -31,11 +31,13 @@ class NewMessageJob implements ShouldQueue
      * Create a new job instance.
      *
      * @param Ticket $ticket
+     * @param $message
      * @param $user
+     * @param $leader
+     * @param $response
      */
     public function __construct(Ticket $ticket, $message, $user, $leader, $response)
     {
-        //
         $this->ticket = $ticket;
         $this->user = $user;
         $this->leader = $leader;
@@ -50,17 +52,19 @@ class NewMessageJob implements ShouldQueue
      */
     public function handle()
     {
-        $softease = 'technique@softease.fr';
+        $softease = 'support@softease.fr';
         $cc = [];
         foreach ($this->leader as $leader){
             $cc[] = $leader->email;
         }
         $cc[] = $softease;
+
 //        Si l'auteur du ticket fais un message sur le ticket => envoie un message uniquement à softease et au leader
         if($this->ticket->user_id == Auth::user()->id){
             Mail::to($cc)->send(new NewMessageEmail($this->ticket,$this->message, $this->response));
-//            sinon envoie un message à tous le monde
-        }else{
+        }
+//        sinon envoie un message à tous le monde
+        else{
             Mail::to($this->user->email)->cc($cc)->send(new NewMessageEmail($this->ticket,$this->message, $this->response));
         }
     }

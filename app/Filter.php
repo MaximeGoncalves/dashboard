@@ -77,13 +77,8 @@ class Filter
                         $q->where('source_id', $request->source);
                     }
                 })
-                ->where(function ($q) use ($request) {
-                    if ($request->user != null) {
-                        $q->where('user_id', $request->user);
-                    }
-                })
                 ->where('society_id', Auth::user()->society->id)
-                ->with(['user', 'source', 'society', 'technician.user', 'state', 'actions', 'messages'])
+                ->with(['user', 'source', 'society', 'technician.user', 'state', 'actions', 'messages','attachments', 'type'])
                 ->orderBy('created_at', 'desc')
                 ->latest()
                 ->paginate(10);
@@ -118,7 +113,7 @@ class Filter
                     }
                 })
                 ->where('user_id', Auth::user()->id)
-                ->with(['user', 'source', 'society', 'technician.user', 'state', 'actions', 'messages'])
+                ->with(['user', 'source', 'society', 'technician.user', 'state', 'actions', 'messages','attachments', 'type'])
                 ->orderBy('created_at', 'desc')
                 ->latest()
                 ->paginate(10);

@@ -13,6 +13,7 @@ use App\Ticket;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 class MessageController extends Controller
@@ -21,7 +22,7 @@ class MessageController extends Controller
     public function index(Request $request)
     {
         $messages = Message::where('commentable_id', $request->get('element'))->whereNull('to_id')->get();
-        return response()->json(['messages' => $messages]);
+        return response($messages);
     }
 
     /**
@@ -68,7 +69,7 @@ class MessageController extends Controller
         }
         $message->save();
         $message->load(['from', 'parent']);
-        return response()->json(['messages' => $message]);
+        return response($message);
     }
 
     /**
@@ -113,7 +114,7 @@ class MessageController extends Controller
         return $users;
     }
 
-    public function sendEmailMessage(Request $request)
+    public function sendEmail(Request $request)
     {
         $message = Message::findOrFail($request->get('message'));
         $ticket = Ticket::findOrfail($message->commentable_id);
@@ -122,10 +123,10 @@ class MessageController extends Controller
 
         if ($message->to_id) {
             $toId = Message::with('from')->findOrFail($message->to_id);
-            $this->dispatch(new NewMessageJob($ticket, $message,$user, $leader, $response = true));
+            $this->dispatch(new NewMessageJob($ticket, $message, $user, $leader, $response = true));
 
         } else {
-            $this->dispatch(new NewMessageJob($ticket,$message, $user, $leader, $response = false));
+            $this->dispatch(new NewMessageJob($ticket, $message, $user, $leader, $response = false));
         }
     }
 }

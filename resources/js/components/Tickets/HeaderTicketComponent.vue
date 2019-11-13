@@ -68,9 +68,10 @@ export default {
             }
             axios.post('/api/attachment/' + this.element.id, formData, config)
                 .then(response => {
-                    for (let i = 0; i < response.data.length; i++) {
+                    for (let i = 0; i < response.data.files.length; i++) {
                         this.element.attachments.push(response.data.files[i])
                     }
+
                     this.files = []
                     this.$Progress.finish();
 

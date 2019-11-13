@@ -127,8 +127,8 @@ export default {
             }).then(response => {
                 this.type = ''
                 this.respondTo = null
-                axios.post('/api/message/'+ response.data.messages.id + '/sendEmailMessage', {
-                    message: response.data.messages.id
+                axios.post('/api/sendEmail', {
+                    message: response.data.id
                 })
                 this.$emit('commentAdded', response.data.messages)
             })
